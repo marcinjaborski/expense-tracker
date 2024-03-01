@@ -26,12 +26,7 @@ export default function Register() {
       fields={
         <>
           <LabeledInput label="Email" name="email" type="email" required />
-          <LabeledInput
-            label="Password"
-            name="password"
-            type="password"
-            required
-          />
+          <LabeledInput label="Password" name="password" type="password" required />
           <LabeledInput label="Confim password" type="password" required />
         </>
       }

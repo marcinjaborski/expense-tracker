@@ -11,8 +11,8 @@ export default function LoggedApplication({ children }: PropsWithChildren) {
 
   return (
     <>
-      <div className="p-3">{children}</div>
-      <div className="btm-nav">
+      <div className="box-border grid min-h-screen w-screen place-items-center p-3 pb-[5rem]">{children}</div>
+      <div className="btm-nav z-20">
         <Link
           href="/"
           className={cn("text-xl text-primary", {

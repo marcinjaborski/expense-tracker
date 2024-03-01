@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@supabase/ssr": "^0.1.0",
-    "@supabase/supabase-js": "^2.39.6",
+    "@supabase/supabase-js": "^2.39.7",
     "clsx": "^2.1.0",
     "lodash": "^4.17.21",
     "next": "14.1.0",
@@ -32,6 +32,7 @@
     "postcss": "^8",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "supabase": "^1.145.4",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

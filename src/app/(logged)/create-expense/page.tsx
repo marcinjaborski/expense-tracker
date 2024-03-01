@@ -1,80 +1,63 @@
-import { createClient } from "@/utils/supabase/server";
-import { z } from "zod";
-import { ExpenseType } from "@/utils/types";
-import { redirect } from "next/navigation";
+"use client";
+
 import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
-import { ExpenseSelect } from "@/app/(logged)/create-expense/(components)";
-
-const createExpenseSchema = z.object({
-  type: ExpenseType,
-  date: z.string(),
-  amount: z.preprocess(Number, z.number().nonnegative()),
-  description: z.string().optional(),
-  recurring: z.string().optional(),
-});
-
-async function createExpense(formData: FormData) {
-  "use server";
-  const supabase = createClient();
-  const parsedFormData = createExpenseSchema.safeParse(
-    Object.fromEntries(formData),
-  );
-  if (!parsedFormData.success) {
-    redirect("/error");
-  }
-  const { error } = await supabase.from("expenses").insert(parsedFormData.data);
-  if (error) {
-    redirect("/error");
-  }
-}
+import { ExpenseSelect, CategoryCarousel, CreateCategoryModal } from "@/app/(logged)/create-expense/(components)";
+import { createExpense } from "@/utils/serverActions";
+import { useState } from "react";
+import { ExpenseType } from "@/utils/types";
+import { useFormState, useFormStatus } from "react-dom";
+import { cn } from "@/utils/functions";
 
 export default function CreateExpense() {
+  const [type, setType] = useState<ExpenseType>(ExpenseType.enum.expense);
+  const [state, formAction] = useFormState(createExpense, { message: "" });
+  const { pending } = useFormStatus();
+
   return (
-    <form
-      action={createExpense}
-      className="flex min-h-screen flex-col items-center justify-center gap-3 p-5"
-    >
-      <div className="join">
-        <ExpenseSelect label="Income" Icon={LuPlus} value="income" />
-        <ExpenseSelect
-          label="Expense"
-          Icon={LuMinus}
-          value="expense"
-          defaultChecked
-        />
-        <ExpenseSelect
-          label="Transfer"
-          Icon={LuArrowRightLeft}
-          value="transfer"
-        />
-      </div>
-      <label className="input input-bordered flex items-center gap-2">
+    <>
+      <form action={formAction} className="box-border flex h-full flex-col items-center justify-center gap-3 px-5">
+        <div className="join">
+          <ExpenseSelect
+            label="Income"
+            Icon={LuPlus}
+            value="income"
+            onChange={() => setType(ExpenseType.enum.income)}
+          />
+          <ExpenseSelect
+            label="Expense"
+            Icon={LuMinus}
+            value="expense"
+            defaultChecked
+            onChange={() => setType(ExpenseType.enum.expense)}
+          />
+          <ExpenseSelect
+            label="Transfer"
+            Icon={LuArrowRightLeft}
+            value="transfer"
+            onChange={() => setType(ExpenseType.enum.transfer)}
+          />
+        </div>
+        <CategoryCarousel type={type} />
+        <label className="input input-bordered flex items-center gap-2">
+          <input autoFocus type="number" className="grow" placeholder="Amount" name="amount" />
+          <LuCoins />
+        </label>
         <input
-          autoFocus
-          type="number"
-          className="grow"
-          placeholder="Amount"
-          name="amount"
+          type="date"
+          className="input input-bordered"
+          name="date"
+          defaultValue={new Date().toISOString().split("T")[0]}
         />
-        <LuCoins />
-      </label>
-      <input
-        type="date"
-        className="input input-bordered"
-        name="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        className="textarea textarea-bordered w-full"
-      ></textarea>
-      <input
-        type="submit"
-        className="btn btn-primary fixed bottom-20"
-        aria-label="Create"
-        value="Create"
-      />
-    </form>
+        <textarea name="description" placeholder="Description" className="textarea textarea-bordered w-full"></textarea>
+        <input
+          type="submit"
+          disabled={pending}
+          className={cn("btn btn-primary fixed bottom-20", { disabled: pending })}
+          aria-label="Create"
+          value="Create"
+        />
+      </form>
+      <CreateCategoryModal />
+    </>
   );
 }

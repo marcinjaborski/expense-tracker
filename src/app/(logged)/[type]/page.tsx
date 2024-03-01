@@ -2,10 +2,13 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import _ from "lodash";
 import { Fragment } from "react";
-import { ExpensesRoute, isExpenseRoute } from "@/utils/routes";
+import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
 import { ExpenseType } from "@/utils/types";
 import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 import { ExpenseLink } from "@/app/(logged)/[type]/(components)";
+import { PageHeader } from "@/app/(logged)/(components)";
+import { Tables } from "@/utils/supabase/database.types";
+import { DynamicIcon } from "@/components";
 
 type ExpensesProps = {
   params: {
@@ -13,10 +16,8 @@ type ExpensesProps = {
   };
 };
 
-const mapRouteToType: Record<ExpensesRoute, ExpenseType> = {
-  expenses: "expense",
-  incomes: "income",
-  transfers: "transfer",
+type ExpenseReturnType = Tables<"expenses"> & {
+  category: Tables<"categories"> | null;
 };
 
 export default async function Expenses({ params }: ExpensesProps) {
@@ -25,25 +26,18 @@ export default async function Expenses({ params }: ExpensesProps) {
   const supabase = createClient();
   const { data: expenses, error } = await supabase
     .from("expenses")
-    .select()
-    .eq("type", type);
+    .select("*, category (*)")
+    .eq("type", type)
+    .returns<ExpenseReturnType[]>();
   const expensesByDate = _.groupBy(expenses, "date");
-  const sortedDates = Object.keys(expensesByDate).sort((date1, date2) =>
-    date2.localeCompare(date1),
-  );
+  const sortedDates = Object.keys(expensesByDate).sort((date1, date2) => date2.localeCompare(date1));
   if (error) redirect("/error");
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-3xl">List of expenses</h1>
+    <div className="flex h-full w-full flex-col gap-2">
+      <PageHeader title="List of expenses" />
       <div className="join">
-        <ExpenseLink
-          currentType={type}
-          type={ExpenseType.enum.income}
-          Icon={LuPlus}
-          label="Incomes"
-          href="/incomes"
-        />
+        <ExpenseLink currentType={type} type={ExpenseType.enum.income} Icon={LuPlus} label="Incomes" href="/incomes" />
         <ExpenseLink
           currentType={type}
           type={ExpenseType.enum.expense}
@@ -71,6 +65,10 @@ export default async function Expenses({ params }: ExpensesProps) {
               {expensesByDate[date].map((expense) => (
                 <tr key={expense.id}>
                   <td>{expense.description}</td>
+                  <td className="flex items-center gap-2">
+                    <DynamicIcon icon={expense.category?.icon} />
+                    {expense.category?.name}
+                  </td>
                   <td className="text-right">{expense.amount}</td>
                 </tr>
               ))}
