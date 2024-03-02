@@ -2,7 +2,6 @@
 import { z } from "zod";
 import { ExpenseType } from "@/utils/types";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 
 const createCategorySchema = z.object({
   name: z.string(),
@@ -10,15 +9,17 @@ const createCategorySchema = z.object({
   type: ExpenseType,
 });
 
-export async function createCategory(formData: FormData) {
+export async function createCategory(_: unknown, formData: FormData) {
   "use server";
   const supabase = createClient();
   const parsedFormData = createCategorySchema.safeParse(Object.fromEntries(formData));
   if (!parsedFormData.success) {
-    redirect("/error");
+    return { message: parsedFormData.error.message };
   }
   const { error } = await supabase.from("categories").insert(parsedFormData.data);
   if (error) {
-    redirect("/error");
+    return { message: error.message };
   }
+
+  return { message: "OK" };
 }
