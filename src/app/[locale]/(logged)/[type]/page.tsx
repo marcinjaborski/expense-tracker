@@ -1,14 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import _ from "lodash";
 import { Fragment } from "react";
 import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
 import { ExpenseType } from "@/utils/types";
 import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
-import { ExpenseLink } from "@/app/(logged)/[type]/(components)";
-import { PageHeader } from "@/app/(logged)/(components)";
 import { Tables } from "@/utils/supabase/database.types";
-import { DynamicIcon } from "@/components";
+import { DynamicIcon, PageHeader, ExpenseLink } from "@/components";
+import { redirect } from "@/navigation";
 
 type ExpensesProps = {
   params: {
@@ -21,8 +20,9 @@ type ExpenseReturnType = Tables<"expenses"> & {
 };
 
 export default async function Expenses({ params }: ExpensesProps) {
-  if (!isExpenseRoute(params.type)) notFound();
-  const type = mapRouteToType[params.type];
+  const route = `/${params.type}`;
+  if (!isExpenseRoute(route)) notFound();
+  const type = mapRouteToType[route];
   const supabase = createClient();
   const { data: expenses, error } = await supabase
     .from("expenses")

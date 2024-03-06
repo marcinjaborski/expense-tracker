@@ -1,10 +1,12 @@
+"use client";
+
 import { LabeledInput } from "@/components";
-import { ExpenseSelect } from "@/app/(logged)/create-expense/(components)";
 import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 import { createCategory } from "@/utils/serverActions/createCategory";
 import { categoryIcon } from "@/utils/categories";
 import { useFormState, useFormStatus } from "react-dom";
 import { cn, getModal } from "@/utils/functions";
+import { ExpenseSelect } from "@/components/create-expense/ExpenseSelect";
 
 export function CreateCategoryModal() {
   const [state, formAction] = useFormState(createCategory, { message: "" });

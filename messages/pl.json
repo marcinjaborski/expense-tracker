@@ -1,0 +1,7 @@
+{
+  "CreateExpense": {
+    "amount": "Kwota",
+    "description": "Opis",
+    "create": "Stwórz"
+  }
+}

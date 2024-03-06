@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { ExpenseType } from "@/utils/types";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { redirect } from "@/navigation";
 import { mapExpenseTypeToRoute } from "@/utils/routes";
 
 const createExpenseSchema = z.object({

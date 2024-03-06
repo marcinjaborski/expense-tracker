@@ -10,9 +10,15 @@ export const metadata: Metadata = {
   description: "Expense tracker description",
 };
 
-export default function RootLayout({ children }: PropsWithChildren) {
+type RootLayoutProps = PropsWithChildren<{
+  params: {
+    locale: string;
+  };
+}>;
+
+export default function RootLayout({ children, params: { locale } }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={inter.className}>{children}</body>
     </html>
   );

@@ -1,7 +1,7 @@
 import { ExpenseType } from "@/utils/types";
-import _ from "lodash";
+import { invert } from "lodash";
 
-export const expensesRoutes = ["expenses", "incomes", "transfers"] as const;
+export const expensesRoutes = ["/expenses", "/incomes", "/transfers"] as const;
 export type ExpensesRoute = (typeof expensesRoutes)[number];
 
 export function isExpenseRoute(route: string): route is ExpensesRoute {
@@ -9,9 +9,9 @@ export function isExpenseRoute(route: string): route is ExpensesRoute {
 }
 
 export const mapRouteToType: Record<ExpensesRoute, ExpenseType> = {
-  expenses: "expense",
-  incomes: "income",
-  transfers: "transfer",
+  "/expenses": "expense",
+  "/incomes": "income",
+  "/transfers": "transfer",
 };
 
-export const mapExpenseTypeToRoute = _.invert(mapRouteToType) as Record<ExpenseType, ExpensesRoute>;
+export const mapExpenseTypeToRoute = invert(mapRouteToType) as Record<ExpenseType, ExpensesRoute>;

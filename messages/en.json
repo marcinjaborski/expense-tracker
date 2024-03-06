@@ -1,0 +1,7 @@
+{
+  "CreateExpense": {
+    "amount": "Amount",
+    "description": "Description",
+    "create": "Create"
+  }
+}

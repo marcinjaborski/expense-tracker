@@ -1,14 +1,16 @@
 "use client";
 
 import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
-import { ExpenseSelect, CategoryCarousel, CreateCategoryModal } from "@/app/(logged)/create-expense/(components)";
 import { createExpense } from "@/utils/serverActions";
 import { useState } from "react";
 import { ExpenseType } from "@/utils/types";
 import { useFormState, useFormStatus } from "react-dom";
 import { cn } from "@/utils/functions";
+import { CategoryCarousel, CreateCategoryModal, ExpenseSelect } from "@/components";
+import { useTranslations } from "next-intl";
 
-export default function CreateExpense() {
+export function CreateExpenseClient() {
+  const t = useTranslations("CreateExpense");
   const [type, setType] = useState<ExpenseType>(ExpenseType.enum.expense);
   const [state, formAction] = useFormState(createExpense, { message: "" });
   const { pending } = useFormStatus();
@@ -39,7 +41,7 @@ export default function CreateExpense() {
         </div>
         <CategoryCarousel type={type} />
         <label className="input input-bordered flex items-center gap-2">
-          <input autoFocus type="number" className="grow" placeholder="Amount" name="amount" />
+          <input autoFocus type="number" className="grow" placeholder={t("amount")} name="amount" />
           <LuCoins />
         </label>
         <input
@@ -48,13 +50,17 @@ export default function CreateExpense() {
           name="date"
           defaultValue={new Date().toISOString().split("T")[0]}
         />
-        <textarea name="description" placeholder="Description" className="textarea textarea-bordered w-full"></textarea>
+        <textarea
+          name="description"
+          placeholder={t("description")}
+          className="textarea textarea-bordered w-full"
+        ></textarea>
         <input
           type="submit"
           disabled={pending}
           className={cn("btn btn-primary fixed bottom-20", { disabled: pending })}
-          aria-label="Create"
-          value="Create"
+          aria-label={t("create")}
+          value={t("create")}
         />
       </form>
       <CreateCategoryModal />

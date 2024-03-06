@@ -1,10 +1,8 @@
-import Link from "next/link";
-import { LabeledInput } from "@/components";
-import { AuthCard } from "@/app/(login)/(components)";
+import { LabeledInput, AuthCard } from "@/components";
+import { Link, redirect } from "@/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 
-async function register(formData: FormData) {
+async function login(formData: FormData) {
   "use server";
   const supabase = createClient();
   const data = {
@@ -12,29 +10,28 @@ async function register(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signInWithPassword(data);
   if (error) redirect("/error");
 
   redirect("/");
 }
 
-export default function Register() {
+export default function Login() {
   return (
     <AuthCard
-      title="Register"
-      action={register}
+      title="Login"
+      action={login}
       fields={
         <>
           <LabeledInput label="Email" name="email" type="email" required />
           <LabeledInput label="Password" name="password" type="password" required />
-          <LabeledInput label="Confim password" type="password" required />
         </>
       }
       bottomText={
         <>
-          Already have an account?{" "}
-          <Link href="/login" className="font-bold">
-            Log in
+          {"Don't have and account? "}
+          <Link href="/register" className="font-bold">
+            Sign up
           </Link>
         </>
       }

@@ -1,10 +1,9 @@
 "use client";
 import { PropsWithChildren } from "react";
 import { LuLayoutDashboard, LuPlus, LuList } from "react-icons/lu";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { cn } from "@/utils/functions";
-import { expensesRoutes } from "@/utils/routes";
+import { isExpenseRoute } from "@/utils/routes";
+import { Link, usePathname } from "@/navigation";
 
 export default function LoggedApplication({ children }: PropsWithChildren) {
   const pathname = usePathname();
@@ -32,7 +31,7 @@ export default function LoggedApplication({ children }: PropsWithChildren) {
         <Link
           href="/expenses"
           className={cn("text-xl text-primary", {
-            active: expensesRoutes.find((route) => pathname.includes(route)),
+            active: isExpenseRoute(pathname),
           })}
         >
           <LuList />
