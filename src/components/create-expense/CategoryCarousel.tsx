@@ -1,10 +1,13 @@
 "use client";
-import { createClient } from "@/utils/supabase/client";
+
 import { useEffect, useState } from "react";
+
+import { CreateCategoryButton } from "@/components/create-expense/CreateCategoryButton";
+import { createClient } from "@/utils/supabase/client";
 import { Tables } from "@/utils/supabase/database.types";
 import { ExpenseType } from "@/utils/types";
-import { DynamicIcon } from "@/components";
-import { CreateCategoryButton } from ".";
+
+import { DynamicIcon } from "../shared";
 
 type CategoryCarouselProps = {
   type: ExpenseType;

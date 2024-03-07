@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+import { FaUmbrellaBeach } from "react-icons/fa6";
 import {
   LuArrowRightLeft,
   LuBanknote,
@@ -24,8 +26,6 @@ import {
   LuSmartphone,
   LuTicket,
 } from "react-icons/lu";
-import { FaUmbrellaBeach } from "react-icons/fa6";
-import { IconType } from "react-icons";
 
 export const categoryIcon: Record<string, IconType> = {
   LuHeart,

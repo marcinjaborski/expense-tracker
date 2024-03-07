@@ -1,10 +1,10 @@
-import { Link } from "@/navigation";
-import { LabeledInput, AuthCard } from "@/components";
+import { AuthCard, LabeledInput } from "@/components";
+import { Link, redirect } from "@/navigation";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "@/navigation";
 
 async function register(formData: FormData) {
   "use server";
+
   const supabase = createClient();
   const data = {
     email: formData.get("email") as string,

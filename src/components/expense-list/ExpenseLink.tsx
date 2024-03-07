@@ -1,8 +1,9 @@
+import { IconType } from "react-icons";
+
+import { AppPathnames } from "@/config";
+import { Link } from "@/navigation";
 import { cn } from "@/utils/functions";
 import { ExpenseType } from "@/utils/types";
-import { Link } from "@/navigation";
-import { IconType } from "react-icons";
-import { AppPathnames } from "@/config";
 
 type ExpenseLinkProps = {
   currentType: ExpenseType;

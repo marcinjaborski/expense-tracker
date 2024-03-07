@@ -1,12 +1,14 @@
 "use server";
+
 import { z } from "zod";
-import { ExpenseType } from "@/utils/types";
-import { createClient } from "@/utils/supabase/server";
+
 import { redirect } from "@/navigation";
 import { mapExpenseTypeToRoute } from "@/utils/routes";
+import { createClient } from "@/utils/supabase/server";
+import { ExpenseTypes } from "@/utils/types";
 
 const createExpenseSchema = z.object({
-  type: ExpenseType,
+  type: ExpenseTypes,
   category: z.preprocess(Number, z.number()),
   date: z.string(),
   amount: z.preprocess(Number, z.number().nonnegative()),
@@ -16,6 +18,7 @@ const createExpenseSchema = z.object({
 
 export async function createExpense(_: unknown, formData: FormData) {
   "use server";
+
   const supabase = createClient();
   const parsedFormData = createExpenseSchema.safeParse(Object.fromEntries(formData));
   if (!parsedFormData.success) {
@@ -30,4 +33,5 @@ export async function createExpense(_: unknown, formData: FormData) {
     };
   }
   redirect(mapExpenseTypeToRoute[parsedFormData.data.type]);
+  return { message: "OK" };
 }

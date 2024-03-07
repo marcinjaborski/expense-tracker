@@ -1,12 +1,13 @@
 "use client";
 
-import { LabeledInput } from "@/components";
-import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
-import { createCategory } from "@/utils/serverActions/createCategory";
-import { categoryIcon } from "@/utils/categories";
 import { useFormState, useFormStatus } from "react-dom";
-import { cn, getModal } from "@/utils/functions";
+import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
+
 import { ExpenseSelect } from "@/components/create-expense/ExpenseSelect";
+import { LabeledInput } from "@/components/shared";
+import { categoryIcon } from "@/utils/categories";
+import { cn, getModal } from "@/utils/functions";
+import { createCategory } from "@/utils/serverActions/createCategory";
 
 export function CreateCategoryModal() {
   const [state, formAction] = useFormState(createCategory, { message: "" });
@@ -42,7 +43,7 @@ export function CreateCategoryModal() {
         </div>
       </form>
       <form method="dialog" className="modal-backdrop">
-        <button>close</button>
+        <button type="submit">close</button>
       </form>
     </dialog>
   );

@@ -1,8 +1,10 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
+
 import { Database } from "@/utils/supabase/database.types";
 
-export async function updateSession(request: NextRequest, response: NextResponse) {
+export async function updateSession(request: NextRequest, defaultResponse: NextResponse) {
+  let response = defaultResponse;
   const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

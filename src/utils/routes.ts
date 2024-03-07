@@ -1,5 +1,6 @@
-import { ExpenseType } from "@/utils/types";
 import { invert } from "lodash";
+
+import { ExpenseType } from "@/utils/types";
 
 export const expensesRoutes = ["/expenses", "/incomes", "/transfers"] as const;
 export type ExpensesRoute = (typeof expensesRoutes)[number];

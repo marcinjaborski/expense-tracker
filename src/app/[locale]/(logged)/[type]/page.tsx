@@ -1,13 +1,14 @@
-import { createClient } from "@/utils/supabase/server";
-import { notFound } from "next/navigation";
 import _ from "lodash";
+import { notFound } from "next/navigation";
 import { Fragment } from "react";
-import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
-import { ExpenseType } from "@/utils/types";
 import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
-import { Tables } from "@/utils/supabase/database.types";
-import { DynamicIcon, PageHeader, ExpenseLink } from "@/components";
+
+import { DynamicIcon, ExpenseLink, PageHeader } from "@/components";
 import { redirect } from "@/navigation";
+import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
+import { Tables } from "@/utils/supabase/database.types";
+import { createClient } from "@/utils/supabase/server";
+import { ExpenseTypes } from "@/utils/types";
 
 type ExpensesProps = {
   params: {
@@ -37,17 +38,17 @@ export default async function Expenses({ params }: ExpensesProps) {
     <div className="flex h-full w-full flex-col gap-2">
       <PageHeader title="List of expenses" />
       <div className="join">
-        <ExpenseLink currentType={type} type={ExpenseType.enum.income} Icon={LuPlus} label="Incomes" href="/incomes" />
+        <ExpenseLink currentType={type} type={ExpenseTypes.enum.income} Icon={LuPlus} label="Incomes" href="/incomes" />
         <ExpenseLink
           currentType={type}
-          type={ExpenseType.enum.expense}
+          type={ExpenseTypes.enum.expense}
           Icon={LuMinus}
           label="Expenses"
           href="/expenses"
         />
         <ExpenseLink
           currentType={type}
-          type={ExpenseType.enum.transfer}
+          type={ExpenseTypes.enum.transfer}
           Icon={LuArrowRightLeft}
           label="Transfers"
           href="/transfers"

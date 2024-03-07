@@ -1,18 +1,19 @@
 "use client";
 
-import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
-import { createExpense } from "@/utils/serverActions";
-import { useState } from "react";
-import { ExpenseType } from "@/utils/types";
-import { useFormState, useFormStatus } from "react-dom";
-import { cn } from "@/utils/functions";
-import { CategoryCarousel, CreateCategoryModal, ExpenseSelect } from "@/components";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
+
+import { CategoryCarousel, CreateCategoryModal, ExpenseSelect } from "@/components";
+import { cn } from "@/utils/functions";
+import { createExpense } from "@/utils/serverActions";
+import { ExpenseType, ExpenseTypes } from "@/utils/types";
 
 export function CreateExpenseClient() {
   const t = useTranslations("CreateExpense");
-  const [type, setType] = useState<ExpenseType>(ExpenseType.enum.expense);
-  const [state, formAction] = useFormState(createExpense, { message: "" });
+  const [type, setType] = useState<ExpenseType>(ExpenseTypes.enum.expense);
+  const [, formAction] = useFormState(createExpense, { message: "" });
   const { pending } = useFormStatus();
 
   return (
@@ -23,25 +24,25 @@ export function CreateExpenseClient() {
             label="Income"
             Icon={LuPlus}
             value="income"
-            onChange={() => setType(ExpenseType.enum.income)}
+            onChange={() => setType(ExpenseTypes.enum.income)}
           />
           <ExpenseSelect
             label="Expense"
             Icon={LuMinus}
             value="expense"
             defaultChecked
-            onChange={() => setType(ExpenseType.enum.expense)}
+            onChange={() => setType(ExpenseTypes.enum.expense)}
           />
           <ExpenseSelect
             label="Transfer"
             Icon={LuArrowRightLeft}
             value="transfer"
-            onChange={() => setType(ExpenseType.enum.transfer)}
+            onChange={() => setType(ExpenseTypes.enum.transfer)}
           />
         </div>
         <CategoryCarousel type={type} />
         <label className="input input-bordered flex items-center gap-2">
-          <input autoFocus type="number" className="grow" placeholder={t("amount")} name="amount" />
+          <input type="number" className="grow" placeholder={t("amount")} name="amount" />
           <LuCoins />
         </label>
         <input
@@ -50,11 +51,7 @@ export function CreateExpenseClient() {
           name="date"
           defaultValue={new Date().toISOString().split("T")[0]}
         />
-        <textarea
-          name="description"
-          placeholder={t("description")}
-          className="textarea textarea-bordered w-full"
-        ></textarea>
+        <textarea name="description" placeholder={t("description")} className="textarea textarea-bordered w-full" />
         <input
           type="submit"
           disabled={pending}

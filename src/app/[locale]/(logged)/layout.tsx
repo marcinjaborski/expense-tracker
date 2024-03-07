@@ -1,9 +1,11 @@
 "use client";
+
 import { PropsWithChildren } from "react";
-import { LuLayoutDashboard, LuPlus, LuList } from "react-icons/lu";
+import { LuLayoutDashboard, LuList, LuPlus } from "react-icons/lu";
+
+import { Link, usePathname } from "@/navigation";
 import { cn } from "@/utils/functions";
 import { isExpenseRoute } from "@/utils/routes";
-import { Link, usePathname } from "@/navigation";
 
 export default function LoggedApplication({ children }: PropsWithChildren) {
   const pathname = usePathname();

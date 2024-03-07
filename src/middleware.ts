@@ -1,7 +1,8 @@
-import { updateSession } from "@/utils/supabase/middleware";
 import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
+
 import { localePrefix, locales, pathnames } from "@/config";
+import { updateSession } from "@/utils/supabase/middleware";
 
 const handleI18nRouting = createIntlMiddleware({
   defaultLocale: "en",
@@ -12,7 +13,7 @@ const handleI18nRouting = createIntlMiddleware({
 
 export async function middleware(request: NextRequest) {
   const response = handleI18nRouting(request);
-  return await updateSession(request, response);
+  return updateSession(request, response);
 }
 
 export const config = {

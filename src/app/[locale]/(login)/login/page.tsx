@@ -1,9 +1,10 @@
-import { LabeledInput, AuthCard } from "@/components";
+import { AuthCard, LabeledInput } from "@/components";
 import { Link, redirect } from "@/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 async function login(formData: FormData) {
   "use server";
+
   const supabase = createClient();
   const data = {
     email: formData.get("email") as string,
