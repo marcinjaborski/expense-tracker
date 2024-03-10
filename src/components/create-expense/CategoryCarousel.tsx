@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { CreateCategoryButton } from "@/components/create-expense/CreateCategoryButton";
-import { createClient } from "@/utils/supabase/client";
-import { Tables } from "@/utils/supabase/database.types";
+import { useCategories } from "@/repository/useCategories";
 import { ExpenseType } from "@/utils/types";
 
 import { DynamicIcon } from "../shared";
@@ -14,18 +11,7 @@ type CategoryCarouselProps = {
 };
 
 export function CategoryCarousel({ type }: CategoryCarouselProps) {
-  const supabase = createClient();
-  const [categories, setCategories] = useState<Tables<"categories">[]>([]);
-
-  useEffect(() => {
-    supabase
-      .from("categories")
-      .select()
-      .eq("type", type)
-      .then(({ data }) => {
-        if (data) setCategories(data);
-      });
-  }, [supabase, type]);
+  const { data: categories } = useCategories(type);
 
   return (
     <div className="flex gap-2">
