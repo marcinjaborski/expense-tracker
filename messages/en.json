@@ -1,4 +1,20 @@
 {
+  "Login": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Submit",
+    "registerText": "Don't have an account?",
+    "registerLink": "Sign up",
+    "loginText": "Already have an account?",
+    "loginLink": "Log in",
+    "notEmail": "Enter a valid email",
+    "passwordMinLength": "Password must have at least 8 characters",
+    "invalidCredentials": "Invalid email or password",
+    "passwordsMismatch": "Passwords do not match"
+  },
   "CreateExpense": {
     "amount": "Amount",
     "description": "Description",

@@ -1,4 +1,20 @@
 {
+  "Login": {
+    "login": "Logowanie",
+    "register": "Rejestracja",
+    "email": "Email",
+    "password": "Hasło",
+    "confirmPassword": "Powtórz hasło",
+    "submit": "Zaloguj",
+    "registerText": "Nie masz konta?",
+    "registerLink": "Stwórz konto",
+    "loginText": "Posiadasz już konto?",
+    "loginLink": "Zaloguj",
+    "notEmail": "Wpisz poprawny email",
+    "passwordMinLength": "Hasło musi zawierać conajmiej 8 znaków",
+    "invalidCredentials": "Niepoprawny email lub hasło",
+    "passwordsMismatch": "Hasła się nie zgadzają"
+  },
   "CreateExpense": {
     "amount": "Kwota",
     "description": "Opis",

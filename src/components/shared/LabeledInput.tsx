@@ -6,20 +6,25 @@ import { cn } from "@/utils/functions";
 type LabeledInputProps = ComponentProps<"input"> & {
   label: string;
   labelClassName?: ClassValue;
+  errorMessage?: string;
 };
 
-export function LabeledInput({ label, labelClassName = "", className, ...inputProps }: LabeledInputProps) {
+export function LabeledInput({
+  label,
+  labelClassName = "",
+  errorMessage = "",
+  className,
+  ...inputProps
+}: LabeledInputProps) {
   return (
-    <div>
-      <label className={cn("label", labelClassName)} htmlFor={inputProps.id || inputProps.name}>
+    <label>
+      <div className={cn("label", labelClassName)}>
         <span className="label-text text-base">{label}</span>
-      </label>
-      <input
-        type="text"
-        id={inputProps.name}
-        {...inputProps}
-        className={cn("input input-bordered w-full focus:input-primary", className)}
-      />
-    </div>
+      </div>
+      <input type="text" {...inputProps} className={cn("input input-bordered w-full focus:input-primary", className)} />
+      <div className="label">
+        <span className="label-text-alt text-error">{errorMessage}</span>
+      </div>
+    </label>
   );
 }

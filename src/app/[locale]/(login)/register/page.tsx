@@ -1,42 +1,15 @@
-import { AuthCard, LabeledInput } from "@/components";
-import { Link, redirect } from "@/navigation";
-import { createClient } from "@/utils/supabase/server";
+import { pick } from "lodash";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
-async function register(formData: FormData) {
-  "use server";
+import { RegisterClient } from "./RegisterClient";
 
-  const supabase = createClient();
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+export default async function Register() {
+  const messages = await getMessages();
 
-  const { error } = await supabase.auth.signUp(data);
-  if (error) redirect("/error");
-
-  redirect("/");
-}
-
-export default function Register() {
   return (
-    <AuthCard
-      title="Register"
-      action={register}
-      fields={
-        <>
-          <LabeledInput label="Email" name="email" type="email" required />
-          <LabeledInput label="Password" name="password" type="password" required />
-          <LabeledInput label="Confim password" type="password" required />
-        </>
-      }
-      bottomText={
-        <>
-          Already have an account?{" "}
-          <Link href="/login" className="font-bold">
-            Log in
-          </Link>
-        </>
-      }
-    />
+    <NextIntlClientProvider messages={pick(messages, "Login")}>
+      <RegisterClient />
+    </NextIntlClientProvider>
   );
 }

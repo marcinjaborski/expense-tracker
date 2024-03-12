@@ -2,11 +2,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { createClient as createClientClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 import { ExpenseType } from "@/utils/types";
 
 export const getCategoriesClient = (type: ExpenseType) => {
-  const supabase = createClientClient();
+  const supabase = createClient();
   return supabase.from("categories").select().eq("type", type).throwOnError();
 };
 
