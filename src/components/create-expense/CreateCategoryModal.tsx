@@ -1,25 +1,34 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 
 import { ExpenseSelect } from "@/components/create-expense/ExpenseSelect";
-import { LabeledInput } from "@/components/shared";
+import { ErrorToast, LabeledInput, SubmitButton } from "@/components/shared";
 import { categoryIcon } from "@/utils/categories";
-import { cn, getModal } from "@/utils/functions";
+import { getModal } from "@/utils/functions";
 import { createCategory } from "@/utils/serverActions/createCategory";
+import { ExpenseType, ExpenseTypes } from "@/utils/types";
 
-export function CreateCategoryModal() {
-  const [state, formAction] = useFormState(createCategory, { message: "" });
-  const { pending } = useFormStatus();
+export function CreateCategoryModal({ initialType }: { initialType: ExpenseType }) {
+  const t = useTranslations("CreateExpense");
+  const tFeedback = useTranslations("Feedback");
+  const [{ message }, formAction] = useFormState(createCategory, { message: "", errors: [] });
+  const [type, setType] = useState<ExpenseType>(initialType);
 
-  if (state.message === "OK") getModal("create_category_modal").close();
+  useEffect(() => {
+    setType(initialType);
+  }, [initialType]);
+
+  if (message === "OK") getModal("create_category_modal").close();
 
   return (
     <dialog id="create_category_modal" className="modal">
       <form className="modal-box flex flex-col" action={formAction}>
-        <h3 className="text-lg font-bold">Create new category</h3>
-        <LabeledInput label="Name" name="name" />
+        <h3 className="text-lg font-bold">{t("createCategory")}</h3>
+        <LabeledInput label={t("name")} name="name" />
         <div className="mt-3 grid max-h-[30vh] grid-cols-4 gap-2 overflow-y-auto">
           {Object.entries(categoryIcon).map(([name, Icon], index) => (
             <label key={name} className="btn has-[:checked]:btn-primary">
@@ -29,22 +38,36 @@ export function CreateCategoryModal() {
           ))}
         </div>
         <div className="join mt-5 self-center">
-          <ExpenseSelect label="Income" Icon={LuPlus} value="income" />
-          <ExpenseSelect label="Expense" Icon={LuMinus} value="expense" defaultChecked />
-          <ExpenseSelect label="Transfer" Icon={LuArrowRightLeft} value="transfer" />
+          <ExpenseSelect
+            label={t("income")}
+            Icon={LuPlus}
+            value="income"
+            checked={type === ExpenseTypes.enum.income}
+            onChange={() => setType(ExpenseTypes.enum.income)}
+          />
+          <ExpenseSelect
+            label={t("expense")}
+            Icon={LuMinus}
+            value="expense"
+            checked={type === ExpenseTypes.enum.expense}
+            onChange={() => setType(ExpenseTypes.enum.expense)}
+          />
+          <ExpenseSelect
+            label={t("transfer")}
+            Icon={LuArrowRightLeft}
+            value="transfer"
+            checked={type === ExpenseTypes.enum.transfer}
+            onChange={() => setType(ExpenseTypes.enum.transfer)}
+          />
         </div>
         <div className="modal-action">
-          <input
-            type="submit"
-            className={cn("btn btn-primary", { disabled: pending })}
-            aria-label="Create"
-            disabled={pending}
-          />
+          <SubmitButton aria-label={t("create")} value={t("create")} />
         </div>
       </form>
       <form method="dialog" className="modal-backdrop">
-        <button type="submit">close</button>
+        <button type="submit">{t("close")}</button>
       </form>
+      <ErrorToast message={tFeedback("error")} show={message === "serverError" || message === "parsingError"} />
     </dialog>
   );
 }

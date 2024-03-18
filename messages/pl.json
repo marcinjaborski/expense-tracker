@@ -18,6 +18,16 @@
   "CreateExpense": {
     "amount": "Kwota",
     "description": "Opis",
-    "create": "Stwórz"
+    "create": "Stwórz",
+    "nonNegativeNumber": "Kwota musi być większa lub równa 0",
+    "income": "Przychód",
+    "expense": "Wydatek",
+    "transfer": "Transfer",
+    "close": "Zamknij",
+    "createCategory": "Stwórz nową kategorię",
+    "name": "Nazwa"
+  },
+  "Feedback": {
+    "error": "Coś poszło nie tak"
   }
 }

@@ -14,7 +14,7 @@ export default async function CreateExpense() {
   await prefetchCategories(queryClient);
 
   return (
-    <NextIntlClientProvider messages={pick(messages, "CreateExpense")}>
+    <NextIntlClientProvider messages={pick(messages, ["CreateExpense", "Feedback"])}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <CreateExpenseClient />
       </HydrationBoundary>

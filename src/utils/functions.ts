@@ -15,3 +15,7 @@ export function getZodErrorMessage(t: ReturnType<typeof useTranslations>, field:
   const fieldError = errors.find(({ path }) => path.includes(field));
   return fieldError ? t(fieldError.message as any) : "";
 }
+
+export function getToday() {
+  return new Date().toISOString().split("T")[0];
+}

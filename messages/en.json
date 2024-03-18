@@ -18,6 +18,16 @@
   "CreateExpense": {
     "amount": "Amount",
     "description": "Description",
-    "create": "Create"
+    "create": "Create",
+    "nonNegativeNumber": "Amount must be greater than or equal to 0",
+    "income": "Income",
+    "expense": "Expense",
+    "transfer": "Transfer",
+    "close": "Close",
+    "createCategory": "Create new category",
+    "name": "Name"
+  },
+  "Feedback": {
+    "error": "Something went wrong"
   }
 }

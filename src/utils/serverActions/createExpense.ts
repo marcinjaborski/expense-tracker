@@ -11,7 +11,7 @@ const createExpenseSchema = z.object({
   type: ExpenseTypes,
   category: z.preprocess(Number, z.number()),
   date: z.string(),
-  amount: z.preprocess(Number, z.number().nonnegative()),
+  amount: z.coerce.number().nonnegative("nonNegativeNumber"),
   description: z.string().optional(),
   recurring: z.string().optional(),
 });
@@ -22,16 +22,15 @@ export async function createExpense(_: unknown, formData: FormData) {
   const supabase = createClient();
   const parsedFormData = createExpenseSchema.safeParse(Object.fromEntries(formData));
   if (!parsedFormData.success) {
-    return {
-      message: parsedFormData.error.message,
-    };
+    return { message: "parsingError", errors: parsedFormData.error.errors };
   }
   const { error } = await supabase.from("expenses").insert(parsedFormData.data);
   if (error) {
     return {
-      message: error.message,
+      message: "serverError",
+      errors: [],
     };
   }
   redirect(mapExpenseTypeToRoute[parsedFormData.data.type]);
-  return { message: "OK" };
+  return { message: "OK", errors: [] };
 }
