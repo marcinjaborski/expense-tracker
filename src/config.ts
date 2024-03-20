@@ -18,6 +18,10 @@ export const pathnames = {
     en: "/create-expense",
     pl: "/stworz-wydatek",
   },
+  "/all": {
+    en: "/transactions",
+    pl: "/transakcje",
+  },
   "/expenses": {
     en: "/expenses",
     pl: "/wydatki",

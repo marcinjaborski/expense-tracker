@@ -3,11 +3,11 @@ import { IconType } from "react-icons";
 import { AppPathnames } from "@/config";
 import { Link } from "@/navigation";
 import { cn } from "@/utils/functions";
-import { ExpenseType } from "@/utils/types";
+import { ExpenseOption } from "@/utils/types";
 
 type ExpenseLinkProps = {
-  currentType: ExpenseType;
-  type: ExpenseType;
+  currentType: ExpenseOption;
+  type: ExpenseOption;
   Icon: IconType;
   label: string;
   href: AppPathnames;

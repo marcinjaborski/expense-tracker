@@ -27,6 +27,13 @@
     "createCategory": "Stwórz nową kategorię",
     "name": "Nazwa"
   },
+  "ExpenseList": {
+    "title": "Lista transakcji",
+    "incomes": "Przychody",
+    "expenses": "Wydatki",
+    "transfers": "Transfery",
+    "all": "Wszystkie"
+  },
   "Feedback": {
     "error": "Coś poszło nie tak"
   }
