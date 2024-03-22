@@ -31,7 +31,7 @@ export default function LoggedApplication({ children }: PropsWithChildren) {
           <LuPlus />
         </Link>
         <Link
-          href="/expenses"
+          href="/all"
           className={cn("text-xl text-primary", {
             active: isExpenseRoute(pathname),
           })}

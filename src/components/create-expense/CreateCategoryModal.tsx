@@ -9,6 +9,7 @@ import { ExpenseSelect } from "@/components/create-expense/ExpenseSelect";
 import { ErrorToast, LabeledInput, SubmitButton } from "@/components/shared";
 import { categoryIcon } from "@/utils/categories";
 import { getModal } from "@/utils/functions";
+import { CREATE_CATEGORY_MODAL } from "@/utils/ids";
 import { createCategory } from "@/utils/serverActions/createCategory";
 import { ExpenseType, ExpenseTypes } from "@/utils/types";
 
@@ -22,10 +23,10 @@ export function CreateCategoryModal({ initialType }: { initialType: ExpenseType 
     setType(initialType);
   }, [initialType]);
 
-  if (message === "OK") getModal("create_category_modal").close();
+  if (message === "OK") getModal(CREATE_CATEGORY_MODAL).close();
 
   return (
-    <dialog id="create_category_modal" className="modal">
+    <dialog id={CREATE_CATEGORY_MODAL} className="modal">
       <form className="modal-box flex flex-col" action={formAction}>
         <h3 className="text-lg font-bold">{t("createCategory")}</h3>
         <LabeledInput label={t("name")} name="name" />

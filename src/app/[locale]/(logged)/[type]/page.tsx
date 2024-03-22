@@ -7,6 +7,7 @@ import { getMessages, getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components";
 import { prefetchExpenses } from "@/repository/prefetchExpenses";
 import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
+import { ExpenseListSearchParams, parseDirOption, parseSortOption } from "@/utils/searchParams";
 
 import { ExpenseListClient } from "./ExpenseListClient";
 
@@ -15,9 +16,10 @@ type ExpensesProps = {
     locale: string;
     type: string;
   };
+  searchParams: ExpenseListSearchParams;
 };
 
-export default async function ExpenseList({ params }: ExpensesProps) {
+export default async function ExpenseList({ params, searchParams }: ExpensesProps) {
   const route = `/${params.type}`;
   if (!isExpenseRoute(route)) notFound();
   const type = mapRouteToType[route];
@@ -25,7 +27,7 @@ export default async function ExpenseList({ params }: ExpensesProps) {
   const messages = await getMessages();
   const t = await getTranslations({ locale: params.locale, namespace: "ExpenseList" });
 
-  await prefetchExpenses(queryClient, type);
+  await prefetchExpenses(queryClient, type, parseSortOption(searchParams.sort), parseDirOption(searchParams.dir));
 
   return (
     <NextIntlClientProvider messages={pick(messages, ["ExpenseList"])}>

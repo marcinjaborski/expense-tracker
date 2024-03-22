@@ -32,7 +32,13 @@
     "incomes": "Incomes",
     "expenses": "Expenses",
     "transfers": "Transfers",
-    "all": "All"
+    "all": "All",
+    "filtersModal": "Filters",
+    "close": "close",
+    "sort": "Sort",
+    "byDate": "By Date",
+    "byAmount": "By Amount",
+    "changeDirection": "Change direction"
   },
   "Feedback": {
     "error": "Something went wrong"
