@@ -22,7 +22,13 @@ export function parseDirOption(searchParam: string | string[] | null | undefined
   return searchParam === DIR.asc || searchParam === DIR.desc ? searchParam : DIR.desc;
 }
 
-export type ExpenseListSearchParams = {
-  [SORT.name]?: string | string[];
-  [DIR.name]?: string | string[];
-};
+export const QUERY = "q";
+
+export function parseQuery(searchParam: string | string[] | null | undefined): string {
+  return typeof searchParam === "string" ? searchParam : "";
+}
+
+export type ExpenseListSearchParams = Record<
+  typeof QUERY | typeof SORT.name | typeof DIR.name,
+  string | string[] | undefined
+>;

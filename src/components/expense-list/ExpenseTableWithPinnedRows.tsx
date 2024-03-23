@@ -1,7 +1,7 @@
 import { groupBy } from "lodash";
 import { Fragment } from "react";
 
-import { ExpenseReturnType } from "@/repository/prefetchExpenses";
+import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 
 import { ExpenseRow } from "./ExpenseRow";
 

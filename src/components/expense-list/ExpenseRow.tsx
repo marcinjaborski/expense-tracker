@@ -1,5 +1,5 @@
 import { DynamicIcon } from "@/components/shared";
-import { ExpenseReturnType } from "@/repository/prefetchExpenses";
+import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { cn } from "@/utils/functions";
 import { ExpenseTypes } from "@/utils/types";
 

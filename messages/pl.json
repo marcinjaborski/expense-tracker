@@ -38,7 +38,8 @@
     "sort": "Sortuj",
     "byDate": "Według daty",
     "byAmount": "Według kwoty",
-    "changeDirection": "Zmień kierunek"
+    "changeDirection": "Zmień kierunek",
+    "search": "Wyszukaj"
   },
   "Feedback": {
     "error": "Coś poszło nie tak"

@@ -1,12 +1,13 @@
 "use client";
 
+import { debounce } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { LuMoveDown } from "react-icons/lu";
+import { LuMoveDown, LuSearch } from "react-icons/lu";
 
 import { cn } from "@/utils/functions";
 import { EXPENSE_FILTERS_MODAL } from "@/utils/ids";
-import { DIR, SORT } from "@/utils/searchParams";
+import { DIR, QUERY, SORT } from "@/utils/searchParams";
 
 export function ExpenseFiltersModal() {
   const t = useTranslations("ExpenseList");
@@ -25,10 +26,22 @@ export function ExpenseFiltersModal() {
     );
   };
 
+  const debouncedUpdateQ = debounce((q: string) => updateParams("q", q), 1000);
+
   return (
     <dialog id={EXPENSE_FILTERS_MODAL} className="modal">
       <div className="modal-box flex flex-col gap-2">
         <h3 className="text-lg font-bold">{t("filtersModal")}</h3>
+        <label className="input input-bordered flex items-center gap-2">
+          <input
+            type="text"
+            className="grow"
+            placeholder={t("search")}
+            defaultValue={searchParams.get(QUERY) ?? ""}
+            onChange={(e) => debouncedUpdateQ(e.target.value)}
+          />
+          <LuSearch />
+        </label>
         <div className="flex items-end gap-2">
           <label className="form-control w-full">
             <div className="label">

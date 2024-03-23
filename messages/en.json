@@ -38,7 +38,8 @@
     "sort": "Sort",
     "byDate": "By Date",
     "byAmount": "By Amount",
-    "changeDirection": "Change direction"
+    "changeDirection": "Change direction",
+    "search": "Search"
   },
   "Feedback": {
     "error": "Something went wrong"

@@ -1,6 +1,6 @@
+import { ComponentProps } from "react";
 import { IconType } from "react-icons";
 
-import { AppPathnames } from "@/config";
 import { Link } from "@/navigation";
 import { cn } from "@/utils/functions";
 import { ExpenseOption } from "@/utils/types";
@@ -10,7 +10,7 @@ type ExpenseLinkProps = {
   type: ExpenseOption;
   Icon: IconType;
   label: string;
-  href: AppPathnames;
+  href: ComponentProps<typeof Link>["href"];
 };
 
 export function ExpenseLink({ currentType, type, Icon, label, href }: ExpenseLinkProps) {
