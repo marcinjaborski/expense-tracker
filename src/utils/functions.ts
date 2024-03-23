@@ -19,3 +19,7 @@ export function getZodErrorMessage(t: ReturnType<typeof useTranslations>, field:
 export function getToday() {
   return new Date().toISOString().split("T")[0];
 }
+
+export function notNull<T>(x: T | null): x is T {
+  return x !== null;
+}

@@ -7,9 +7,12 @@ export type ExpenseReturnType = Tables<"expenses"> & {
   category: Tables<"categories"> | null;
 };
 
+export const EXPENSE_PAGE_SIZE = 50;
+
 export const buildExpensesQuery = (
   supabase: ReturnType<typeof createClient>,
   type: ExpenseOption,
+  page: number,
   q: string,
   sort: SortOption,
   dir: DirOption,
@@ -17,5 +20,7 @@ export const buildExpensesQuery = (
   let query = supabase.from("expenses").select("*, category (*)");
   if (type !== "all") query = query.eq("type", type);
   if (q !== "") query = query.ilike("description", `%${q}%`);
-  return query.order(sort, { ascending: dir === DIR.asc }).returns<ExpenseReturnType[]>();
+  query = query.order(sort, { ascending: dir === DIR.asc });
+  query = query.range(page * EXPENSE_PAGE_SIZE, (page + 1) * EXPENSE_PAGE_SIZE - 1);
+  return query.returns<ExpenseReturnType[]>();
 };

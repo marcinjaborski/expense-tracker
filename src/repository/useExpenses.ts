@@ -1,20 +1,23 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { DirOption, SortOption } from "@/utils/searchParams";
 import { createClient } from "@/utils/supabase/client";
 import { ExpenseOption } from "@/utils/types";
 
-import { buildExpensesQuery } from "./buildExpensesQuery";
+import { buildExpensesQuery, EXPENSE_PAGE_SIZE } from "./buildExpensesQuery";
 
-export const getExpensesClient = (type: ExpenseOption, q: string, sort: SortOption, dir: DirOption) => {
+export const getExpensesClient = (type: ExpenseOption, page: number, q: string, sort: SortOption, dir: DirOption) => {
   const supabase = createClient();
-  return buildExpensesQuery(supabase, type, q, sort, dir).throwOnError();
+  return buildExpensesQuery(supabase, type, page, q, sort, dir).throwOnError();
 };
 
 export const useExpenses = (type: ExpenseOption, q: string, sort: SortOption, dir: DirOption) =>
-  useQuery({
+  useInfiniteQuery({
     queryKey: ["expenses", type, q, sort, dir],
-    queryFn: async () => getExpensesClient(type, q, sort, dir).then((result) => result.data),
+    queryFn: async ({ pageParam }) => getExpensesClient(type, pageParam, q, sort, dir).then((result) => result.data),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, __, lastPageParam) =>
+      lastPage?.length === EXPENSE_PAGE_SIZE ? lastPageParam + 1 : null,
   });

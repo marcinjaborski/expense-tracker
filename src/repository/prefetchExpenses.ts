@@ -14,11 +14,12 @@ export const prefetchExpenses = async (
   dir: DirOption,
 ) => {
   const supabase = createClient();
-  const { data: expenses } = await buildExpensesQuery(supabase, type, q, sort, dir);
+  const { data: expenses } = await buildExpensesQuery(supabase, type, 0, q, sort, dir);
   if (!expenses) return;
 
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: ["expenses", type, q, sort, dir],
     queryFn: () => expenses,
+    initialPageParam: 0,
   });
 };

@@ -2,12 +2,14 @@
 
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
 import { LuArrowRightLeft, LuMinus, LuPlus, LuShapes } from "react-icons/lu";
 
 import { ExpenseFiltersButton, ExpenseLink, ExpenseTable, ExpenseTableWithPinnedRows } from "@/components";
 import { ExpenseFiltersModal } from "@/components/expense-list";
 import { redirect } from "@/navigation";
 import { useExpenses } from "@/repository/useExpenses";
+import { notNull } from "@/utils/functions";
 import { parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
 import { ExpenseOption, ExpenseTypes } from "@/utils/types";
 
@@ -22,8 +24,25 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
   const sort = parseSortOption(searchParams.get("sort"));
   const dir = parseDirOption(searchParams.get("dir"));
   const q = parseQuery(searchParams.get("q"));
-  const { data: expenses, error } = useExpenses(type, q, sort, dir);
+  const { data, error, fetchNextPage } = useExpenses(type, q, sort, dir);
   if (error) redirect("/error");
+  const expenses = data?.pages.flat().filter(notNull) ?? [];
+  const observerTarget = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) fetchNextPage();
+      },
+      { threshold: 1 },
+    );
+
+    if (observerTarget.current) observer.observe(observerTarget.current);
+
+    return () => {
+      if (observerTarget.current) observer.unobserve(observerTarget.current);
+    };
+  }, [observerTarget]);
 
   return (
     <>
@@ -73,10 +92,11 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
         <ExpenseFiltersButton />
       </div>
       {sort === SORT.date ? (
-        <ExpenseTableWithPinnedRows expenses={expenses ?? []} />
+        <ExpenseTableWithPinnedRows expenses={expenses} dir={dir} />
       ) : (
-        <ExpenseTable expenses={expenses ?? []} />
+        <ExpenseTable expenses={expenses} />
       )}
+      <div ref={observerTarget} />
       <ExpenseFiltersModal />
     </>
   );
