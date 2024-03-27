@@ -39,9 +39,16 @@
     "byDate": "Według daty",
     "byAmount": "Według kwoty",
     "changeDirection": "Zmień kierunek",
-    "search": "Wyszukaj"
+    "search": "Wyszukaj",
+    "edit": "Edytuj",
+    "delete": "Delete",
+    "confirmDelete": "Czy na pewno chcesz usunąć ten wydatek?"
   },
   "Feedback": {
     "error": "Coś poszło nie tak"
+  },
+  "Shared": {
+    "confirm": "Potwierdź",
+    "cancel": "Anuluj"
   }
 }

@@ -1,30 +1,19 @@
 "use client";
 
 import { debounce } from "lodash";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LuMoveDown, LuSearch } from "react-icons/lu";
 
 import { cn } from "@/utils/functions";
+import { useUpdateParams } from "@/utils/hooks";
 import { EXPENSE_FILTERS_MODAL } from "@/utils/ids";
 import { DIR, QUERY, SORT } from "@/utils/searchParams";
 
 export function ExpenseFiltersModal() {
   const t = useTranslations("ExpenseList");
   const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const updateParams = (name: string, value: string) => {
-    router.push(
-      `?${new URLSearchParams({
-        ...Object.fromEntries(searchParams.entries()),
-        [name]: value,
-      })}`,
-      {
-        scroll: false,
-      },
-    );
-  };
+  const updateParams = useUpdateParams();
 
   const debouncedUpdateQ = debounce((q: string) => updateParams("q", q), 1000);
 

@@ -5,12 +5,20 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { LuArrowRightLeft, LuMinus, LuPlus, LuShapes } from "react-icons/lu";
 
-import { ExpenseFiltersButton, ExpenseLink, ExpenseTable, ExpenseTableWithPinnedRows } from "@/components";
+import {
+  ConfirmModal,
+  ExpenseFiltersButton,
+  ExpenseLink,
+  ExpenseTable,
+  ExpenseTableWithPinnedRows,
+} from "@/components";
 import { ExpenseFiltersModal } from "@/components/expense-list";
 import { redirect } from "@/navigation";
+import { useDeleteExpense } from "@/repository/useDeleteExpense";
 import { useExpenses } from "@/repository/useExpenses";
 import { notNull } from "@/utils/functions";
-import { parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
+import { useUpdateParams } from "@/utils/hooks";
+import { DELETE_ID, parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
 import { ExpenseOption, ExpenseTypes } from "@/utils/types";
 
 type ExpenseListClientProps = {
@@ -20,12 +28,18 @@ type ExpenseListClientProps = {
 export function ExpenseListClient({ type }: ExpenseListClientProps) {
   const t = useTranslations("ExpenseList");
   const searchParams = useSearchParams();
+  const updateParams = useUpdateParams();
+
   const query = new URLSearchParams(searchParams).toString();
   const sort = parseSortOption(searchParams.get("sort"));
   const dir = parseDirOption(searchParams.get("dir"));
   const q = parseQuery(searchParams.get("q"));
+
   const { data, error, fetchNextPage } = useExpenses(type, q, sort, dir);
+  const { mutate: deleteExpense } = useDeleteExpense();
+
   if (error) redirect("/error");
+
   const expenses = data?.pages.flat().filter(notNull) ?? [];
   const observerTarget = useRef(null);
 
@@ -42,7 +56,7 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
     return () => {
       if (observerTarget.current) observer.unobserve(observerTarget.current);
     };
-  }, [observerTarget]);
+  }, [fetchNextPage, observerTarget]);
 
   return (
     <>
@@ -98,6 +112,11 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
       )}
       <div ref={observerTarget} />
       <ExpenseFiltersModal />
+      <ConfirmModal
+        title={t("confirmDelete")}
+        onConfirm={() => searchParams.has(DELETE_ID) && deleteExpense(Number(searchParams.get(DELETE_ID)))}
+        onCancel={() => updateParams(DELETE_ID, null)}
+      />
     </>
   );
 }

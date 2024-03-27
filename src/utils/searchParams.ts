@@ -32,3 +32,5 @@ export type ExpenseListSearchParams = Record<
   typeof QUERY | typeof SORT.name | typeof DIR.name,
   string | string[] | undefined
 >;
+
+export const DELETE_ID = "deleteId";

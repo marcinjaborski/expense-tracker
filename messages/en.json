@@ -39,9 +39,16 @@
     "byDate": "By Date",
     "byAmount": "By Amount",
     "changeDirection": "Change direction",
-    "search": "Search"
+    "search": "Search",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this expense?"
   },
   "Feedback": {
     "error": "Something went wrong"
+  },
+  "Shared": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }

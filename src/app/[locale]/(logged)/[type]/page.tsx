@@ -36,7 +36,7 @@ export default async function ExpenseList({ params, searchParams }: ExpensesProp
   );
 
   return (
-    <NextIntlClientProvider messages={pick(messages, ["ExpenseList"])}>
+    <NextIntlClientProvider messages={pick(messages, ["ExpenseList", "Shared"])}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <div className="flex h-full w-full flex-col gap-2">
           <PageHeader title={t("title")} />
