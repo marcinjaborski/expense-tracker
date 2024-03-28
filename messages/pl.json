@@ -19,13 +19,15 @@
     "amount": "Kwota",
     "description": "Opis",
     "create": "Stwórz",
+    "update": "Aktualizuj",
     "nonNegativeNumber": "Kwota musi być większa lub równa 0",
     "income": "Przychód",
     "expense": "Wydatek",
     "transfer": "Transfer",
     "close": "Zamknij",
     "createCategory": "Stwórz nową kategorię",
-    "name": "Nazwa"
+    "name": "Nazwa",
+    "missingCategory": "Wybierz kategorię"
   },
   "ExpenseList": {
     "title": "Lista transakcji",

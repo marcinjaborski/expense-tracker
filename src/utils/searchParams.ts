@@ -34,3 +34,7 @@ export type ExpenseListSearchParams = Record<
 >;
 
 export const DELETE_ID = "deleteId";
+
+export const UPDATE_ID = "updateId";
+
+export type CreateExpenseSearchParams = Record<typeof UPDATE_ID, string | string[] | undefined>;

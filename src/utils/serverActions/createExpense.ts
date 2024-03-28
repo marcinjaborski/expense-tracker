@@ -8,8 +8,12 @@ import { createClient } from "@/utils/supabase/server";
 import { ExpenseTypes } from "@/utils/types";
 
 const createExpenseSchema = z.object({
+  id: z.preprocess(Number, z.number().optional()),
   type: ExpenseTypes,
-  category: z.preprocess(Number, z.number()),
+  category: z.preprocess(
+    Number,
+    z.number({ invalid_type_error: "missingCategory", required_error: "missingCategory" }),
+  ),
   date: z.string(),
   amount: z.coerce.number().nonnegative("nonNegativeNumber"),
   description: z.string().optional(),
@@ -24,7 +28,8 @@ export async function createExpense(_: unknown, formData: FormData) {
   if (!parsedFormData.success) {
     return { message: "parsingError", errors: parsedFormData.error.errors };
   }
-  const { error } = await supabase.from("expenses").insert(parsedFormData.data);
+  if (parsedFormData.data.id === 0) delete parsedFormData.data.id;
+  const { error } = await supabase.from("expenses").upsert(parsedFormData.data);
   if (error) {
     return {
       message: "serverError",

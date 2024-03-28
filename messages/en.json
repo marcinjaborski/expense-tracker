@@ -19,13 +19,15 @@
     "amount": "Amount",
     "description": "Description",
     "create": "Create",
+    "update": "Update",
     "nonNegativeNumber": "Amount must be greater than or equal to 0",
     "income": "Income",
     "expense": "Expense",
     "transfer": "Transfer",
     "close": "Close",
     "createCategory": "Create new category",
-    "name": "Name"
+    "name": "Name",
+    "missingCategory": "Select category"
   },
   "ExpenseList": {
     "title": "List of transactions",

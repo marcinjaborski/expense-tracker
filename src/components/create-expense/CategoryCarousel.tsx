@@ -8,9 +8,10 @@ import { DynamicIcon } from "../shared";
 
 type CategoryCarouselProps = {
   type: ExpenseType;
+  defaultCategoryId?: number;
 };
 
-export function CategoryCarousel({ type }: CategoryCarouselProps) {
+export function CategoryCarousel({ type, defaultCategoryId = 0 }: CategoryCarouselProps) {
   const { data: categories } = useCategories(type);
 
   return (
@@ -20,7 +21,13 @@ export function CategoryCarousel({ type }: CategoryCarouselProps) {
           <label key={category.id} className="btn has-[:checked]:btn-primary">
             <DynamicIcon icon={category.icon} />
             {category.name}
-            <input type="radio" className=" hidden" name="category" defaultChecked={index === 0} value={category.id} />
+            <input
+              type="radio"
+              className=" hidden"
+              name="category"
+              defaultChecked={defaultCategoryId ? defaultCategoryId === category.id : index === 0}
+              value={category.id}
+            />
           </label>
         ))}
       </div>

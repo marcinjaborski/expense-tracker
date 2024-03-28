@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { useLongPress } from "use-long-press";
 
 import { DynamicIcon } from "@/components/shared";
+import { Link } from "@/navigation";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { cn, getModal } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
@@ -60,7 +61,14 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
       {menuVisible ? (
         <td className={cn("menu absolute left-0 top-full z-30 w-56 rounded-box bg-base-200")}>
           <li>
-            <span>{t("edit")}</span>
+            <Link
+              href={{
+                pathname: "/create-expense",
+                query: new URLSearchParams({ updateId: String(expense.id) }).toString(),
+              }}
+            >
+              {t("edit")}
+            </Link>
           </li>
           <li>
             <button type="button" onClick={onDelete}>
