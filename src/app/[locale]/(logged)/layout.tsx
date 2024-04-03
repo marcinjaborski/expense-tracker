@@ -1,6 +1,7 @@
 "use client";
 
 import { PropsWithChildren } from "react";
+import { FaEllipsis } from "react-icons/fa6";
 import { LuLayoutDashboard, LuList, LuPlus } from "react-icons/lu";
 
 import { Link, usePathname } from "@/navigation";
@@ -37,6 +38,14 @@ export default function LoggedApplication({ children }: PropsWithChildren) {
           })}
         >
           <LuList />
+        </Link>
+        <Link
+          href="/other"
+          className={cn("text-xl text-primary", {
+            active: pathname === "/other",
+          })}
+        >
+          <FaEllipsis />
         </Link>
       </div>
     </>

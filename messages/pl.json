@@ -46,6 +46,14 @@
     "delete": "Delete",
     "confirmDelete": "Czy na pewno chcesz usunąć ten wydatek?"
   },
+  "Other": {
+    "title": "Więcej",
+    "accounts": "Konta",
+    "import": "Import",
+    "export": "Export",
+    "debts": "Długi",
+    "logout": "Wyloguj"
+  },
   "Feedback": {
     "error": "Coś poszło nie tak"
   },
