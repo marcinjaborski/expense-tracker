@@ -3,6 +3,8 @@ import { useTranslations } from "next-intl";
 import { twMerge } from "tailwind-merge";
 import { ZodIssue } from "zod";
 
+import { currencies, Currency, defaultCurrency } from "@/utils/constants";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -22,4 +24,8 @@ export function getToday() {
 
 export function notNull<T>(x: T | null): x is T {
   return x !== null;
+}
+
+export function toCurrency(value: string): Currency {
+  return currencies.includes(value as Currency) ? (value as Currency) : defaultCurrency;
 }

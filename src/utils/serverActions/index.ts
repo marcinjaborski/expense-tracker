@@ -1,3 +1,4 @@
+export * from "./createAccount";
 export * from "./createCategory";
 export * from "./createExpense";
 export * from "./login";

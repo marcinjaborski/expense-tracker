@@ -49,16 +49,32 @@
   "Other": {
     "title": "Więcej",
     "accounts": "Konta",
+    "categories": "Kategorie",
     "import": "Import",
     "export": "Export",
     "debts": "Długi",
     "logout": "Wyloguj"
+  },
+  "Accounts": {
+    "title": "Konta",
+    "createAccount": "Stwórz",
+    "createAccountTitle": "Stwórz konto",
+    "noAccounts": "Na razie nie masz żadnych kont, stwórz jedne!",
+    "name": "Nazwa",
+    "currency": "Waluta",
+    "PLN": "Zlotówki zł",
+    "EUR": "Euro €",
+    "USD": "Dolary amerykańskie $",
+    "nameMinLength": "Nazwa musi mieć conajmniej 3 znaki",
+    "edit": "Edytuj konto",
+    "delete": "Usuń konto"
   },
   "Feedback": {
     "error": "Coś poszło nie tak"
   },
   "Shared": {
     "confirm": "Potwierdź",
-    "cancel": "Anuluj"
+    "cancel": "Anuluj",
+    "close": "Zamknij"
   }
 }

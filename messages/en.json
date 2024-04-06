@@ -49,16 +49,32 @@
   "Other": {
     "title": "More",
     "accounts": "Accounts",
+    "categories": "Categories",
     "import": "Import",
     "export": "Export",
     "debts": "Debts",
     "logout": "Log out"
+  },
+  "Accounts": {
+    "title": "Accounts",
+    "createAccount": "Create",
+    "createAccountTitle": "Create account",
+    "noAccounts": "Currently there are no accounts, create one!",
+    "name": "Name",
+    "currency": "Currency",
+    "PLN": "Polish Zloty zl",
+    "EUR": "Euro €",
+    "USD": "American dollars $",
+    "nameMinLength": "Name must have at least 3 characters",
+    "edit": "Edit account",
+    "delete": "Delete account"
   },
   "Feedback": {
     "error": "Something went wrong"
   },
   "Shared": {
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "close": "Close"
   }
 }

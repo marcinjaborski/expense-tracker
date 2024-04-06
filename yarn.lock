@@ -2275,6 +2275,11 @@ nanoid@^3.3.6, nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
+nanoid@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.6.tgz#7f99a033aa843e4dcf9778bdaec5eb02f4dc44d5"
+  integrity sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -2947,15 +2952,15 @@ sucrase@^3.32.0:
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
 
-supabase@^1.145.4:
-  version "1.145.4"
-  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.145.4.tgz#8cbff4de061fd14e86edf0236a2bdbf683903971"
-  integrity sha512-j6OvAQjTNcJ8SBlqZpUTFJ7C3iXliZ8VjcleFvUBAlFLqot1EhXT8tqSLZiOP1B91Ks2DPOxT8D94cAIWYWvLQ==
+supabase@^1.153.1:
+  version "1.153.1"
+  resolved "https://registry.yarnpkg.com/supabase/-/supabase-1.153.1.tgz#077d96535dfe9d5e409ec23554559ef567394df4"
+  integrity sha512-YhB843C9lSBeNjWohOSzJqUWlBRiOK/Tz/EhlK5o8VdYPdC/hPsEHdvoFO9Gym2RpexvKQMnhD28yQ4CYZIVTw==
   dependencies:
     bin-links "^4.0.3"
     https-proxy-agent "^7.0.2"
     node-fetch "^3.3.2"
-    tar "6.2.0"
+    tar "6.2.1"
 
 supports-color@^7.1.0:
   version "7.2.0"
@@ -3009,10 +3014,10 @@ tapable@^2.2.0:
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
   integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
-tar@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-6.2.0.tgz#b14ce49a79cb1cd23bc9b016302dea5474493f73"
-  integrity sha512-/Wo7DcT0u5HUV486xg675HtjNd3BXZ6xDbzsCUZPt5iw8bTQ63bP0Raut3mvro9u+CUyq7YQd8Cx55fsZXxqLQ==
+tar@6.2.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-6.2.1.tgz#717549c541bc3c2af15751bea94b1dd068d4b03a"
+  integrity sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==
   dependencies:
     chownr "^2.0.0"
     fs-minipass "^2.0.0"
