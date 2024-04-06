@@ -1,3 +1,5 @@
+export type SearchParamType = string | string[] | undefined;
+
 export const SORT = {
   name: "sort",
   date: "date",
@@ -6,7 +8,7 @@ export const SORT = {
 
 export type SortOption = typeof SORT.date | typeof SORT.amount;
 
-export function parseSortOption(searchParam: string | string[] | null | undefined): SortOption {
+export function parseSortOption(searchParam: SearchParamType | null): SortOption {
   return searchParam === SORT.date || searchParam === SORT.amount ? searchParam : SORT.date;
 }
 
@@ -18,23 +20,20 @@ export const DIR = {
 
 export type DirOption = typeof DIR.asc | typeof DIR.desc;
 
-export function parseDirOption(searchParam: string | string[] | null | undefined): DirOption {
+export function parseDirOption(searchParam: SearchParamType | null): DirOption {
   return searchParam === DIR.asc || searchParam === DIR.desc ? searchParam : DIR.desc;
 }
 
 export const QUERY = "q";
 
-export function parseQuery(searchParam: string | string[] | null | undefined): string {
+export function parseQuery(searchParam: SearchParamType | null): string {
   return typeof searchParam === "string" ? searchParam : "";
 }
 
-export type ExpenseListSearchParams = Record<
-  typeof QUERY | typeof SORT.name | typeof DIR.name,
-  string | string[] | undefined
->;
+export type ExpenseListSearchParams = Record<typeof QUERY | typeof SORT.name | typeof DIR.name, SearchParamType>;
 
 export const DELETE_ID = "deleteId";
 
 export const UPDATE_ID = "updateId";
 
-export type CreateExpenseSearchParams = Record<typeof UPDATE_ID, string | string[] | undefined>;
+export type CreateExpenseSearchParams = Record<typeof UPDATE_ID, SearchParamType>;

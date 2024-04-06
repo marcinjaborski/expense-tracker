@@ -1,16 +1,19 @@
 "use client";
 
 import { nanoid } from "nanoid";
-import { ElementType, useState } from "react";
+import { ComponentProps, ElementType, JSXElementConstructor, useState } from "react";
 
 type FormWrapProps = {
   Form: ElementType;
 };
 
-export function FormWrap({ Form }: FormWrapProps) {
+export function FormWrap<T extends JSXElementConstructor<any>>({
+  Form,
+  ...props
+}: FormWrapProps & Omit<ComponentProps<T>, "onReset">) {
   const [formKey, setFormKey] = useState(nanoid());
 
   const updateFormKey = () => setFormKey(nanoid());
 
-  return <Form key={formKey} onReset={updateFormKey} />;
+  return <Form key={formKey} onReset={updateFormKey} {...props} />;
 }

@@ -7,19 +7,26 @@ import { AccountCard, CreateAccountButton, CreateAccountModal } from "@/componen
 import { FormWrap } from "@/components/shared/FormWrap";
 import { redirect } from "@/navigation";
 import { getAccounts } from "@/repository/getAccounts";
+import { SearchParamType, UPDATE_ID } from "@/utils/searchParams";
+
+import { AccountsClient } from "./AccountsClient";
 
 type AccountsProps = {
   params: {
     locale: string;
   };
+  searchParams: {
+    [UPDATE_ID]: SearchParamType;
+  };
 };
 
-export default async function Accounts({ params: { locale } }: AccountsProps) {
+export default async function Accounts({ params: { locale }, searchParams: { updateId } }: AccountsProps) {
   const messages = await getMessages();
   const t = await getTranslations({ locale, namespace: "Accounts" });
   const { data: accounts, error } = await getAccounts();
 
   if (error || accounts === null) return redirect("/error");
+  const account = accounts.find((acc) => acc.id === Number(updateId));
 
   return (
     <NextIntlClientProvider messages={pick(messages, ["Accounts", "Shared", "Feedback"])}>
@@ -33,7 +40,8 @@ export default async function Accounts({ params: { locale } }: AccountsProps) {
           )}
         </div>
         <CreateAccountButton />
-        <FormWrap Form={CreateAccountModal} />{" "}
+        <FormWrap<typeof CreateAccountModal> Form={CreateAccountModal} account={account} />
+        <AccountsClient />
       </div>
     </NextIntlClientProvider>
   );

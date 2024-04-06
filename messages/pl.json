@@ -58,6 +58,7 @@
   "Accounts": {
     "title": "Konta",
     "createAccount": "Stwórz",
+    "updateAccount": "Zapisz",
     "createAccountTitle": "Stwórz konto",
     "noAccounts": "Na razie nie masz żadnych kont, stwórz jedne!",
     "name": "Nazwa",
@@ -67,7 +68,8 @@
     "USD": "Dolary amerykańskie $",
     "nameMinLength": "Nazwa musi mieć conajmniej 3 znaki",
     "edit": "Edytuj konto",
-    "delete": "Usuń konto"
+    "delete": "Usuń konto",
+    "confirmDelete": "Czy na pewno chcesz usunąć to konto?"
   },
   "Feedback": {
     "error": "Coś poszło nie tak"

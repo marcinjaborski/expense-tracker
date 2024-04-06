@@ -18,16 +18,16 @@ export function ConfirmModal({ title, onConfirm, onCancel }: ConfirmModalProps) 
       <dialog id={CONFIRM_MODAL} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">{title}</h3>
-          <div className="modal-action">
-            <form method="dialog">
+          <form method="dialog">
+            <div className="modal-action">
               <button className="btn" type="submit" onClick={onCancel}>
                 {t("cancel")}
               </button>
               <button className="btn" type="submit" onClick={onConfirm}>
                 {t("confirm")}
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button type="submit" onClick={onCancel}>

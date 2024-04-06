@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createClient } from "@/utils/supabase/server";
 
 const createAccountSchema = z.object({
+  id: z.preprocess(Number, z.number().optional()),
   name: z.string().min(3, "nameMinLength"),
   currency: z.string().optional(),
 });
@@ -17,7 +18,8 @@ export async function createAccount(_: unknown, formData: FormData) {
   if (!parsedFormData.success) {
     return { message: "parsingError", errors: parsedFormData.error.errors };
   }
-  const { error } = await supabase.from("accounts").insert(parsedFormData.data);
+  if (parsedFormData.data.id === 0) delete parsedFormData.data.id;
+  const { error } = await supabase.from("accounts").upsert(parsedFormData.data);
   if (error) {
     return { message: "serverError", errors: [] };
   }

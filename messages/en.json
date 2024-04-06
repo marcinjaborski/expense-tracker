@@ -58,6 +58,7 @@
   "Accounts": {
     "title": "Accounts",
     "createAccount": "Create",
+    "updateAccount": "Update",
     "createAccountTitle": "Create account",
     "noAccounts": "Currently there are no accounts, create one!",
     "name": "Name",
@@ -67,7 +68,8 @@
     "USD": "American dollars $",
     "nameMinLength": "Name must have at least 3 characters",
     "edit": "Edit account",
-    "delete": "Delete account"
+    "delete": "Delete account",
+    "confirmDelete": "Are you sure you want to delete this account?"
   },
   "Feedback": {
     "error": "Something went wrong"
