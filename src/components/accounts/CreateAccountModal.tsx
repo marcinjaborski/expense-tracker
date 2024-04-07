@@ -17,7 +17,7 @@ type CreateAccountModalProps = {
   onReset: () => void;
 };
 
-export function CreateAccountModal({ account, onReset }: CreateAccountModalProps) {
+export function CreateAccountModal({ account = undefined, onReset }: CreateAccountModalProps) {
   const t = useTranslations("Accounts");
   const tFeedback = useTranslations("Feedback");
   const [{ message, errors }, formAction] = useFormState(createAccount, { message: "", errors: [] });

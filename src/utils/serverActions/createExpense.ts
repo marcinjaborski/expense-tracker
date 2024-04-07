@@ -14,6 +14,7 @@ const createExpenseSchema = z.object({
     Number,
     z.number({ invalid_type_error: "missingCategory", required_error: "missingCategory" }),
   ),
+  account: z.preprocess(Number, z.number().optional()),
   date: z.string(),
   amount: z.coerce.number().nonnegative("nonNegativeNumber"),
   description: z.string().optional(),

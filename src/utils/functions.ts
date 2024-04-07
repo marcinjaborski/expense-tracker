@@ -26,6 +26,6 @@ export function notNull<T>(x: T | null): x is T {
   return x !== null;
 }
 
-export function toCurrency(value: string): Currency {
+export function toCurrency(value?: string): Currency {
   return currencies.includes(value as Currency) ? (value as Currency) : defaultCurrency;
 }

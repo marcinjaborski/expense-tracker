@@ -17,6 +17,7 @@
   },
   "CreateExpense": {
     "amount": "Amount",
+    "account": "Account",
     "description": "Description",
     "create": "Create",
     "update": "Update",

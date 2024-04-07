@@ -7,7 +7,9 @@ import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
 
 import { CategoryCarousel, CreateCategoryModal, ErrorToast, ExpenseSelect, SubmitButton } from "@/components";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
+import { useAccounts } from "@/repository/useAccounts";
 import { cn, getToday, getZodErrorMessage } from "@/utils/functions";
+import { useCurrencySymbol } from "@/utils/hooks";
 import { createExpense } from "@/utils/serverActions";
 import { ExpenseType, ExpenseTypes } from "@/utils/types";
 
@@ -20,6 +22,8 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
   const tFeedback = useTranslations("Feedback");
   const [type, setType] = useState<ExpenseType>(ExpenseTypes.enum.expense);
   const [{ message, errors }, formAction] = useFormState(createExpense, { message: "", errors: [] });
+  const { data: accounts } = useAccounts();
+  const getCurrencySymbol = useCurrencySymbol();
   const buttonText = expense ? t("update") : t("create");
 
   return (
@@ -53,6 +57,13 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
         {message === "parsingError" ? (
           <span className="label-text-alt text-error">{getZodErrorMessage(t, "category", errors)}</span>
         ) : null}
+        <select className="select select-bordered w-full" name="account" defaultValue={expense?.account || undefined}>
+          {accounts?.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.name} - {getCurrencySymbol(account.currency)}
+            </option>
+          ))}
+        </select>
         <label className="input input-bordered flex items-center gap-2">
           <input
             type="number"

@@ -10,6 +10,7 @@ import { Link } from "@/navigation";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { cn, getModal } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
+import { useFormatCurrency } from "@/utils/hooks/useFormatCurrency";
 import { CONFIRM_MODAL } from "@/utils/ids";
 import { DELETE_ID } from "@/utils/searchParams";
 import { ExpenseTypes } from "@/utils/types";
@@ -21,6 +22,7 @@ type ExpenseCellProps = {
 export function ExpenseRow({ expense }: ExpenseCellProps) {
   const t = useTranslations("ExpenseList");
   const updateParams = useUpdateParams();
+  const formatCurrency = useFormatCurrency();
   const [holding, setHolding] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
   const ref = useClickAway<HTMLTableRowElement>(() => {
@@ -49,6 +51,8 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
       <td className="flex items-center gap-2">
         <DynamicIcon icon={expense.category?.icon} />
         {expense.category?.name}
+        <br />
+        {expense.account?.name}
       </td>
       <td
         className={cn("text-right", {
@@ -56,7 +60,7 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
           "text-green-300": expense.type === ExpenseTypes.enum.income,
         })}
       >
-        {expense.amount}
+        {formatCurrency(expense.amount, expense.account?.currency)}
       </td>
       {menuVisible ? (
         <td className={cn("menu absolute left-0 top-full z-30 w-56 rounded-box bg-base-200")}>

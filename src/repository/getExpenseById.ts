@@ -8,7 +8,7 @@ export async function getExpenseById(id: number) {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("expenses")
-    .select("*, category (*)")
+    .select("*, category (*), account (*)")
     .eq("id", id)
     .single<ExpenseReturnType>();
   if (error || !data) return null;

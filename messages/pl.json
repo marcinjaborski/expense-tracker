@@ -17,6 +17,7 @@
   },
   "CreateExpense": {
     "amount": "Kwota",
+    "account": "Konto",
     "description": "Opis",
     "create": "Stwórz",
     "update": "Aktualizuj",

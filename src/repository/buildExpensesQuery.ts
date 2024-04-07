@@ -5,6 +5,7 @@ import { ExpenseOption } from "@/utils/types";
 
 export type ExpenseReturnType = Tables<"expenses"> & {
   category: Tables<"categories"> | null;
+  account: Tables<"accounts"> | null;
 };
 
 export const EXPENSE_PAGE_SIZE = 50;
@@ -17,7 +18,7 @@ export const buildExpensesQuery = (
   sort: SortOption,
   dir: DirOption,
 ) => {
-  let query = supabase.from("expenses").select("*, category (*)");
+  let query = supabase.from("expenses").select("*, category (*), account (*)");
   if (type !== "all") query = query.eq("type", type);
   if (q !== "") query = query.ilike("description", `%${q}%`);
   query = query.order(sort, { ascending: dir === DIR.asc });
