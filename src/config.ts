@@ -42,6 +42,10 @@ export const pathnames = {
     en: "/accounts",
     pl: "/konta",
   },
+  "/categories": {
+    en: "/categories",
+    pl: "/kategorie",
+  },
 } satisfies Pathnames<typeof locales>;
 
 // Use the default: `always`

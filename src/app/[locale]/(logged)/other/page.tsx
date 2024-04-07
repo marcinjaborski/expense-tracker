@@ -24,7 +24,7 @@ export default async function Other({ params: { locale } }: OtherProps) {
         <div className="grid h-full items-center">
           <div className="mt-3 grid grid-cols-3 items-center gap-5">
             <OtherLink title={t("accounts")} Icon={LuWallet} href="/accounts" />
-            <OtherLink title={t("categories")} Icon={LuFolders} href="/" />
+            <OtherLink title={t("categories")} Icon={LuFolders} href="/categories" />
             <OtherLink title={t("debts")} Icon={FaHandHoldingUsd} href="/" />
             <OtherLink title={t("import")} Icon={LuImport} href="/" />
             <OtherLink title={t("export")} Icon={LuDatabaseBackup} href="/" />

@@ -3,10 +3,12 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components";
-import { AccountCard, CreateAccountButton, CreateAccountModal } from "@/components/accounts";
+import { AccountCard, CreateAccountModal } from "@/components/accounts";
+import { CreateButton } from "@/components/shared/CreateButton";
 import { FormWrap } from "@/components/shared/FormWrap";
 import { redirect } from "@/navigation";
 import { getAccounts } from "@/repository/getAccounts";
+import { CREATE_ACCOUNT_MODAL } from "@/utils/ids";
 import { SearchParamType, UPDATE_ID } from "@/utils/searchParams";
 
 import { AccountsClient } from "./AccountsClient";
@@ -26,7 +28,7 @@ export default async function Accounts({ params: { locale }, searchParams: { upd
   const { data: accounts, error } = await getAccounts();
 
   if (error || accounts === null) return redirect("/error");
-  const account = accounts.find((acc) => acc.id === Number(updateId));
+  const accountToUpdate = accounts.find((acc) => acc.id === Number(updateId));
 
   return (
     <NextIntlClientProvider messages={pick(messages, ["Accounts", "Shared", "Feedback"])}>
@@ -39,8 +41,8 @@ export default async function Accounts({ params: { locale }, searchParams: { upd
             accounts.map((account) => <AccountCard key={account.id} account={account} />)
           )}
         </div>
-        <CreateAccountButton />
-        <FormWrap<typeof CreateAccountModal> Form={CreateAccountModal} account={account} />
+        <CreateButton label={t("createAccount")} modal={CREATE_ACCOUNT_MODAL} />
+        <FormWrap<typeof CreateAccountModal> Form={CreateAccountModal} account={accountToUpdate} />
         <AccountsClient />
       </div>
     </NextIntlClientProvider>

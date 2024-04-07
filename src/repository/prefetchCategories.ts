@@ -8,12 +8,13 @@ export const prefetchCategories = async (queryClient: QueryClient) => {
   const { data: categories } = await supabase.from("categories").select();
   if (!categories) return;
 
-  await Promise.all(
-    ExpenseTypes.options.map((type) =>
+  await Promise.all([
+    queryClient.prefetchQuery({ queryKey: ["categories", "all"], queryFn: () => categories }),
+    ...ExpenseTypes.options.map((type) =>
       queryClient.prefetchQuery({
         queryKey: ["categories", type],
         queryFn: () => categories.filter((category) => category.type === type),
       }),
     ),
-  );
+  ]);
 };

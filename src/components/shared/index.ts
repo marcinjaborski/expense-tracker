@@ -1,4 +1,5 @@
 export * from "./ConfirmModal";
+export * from "./CreateButton";
 export * from "./DynamicIcon";
 export * from "./ErrorToast";
 export * from "./LabeledInput";

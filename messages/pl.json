@@ -28,7 +28,8 @@
     "close": "Zamknij",
     "createCategory": "Stwórz nową kategorię",
     "name": "Nazwa",
-    "missingCategory": "Wybierz kategorię"
+    "missingCategory": "Wybierz kategorię",
+    "nonEmptyName": "Nazwa nie może być pusta"
   },
   "ExpenseList": {
     "title": "Lista transakcji",
@@ -71,6 +72,16 @@
     "edit": "Edytuj konto",
     "delete": "Usuń konto",
     "confirmDelete": "Czy na pewno chcesz usunąć to konto?"
+  },
+  "Categories": {
+    "title": "Kategorie",
+    "createCategory": "Stwórz kategorię",
+    "edit": "Edytuj kategorię",
+    "delete": "Usuń kategorię",
+    "confirmDelete": "Czy na pewno chcesz usunąć tą kategorię?",
+    "expenses": "Wydatki",
+    "incomes": "Przychody",
+    "transfers": "Transfery"
   },
   "Feedback": {
     "error": "Coś poszło nie tak"
