@@ -83,6 +83,18 @@
     "incomes": "Przychody",
     "transfers": "Transfery"
   },
+  "Debts": {
+    "title": "Długi",
+    "showSettled": "Pokaż rozliczone",
+    "createDebt": "Dodaj dług",
+    "create": "Dodaj",
+    "person": "Osoba",
+    "amount": "Kwota",
+    "description": "Opis",
+    "emptyPerson": "Wprowadź osobę którą dotyczy dług",
+    "invalidNumber": "Wprowadź poprawną liczbę",
+    "numberGreaterThanZero": "Kwota musi być większa od 0"
+  },
   "Feedback": {
     "error": "Coś poszło nie tak"
   },

@@ -3,14 +3,13 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import { ConfirmModal, CreateButton, CreateCategoryModal } from "@/components";
+import { ConfirmModal, CreateCategoryModal } from "@/components";
 import { CategorySection } from "@/components/categories";
 import { FormWrap } from "@/components/shared/FormWrap";
 import { useRouter } from "@/navigation";
 import { useCategories } from "@/repository/useCategories";
 import { useDeleteCategory } from "@/repository/useDeleteCategory";
 import { useUpdateParams } from "@/utils/hooks";
-import { CREATE_CATEGORY_MODAL } from "@/utils/ids";
 import { DELETE_ID, UPDATE_ID } from "@/utils/searchParams";
 import { ExpenseTypes, isExpenseType } from "@/utils/types";
 
@@ -39,7 +38,6 @@ export function CategoriesClient() {
       <CategorySection title={t("expenses")} categories={expenseCategories} />
       <CategorySection title={t("incomes")} categories={incomeCategories} />
       <CategorySection title={t("transfers")} categories={transfersCategories} />
-      <CreateButton label={t("createCategory")} modal={CREATE_CATEGORY_MODAL} />
       <FormWrap<typeof CreateCategoryModal>
         Form={CreateCategoryModal}
         category={categoryToUpdate}

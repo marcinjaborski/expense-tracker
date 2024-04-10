@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { LuArrowRightLeft, LuMinus, LuPlus, LuShapes } from "react-icons/lu";
 
 import {
@@ -18,6 +18,7 @@ import { useDeleteExpense } from "@/repository/useDeleteExpense";
 import { useExpenses } from "@/repository/useExpenses";
 import { notNull } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
+import { useObserver } from "@/utils/hooks/useObserver";
 import { DELETE_ID, parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
 import { ExpenseOption, ExpenseTypes } from "@/utils/types";
 
@@ -42,21 +43,7 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
 
   const expenses = data?.pages.flat().filter(notNull) ?? [];
   const observerTarget = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) fetchNextPage();
-      },
-      { threshold: 1 },
-    );
-
-    if (observerTarget.current) observer.observe(observerTarget.current);
-
-    return () => {
-      if (observerTarget.current) observer.unobserve(observerTarget.current);
-    };
-  }, [fetchNextPage, observerTarget]);
+  useObserver(observerTarget, fetchNextPage);
 
   return (
     <>

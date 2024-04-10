@@ -6,14 +6,9 @@ import { LuDatabaseBackup, LuFolders, LuImport, LuWallet } from "react-icons/lu"
 
 import { OtherLink, PageHeader } from "@/components";
 import { LogoutLink } from "@/components/other/LogoutLink";
+import { LocaleParams } from "@/utils/params";
 
-type OtherProps = {
-  params: {
-    locale: string;
-  };
-};
-
-export default async function Other({ params: { locale } }: OtherProps) {
+export default async function Other({ params: { locale } }: LocaleParams) {
   const messages = await getMessages();
   const t = await getTranslations({ locale, namespace: "Other" });
 
@@ -25,7 +20,7 @@ export default async function Other({ params: { locale } }: OtherProps) {
           <div className="mt-3 grid grid-cols-3 items-center gap-5">
             <OtherLink title={t("accounts")} Icon={LuWallet} href="/accounts" />
             <OtherLink title={t("categories")} Icon={LuFolders} href="/categories" />
-            <OtherLink title={t("debts")} Icon={FaHandHoldingUsd} href="/" />
+            <OtherLink title={t("debts")} Icon={FaHandHoldingUsd} href="/debts" />
             <OtherLink title={t("import")} Icon={LuImport} href="/" />
             <OtherLink title={t("export")} Icon={LuDatabaseBackup} href="/" />
             <LogoutLink />

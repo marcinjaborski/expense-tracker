@@ -4,25 +4,25 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 
 import { CreateButton, PageHeader } from "@/components";
-import { prefetchCategories } from "@/repository/prefetchCategories";
-import { CREATE_CATEGORY_MODAL } from "@/utils/ids";
+import { prefetchDebts } from "@/repository/prefetchDebts";
+import { CREATE_DEBT_MODAL } from "@/utils/ids";
 import { LocaleParams } from "@/utils/params";
 
-import { CategoriesClient } from "./CategoriesClient";
+import { DebtsClient } from "./DebtsClient";
 
-export default async function Categories({ params: { locale } }: LocaleParams) {
+export default async function Debts({ params: { locale } }: LocaleParams) {
   const messages = await getMessages();
-  const t = await getTranslations({ locale, namespace: "Categories" });
+  const t = await getTranslations({ locale, namespace: "Debts" });
   const queryClient = new QueryClient();
-  await prefetchCategories(queryClient);
+  await prefetchDebts(queryClient);
 
   return (
-    <NextIntlClientProvider messages={pick(messages, ["Categories", "CreateExpense", "Shared", "Feedback"])}>
+    <NextIntlClientProvider messages={pick(messages, ["Debts", "Shared", "Feedback"])}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <div className="relative flex w-full flex-col items-center self-stretch">
           <PageHeader title={t("title")} />
-          <CategoriesClient />
-          <CreateButton label={t("createCategory")} modal={CREATE_CATEGORY_MODAL} />
+          <DebtsClient />
+          <CreateButton label={t("createDebt")} modal={CREATE_DEBT_MODAL} />
         </div>
       </HydrationBoundary>
     </NextIntlClientProvider>

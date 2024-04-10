@@ -6,18 +6,18 @@ import { getMessages, getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components";
 import { prefetchExpenses } from "@/repository/prefetchExpenses";
+import { LocaleParams } from "@/utils/params";
 import { isExpenseRoute, mapRouteToType } from "@/utils/routes";
 import { ExpenseListSearchParams, parseDirOption, parseQuery, parseSortOption } from "@/utils/searchParams";
 
 import { ExpenseListClient } from "./ExpenseListClient";
 
-type ExpensesProps = {
-  params: {
-    locale: string;
-    type: string;
+type ExpensesProps = LocaleParams &
+  ExpenseListSearchParams & {
+    params: {
+      type: string;
+    };
   };
-  searchParams: ExpenseListSearchParams;
-};
 
 export default async function ExpenseList({ params, searchParams }: ExpensesProps) {
   const route = `/${params.type}`;

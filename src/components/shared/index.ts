@@ -1,3 +1,4 @@
+export * from "./AmountInput";
 export * from "./ConfirmModal";
 export * from "./CreateButton";
 export * from "./DynamicIcon";

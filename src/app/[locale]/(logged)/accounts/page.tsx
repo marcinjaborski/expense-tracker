@@ -9,18 +9,12 @@ import { FormWrap } from "@/components/shared/FormWrap";
 import { redirect } from "@/navigation";
 import { getAccounts } from "@/repository/getAccounts";
 import { CREATE_ACCOUNT_MODAL } from "@/utils/ids";
-import { SearchParamType, UPDATE_ID } from "@/utils/searchParams";
+import { LocaleParams } from "@/utils/params";
+import { UpdateSearchParams } from "@/utils/searchParams";
 
 import { AccountsClient } from "./AccountsClient";
 
-type AccountsProps = {
-  params: {
-    locale: string;
-  };
-  searchParams: {
-    [UPDATE_ID]: SearchParamType;
-  };
-};
+type AccountsProps = LocaleParams & UpdateSearchParams;
 
 export default async function Accounts({ params: { locale }, searchParams: { updateId } }: AccountsProps) {
   const messages = await getMessages();

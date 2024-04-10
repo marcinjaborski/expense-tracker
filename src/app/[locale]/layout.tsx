@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { PropsWithChildren } from "react";
 
 import Providers from "@/Providers";
+import { LocaleParams } from "@/utils/params";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,13 +14,7 @@ export const metadata: Metadata = {
   description: "Expense tracker description",
 };
 
-type RootLayoutProps = PropsWithChildren<{
-  params: {
-    locale: string;
-  };
-}>;
-
-export default function RootLayout({ children = null, params: { locale } }: RootLayoutProps) {
+export default function RootLayout({ children = null, params: { locale } }: PropsWithChildren & LocaleParams) {
   return (
     <html lang={locale}>
       <body className={inter.className}>

@@ -30,10 +30,22 @@ export function parseQuery(searchParam: SearchParamType | null): string {
   return typeof searchParam === "string" ? searchParam : "";
 }
 
-export type ExpenseListSearchParams = Record<typeof QUERY | typeof SORT.name | typeof DIR.name, SearchParamType>;
+export type ExpenseListSearchParams = {
+  searchParams: Record<typeof QUERY | typeof SORT.name | typeof DIR.name, SearchParamType>;
+};
 
 export const DELETE_ID = "deleteId";
 
 export const UPDATE_ID = "updateId";
 
-export type CreateExpenseSearchParams = Record<typeof UPDATE_ID, SearchParamType>;
+export type UpdateSearchParams = {
+  searchParams: {
+    [UPDATE_ID]: SearchParamType;
+  };
+};
+
+export type DeleteSearchParams = {
+  searchParams: {
+    [DELETE_ID]: SearchParamType;
+  };
+};

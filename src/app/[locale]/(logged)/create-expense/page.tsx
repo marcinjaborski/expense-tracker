@@ -6,15 +6,11 @@ import { getMessages } from "next-intl/server";
 import { getExpenseById } from "@/repository/getExpenseById";
 import { prefetchAccounts } from "@/repository/prefetchAccounts";
 import { prefetchCategories } from "@/repository/prefetchCategories";
-import { CreateExpenseSearchParams } from "@/utils/searchParams";
+import { UpdateSearchParams } from "@/utils/searchParams";
 
 import { CreateExpenseClient } from "./CreateExpenseClient";
 
-type CreateExpenseProps = {
-  searchParams: CreateExpenseSearchParams;
-};
-
-export default async function CreateExpense({ searchParams }: CreateExpenseProps) {
+export default async function CreateExpense({ searchParams }: UpdateSearchParams) {
   const queryClient = new QueryClient();
   const messages = await getMessages();
   const expense = await getExpenseById(Number(searchParams.updateId));

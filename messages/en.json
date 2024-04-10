@@ -83,6 +83,18 @@
     "incomes": "Incomes",
     "transfers": "Transfers"
   },
+  "Debts": {
+    "title": "Debts",
+    "showSettled": "Show settled",
+    "createDebt": "Add debt",
+    "create": "Add",
+    "person": "Person",
+    "amount": "Amount",
+    "description": "Description",
+    "emptyPerson": "Enter a person connected to the debt",
+    "invalidNumber": "Enter valid amount",
+    "numberGreaterThanZero": "Amount must be greater than 0"
+  },
   "Feedback": {
     "error": "Something went wrong"
   },

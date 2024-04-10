@@ -3,9 +3,16 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-import { LuArrowRightLeft, LuCoins, LuMinus, LuPlus } from "react-icons/lu";
+import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 
-import { CategoryCarousel, CreateCategoryModal, ErrorToast, ExpenseSelect, SubmitButton } from "@/components";
+import {
+  AmountInput,
+  CategoryCarousel,
+  CreateCategoryModal,
+  ErrorToast,
+  ExpenseSelect,
+  SubmitButton,
+} from "@/components";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { useAccounts } from "@/repository/useAccounts";
 import { cn, getToday, getZodErrorMessage } from "@/utils/functions";
@@ -64,19 +71,12 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
             </option>
           ))}
         </select>
-        <label className="input input-bordered flex items-center gap-2">
-          <input
-            type="number"
-            className="grow"
-            placeholder={t("amount")}
-            name="amount"
-            defaultValue={expense?.amount}
-          />
-          <LuCoins />
-        </label>
-        {message === "parsingError" ? (
-          <span className="label-text-alt text-error">{getZodErrorMessage(t, "amount", errors)}</span>
-        ) : null}
+        <AmountInput
+          placeholder={t("amount")}
+          name="amount"
+          defaultValue={expense?.amount}
+          errorMessage={getZodErrorMessage(t, "amount", errors)}
+        />
         <input type="date" className="input input-bordered" name="date" defaultValue={expense?.date || getToday()} />
         <textarea
           name="description"
