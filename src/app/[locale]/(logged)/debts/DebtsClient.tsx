@@ -1,12 +1,14 @@
 "use client";
 
+import { groupBy } from "lodash";
 import { useTranslations } from "next-intl";
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 
 import { CreateDebtModal, DebtCard } from "@/components/debts";
 import { FormWrap } from "@/components/shared/FormWrap";
 import { useDebts } from "@/repository/useDebts";
 import { notNull } from "@/utils/functions";
+import { useFormatCurrency } from "@/utils/hooks/useFormatCurrency";
 import { useObserver } from "@/utils/hooks/useObserver";
 
 export function DebtsClient() {
@@ -14,8 +16,11 @@ export function DebtsClient() {
   const [showSettled, setShowSettled] = useState(false);
   const { data, fetchNextPage } = useDebts(showSettled);
   const debts = data?.pages.flat().filter(notNull) ?? [];
+  const formatCurrency = useFormatCurrency();
   const observerTarget = useRef(null);
   useObserver(observerTarget, fetchNextPage);
+
+  const groupedDebts = groupBy(debts, "person");
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -30,7 +35,17 @@ export function DebtsClient() {
           />
         </label>
       </div>
-      {debts?.map((debt) => <DebtCard key={debt.id} debt={debt} />)}
+      {Object.entries(groupedDebts).map(([person, personDebts]) => (
+        <Fragment key={person}>
+          <div className="mt-2 text-xl font-bold">
+            {person} -{" "}
+            {formatCurrency(personDebts.reduce((sum, { amount, settled }) => (settled ? sum : sum + amount), 0))}
+          </div>
+          {personDebts.map((debt) => (
+            <DebtCard key={debt.id} debt={debt} />
+          ))}
+        </Fragment>
+      ))}
       <div ref={observerTarget} />
       <FormWrap<typeof CreateDebtModal> Form={CreateDebtModal} />
     </div>

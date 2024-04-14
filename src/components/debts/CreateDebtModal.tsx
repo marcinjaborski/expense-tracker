@@ -1,12 +1,14 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { uniqBy } from "lodash";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
 import { AmountInput, ErrorToast, LabeledInput, Modal, SubmitButton } from "@/components";
-import { getModal, getZodErrorMessage } from "@/utils/functions";
+import { useDebts } from "@/repository/useDebts";
+import { getModal, getZodErrorMessage, notUndefined } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
 import { CREATE_DEBT_MODAL } from "@/utils/ids";
 import { UPDATE_ID } from "@/utils/searchParams";
@@ -23,6 +25,10 @@ export function CreateDebtModal({ debt = undefined, onReset = () => {} }: Create
   const tFeedback = useTranslations("Feedback");
   const queryClient = useQueryClient();
   const updateParams = useUpdateParams();
+  const debts = useDebts(true);
+  const persons = uniqBy(debts.data?.pages.flat() || [], "person")
+    .map((d) => d?.person)
+    .filter(notUndefined);
   const [{ message, errors }, formAction] = useFormState(createDebt, { message: "", errors: [] });
 
   useEffect(() => {
@@ -40,7 +46,13 @@ export function CreateDebtModal({ debt = undefined, onReset = () => {} }: Create
         name="person"
         defaultValue={debt?.person}
         errorMessage={getZodErrorMessage(t, "person", errors)}
+        list="personOptions"
       />
+      <datalist id="personOptions">
+        {persons.map((person) => (
+          <option key={person} value={person} aria-label={person} />
+        ))}
+      </datalist>
       <AmountInput
         placeholder={t("amount")}
         name="amount"
