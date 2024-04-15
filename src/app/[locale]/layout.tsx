@@ -12,6 +12,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Expense tracker",
   description: "Expense tracker description",
+  generator: "Next.js",
+  manifest: "/manifest.webmanifest",
+  keywords: ["expenses", "tracker", "money", "debts"],
 };
 
 export default function RootLayout({ children = null, params: { locale } }: PropsWithChildren & LocaleParams) {
