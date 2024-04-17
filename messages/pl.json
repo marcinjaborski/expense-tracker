@@ -95,6 +95,14 @@
     "invalidNumber": "Wprowadź poprawną liczbę",
     "numberGreaterThanZero": "Kwota musi być większa od 0"
   },
+  "Import": {
+    "exportTitle": "Wyeksportuj dane",
+    "expenses": "Wydatki",
+    "categories": "Kategorie",
+    "accounts": "Konta",
+    "debts": "Długi",
+    "download": "Pobierz csv"
+  },
   "Feedback": {
     "error": "Coś poszło nie tak"
   },

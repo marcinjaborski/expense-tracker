@@ -50,6 +50,7 @@ export const pathnames = {
     en: "/debts",
     pl: "/dlugi",
   },
+  "/export": "/export",
 } satisfies Pathnames<typeof locales>;
 
 // Use the default: `always`

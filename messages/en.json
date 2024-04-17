@@ -95,6 +95,14 @@
     "invalidNumber": "Enter valid amount",
     "numberGreaterThanZero": "Amount must be greater than 0"
   },
+  "Import": {
+    "exportTitle": "Export data",
+    "expenses": "Expenses",
+    "categories": "Categories",
+    "accounts": "Accounts",
+    "debts": "Debts",
+    "download": "Download csv"
+  },
   "Feedback": {
     "error": "Something went wrong"
   },

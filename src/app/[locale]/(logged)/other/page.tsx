@@ -22,7 +22,7 @@ export default async function Other({ params: { locale } }: LocaleParams) {
             <OtherLink title={t("categories")} Icon={LuFolders} href="/categories" />
             <OtherLink title={t("debts")} Icon={FaHandHoldingUsd} href="/debts" />
             <OtherLink title={t("import")} Icon={LuImport} href="/" />
-            <OtherLink title={t("export")} Icon={LuDatabaseBackup} href="/" />
+            <OtherLink title={t("export")} Icon={LuDatabaseBackup} href="/export" />
             <LogoutLink />
           </div>
         </div>
