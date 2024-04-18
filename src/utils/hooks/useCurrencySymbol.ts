@@ -1,10 +1,9 @@
-import { useParams } from "next/navigation";
-
-import { Locale } from "@/config";
 import { toCurrency } from "@/utils/functions";
 
+import { useLocale } from "./useLocale";
+
 export function useCurrencySymbol() {
-  const { locale } = useParams<{ locale: Locale }>();
+  const locale = useLocale();
   return (currency: string) =>
     (0)
       .toLocaleString(locale, {

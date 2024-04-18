@@ -1,10 +1,9 @@
-import { useParams } from "next/navigation";
-
-import { Locale } from "@/config";
 import { toCurrency } from "@/utils/functions";
 
+import { useLocale } from "./useLocale";
+
 export function useFormatCurrency() {
-  const { locale } = useParams<{ locale: Locale }>();
+  const locale = useLocale();
   return (value: number, currency?: string) =>
     Intl.NumberFormat(locale, { style: "currency", currency: toCurrency(currency) }).format(value);
 }
