@@ -29,6 +29,11 @@ export function notNull<T>(x: T | null): x is T {
 export function notUndefined<T>(x: T | undefined): x is T {
   return x !== undefined;
 }
+
 export function toCurrency(value?: string): Currency {
   return currencies.includes(value as Currency) ? (value as Currency) : defaultCurrency;
+}
+
+export function containsAll<T>(array: T[], values: T[]) {
+  return values.every((value) => array.includes(value));
 }

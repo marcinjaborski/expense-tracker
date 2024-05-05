@@ -17,11 +17,11 @@ export default async function Other({ params: { locale } }: LocaleParams) {
       <div className="flex w-full flex-col items-center self-stretch">
         <PageHeader title={t("title")} />
         <div className="grid h-full items-center">
-          <div className="mt-3 grid grid-cols-3 items-center gap-5">
+          <div className="mt-3 grid grid-cols-3 place-items-center gap-5">
             <OtherLink title={t("accounts")} Icon={LuWallet} href="/accounts" />
             <OtherLink title={t("categories")} Icon={LuFolders} href="/categories" />
             <OtherLink title={t("debts")} Icon={FaHandHoldingUsd} href="/debts" />
-            <OtherLink title={t("import")} Icon={LuImport} href="/" />
+            <OtherLink title={t("import")} Icon={LuImport} href="/import" />
             <OtherLink title={t("export")} Icon={LuDatabaseBackup} href="/export" />
             <LogoutLink />
           </div>

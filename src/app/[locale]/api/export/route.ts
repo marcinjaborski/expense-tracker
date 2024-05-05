@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 
   const buffer = Buffer.from(csv, "utf8");
   const headers = new Headers();
-  headers.append("Content-Disposition", `attachment; filename="${table}.txt"`);
+  headers.append("Content-Disposition", `attachment; filename="${table}.csv"`);
   headers.append("Content-Type", "application/text");
 
   return new Response(buffer, {

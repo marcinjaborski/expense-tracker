@@ -96,6 +96,9 @@
     "numberGreaterThanZero": "Kwota musi być większa od 0"
   },
   "Import": {
+    "importTitle": "Importuj dane",
+    "importButton": "Importuj {amount} {table}",
+    "importError": "Błąd podczas importowania, sprawdź poprawność danych",
     "exportTitle": "Wyeksportuj dane",
     "expenses": "Wydatki",
     "categories": "Kategorie",

@@ -96,6 +96,9 @@
     "numberGreaterThanZero": "Amount must be greater than 0"
   },
   "Import": {
+    "importTitle": "Import data",
+    "importButton": "Import {amount} {table}",
+    "importError": "Error while importing data, check data",
     "exportTitle": "Export data",
     "expenses": "Expenses",
     "categories": "Categories",
