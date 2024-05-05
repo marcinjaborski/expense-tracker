@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import { LuCoins } from "react-icons/lu";
 
@@ -15,17 +16,19 @@ type AmountInputProps = {
 
 export function AmountInput({ placeholder, name, defaultValue = undefined, errorMessage = "" }: AmountInputProps) {
   const locale = useLocale();
+  const [value, setValue] = useState<number | undefined>(defaultValue);
 
   return (
     <>
+      <input type="hidden" name={name} value={value} />
       <label className="input input-bordered flex items-center gap-2">
         <CurrencyInput
           className="grow"
           placeholder={placeholder}
-          name={name}
           defaultValue={defaultValue}
           decimalsLimit={2}
           intlConfig={{ locale, currency: defaultCurrency }}
+          onValueChange={(newValue) => newValue && setValue(Number(newValue))}
         />
         <LuCoins />
       </label>
