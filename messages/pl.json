@@ -45,7 +45,7 @@
     "changeDirection": "Zmień kierunek",
     "search": "Wyszukaj",
     "edit": "Edytuj",
-    "delete": "Delete",
+    "delete": "Usuń",
     "confirmDelete": "Czy na pewno chcesz usunąć ten wydatek?"
   },
   "Other": {
@@ -99,6 +99,7 @@
     "importTitle": "Importuj dane",
     "importButton": "Importuj {amount} {table}",
     "importError": "Błąd podczas importowania, sprawdź poprawność danych",
+    "noMatchingTable": "Nie można było dopasować danych do żadnych zasobów ",
     "exportTitle": "Wyeksportuj dane",
     "expenses": "Wydatki",
     "categories": "Kategorie",

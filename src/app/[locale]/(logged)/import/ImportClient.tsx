@@ -46,15 +46,15 @@ export function ImportClient() {
   return (
     <>
       <input type="file" className="file-input w-full max-w-xs" onChange={onFileUpload} />
-      {parseResult ? (
+      {parseResult && table ? (
         <button type="button" className="btn btn-primary" onClick={onImport}>
           {t("importButton", { amount: parseResult.data.length, table })}
         </button>
       ) : null}
-      {importError ? (
+      {importError || (parseResult && table === null) ? (
         <div role="alert" className="alert alert-error flex">
           <FaRegCircleXmark className="text-4xl" />
-          <span>{t("importError")}</span>
+          <span>{importError ? t("importError") : t("noMatchingTable")}</span>
         </div>
       ) : null}
       <div className="w-[calc(100vw-0.75rem)] overflow-x-auto">

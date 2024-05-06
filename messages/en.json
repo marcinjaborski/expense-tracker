@@ -99,6 +99,7 @@
     "importTitle": "Import data",
     "importButton": "Import {amount} {table}",
     "importError": "Error while importing data, check data",
+    "noMatchingTable": "Could not match data to any resource",
     "exportTitle": "Export data",
     "expenses": "Expenses",
     "categories": "Categories",
