@@ -87,6 +87,8 @@
     "title": "Debts",
     "showSettled": "Show settled",
     "createDebt": "Add debt",
+    "toggleTypeBorrow": "Switch to borrow",
+    "toggleTypeReimburse": "Switch to reimburse",
     "create": "Add",
     "person": "Person",
     "amount": "Amount",

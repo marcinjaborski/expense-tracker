@@ -15,11 +15,15 @@ export async function createDebt(_: unknown, formData: FormData) {
   "use server";
 
   const supabase = createClient();
-  const parsedFormData = createDebtSchema.safeParse(Object.fromEntries(formData));
+  const { type, ...debtFormData } = Object.fromEntries(formData);
+  const parsedFormData = createDebtSchema.safeParse(debtFormData);
   if (!parsedFormData.success) {
     return { message: "parsingError", errors: parsedFormData.error.errors };
   }
   if (parsedFormData.data.id === 0) delete parsedFormData.data.id;
+  if (type === "reimburse") {
+    parsedFormData.data.amount *= -1;
+  }
   const { error } = await supabase.from("debts").upsert(parsedFormData.data);
   if (error) {
     return { message: "serverError", errors: [] };

@@ -87,6 +87,8 @@
     "title": "Długi",
     "showSettled": "Pokaż rozliczone",
     "createDebt": "Dodaj dług",
+    "toggleTypeBorrow": "Zamień na pożyczkę",
+    "toggleTypeReimburse": "Zamień na zwrot pieniędzy",
     "create": "Dodaj",
     "person": "Osoba",
     "amount": "Kwota",

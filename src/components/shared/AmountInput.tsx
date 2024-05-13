@@ -16,7 +16,7 @@ type AmountInputProps = {
 
 export function AmountInput({ placeholder, name, defaultValue = undefined, errorMessage = "" }: AmountInputProps) {
   const locale = useLocale();
-  const [value, setValue] = useState<number | undefined>(defaultValue);
+  const [value, setValue] = useState<number | "">(defaultValue || "");
 
   return (
     <>

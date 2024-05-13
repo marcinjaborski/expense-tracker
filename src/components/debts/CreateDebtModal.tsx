@@ -3,12 +3,13 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { uniqBy } from "lodash";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
+import { LuArrowDown, LuUser } from "react-icons/lu";
 
 import { AmountInput, ErrorToast, LabeledInput, Modal, SubmitButton } from "@/components";
 import { useDebts } from "@/repository/useDebts";
-import { getModal, getZodErrorMessage, notUndefined } from "@/utils/functions";
+import { cn, getModal, getZodErrorMessage, notUndefined } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
 import { CREATE_DEBT_MODAL } from "@/utils/ids";
 import { UPDATE_ID } from "@/utils/searchParams";
@@ -30,6 +31,7 @@ export function CreateDebtModal({ debt = undefined, onReset = () => {} }: Create
     .map((d) => d?.person)
     .filter(notUndefined);
   const [{ message, errors }, formAction] = useFormState(createDebt, { message: "", errors: [] });
+  const [type, setType] = useState<"borrow" | "reimburse">("borrow");
 
   useEffect(() => {
     if (message !== "OK") return;
@@ -41,6 +43,20 @@ export function CreateDebtModal({ debt = undefined, onReset = () => {} }: Create
   return (
     <Modal id={CREATE_DEBT_MODAL} title={t("createDebt")} action={formAction}>
       <input type="hidden" name="id" defaultValue={debt?.id} />
+      <input type="hidden" name="type" value={type} />
+      <div className="flex flex-col items-center gap-3 text-4xl">
+        <LuUser />
+        <button
+          className="btn btn-circle text-4xl"
+          type="button"
+          aria-label={type === "borrow" ? t("toggleTypeReimburse") : t("toggleTypeBorrow")}
+        >
+          <LuArrowDown
+            className={cn("transition-transform", { "rotate-180": type === "reimburse" })}
+            onClick={() => setType((prevState) => (prevState === "borrow" ? "reimburse" : "borrow"))}
+          />
+        </button>
+      </div>
       <LabeledInput
         label={t("person")}
         name="person"
