@@ -15,6 +15,11 @@
     "invalidCredentials": "Niepoprawny email lub hasło",
     "passwordsMismatch": "Hasła się nie zgadzają"
   },
+  "Dashboard": {
+    "title": "Pulpit",
+    "income": "Przychody",
+    "expense": "Wydatki"
+  },
   "CreateExpense": {
     "amount": "Kwota",
     "account": "Konto",

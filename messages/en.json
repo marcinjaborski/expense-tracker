@@ -15,6 +15,11 @@
     "invalidCredentials": "Invalid email or password",
     "passwordsMismatch": "Passwords do not match"
   },
+  "Dashboard": {
+    "title": "Dashboard",
+    "income": "Incomes",
+    "expense": "Expenses"
+  },
   "CreateExpense": {
     "amount": "Amount",
     "account": "Account",
