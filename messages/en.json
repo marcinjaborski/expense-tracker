@@ -70,6 +70,7 @@
     "noAccounts": "Currently there are no accounts, create one!",
     "name": "Name",
     "currency": "Currency",
+    "initialBalance": "Initial balance",
     "PLN": "Polish Zloty zl",
     "EUR": "Euro €",
     "USD": "American dollars $",

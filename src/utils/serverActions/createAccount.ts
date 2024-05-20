@@ -8,6 +8,7 @@ const createAccountSchema = z.object({
   id: z.preprocess(Number, z.number().optional()),
   name: z.string().min(3, "nameMinLength"),
   currency: z.string().optional(),
+  initialBalance: z.coerce.number().optional(),
 });
 
 export async function createAccount(_: unknown, formData: FormData) {

@@ -5,6 +5,7 @@ import CurrencyInput from "react-currency-input-field";
 import { LuCoins } from "react-icons/lu";
 
 import { defaultCurrency } from "@/utils/constants";
+import { cn } from "@/utils/functions";
 import { useLocale } from "@/utils/hooks";
 
 type AmountInputProps = {
@@ -12,23 +13,30 @@ type AmountInputProps = {
   name: string;
   defaultValue?: number;
   errorMessage?: string;
+  className?: string;
 };
 
-export function AmountInput({ placeholder, name, defaultValue = undefined, errorMessage = "" }: AmountInputProps) {
+export function AmountInput({
+  placeholder,
+  name,
+  defaultValue = undefined,
+  errorMessage = "",
+  className = "",
+}: AmountInputProps) {
   const locale = useLocale();
   const [value, setValue] = useState<number | "">(defaultValue || "");
 
   return (
     <>
       <input type="hidden" name={name} value={value} />
-      <label className="input input-bordered flex items-center gap-2">
+      <label className={cn("input input-bordered flex items-center gap-2", className)}>
         <CurrencyInput
           className="grow"
           placeholder={placeholder}
           defaultValue={defaultValue}
           decimalsLimit={2}
           intlConfig={{ locale, currency: defaultCurrency }}
-          onValueChange={(newValue) => newValue && setValue(Number(newValue))}
+          onValueChange={(newValue) => newValue && setValue(Number(newValue.replace(",", ".")))}
         />
         <LuCoins />
       </label>

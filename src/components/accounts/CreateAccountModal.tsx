@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
-import { ErrorToast, LabeledInput, Modal, SubmitButton } from "@/components";
+import { AmountInput, ErrorToast, LabeledInput, Modal, SubmitButton } from "@/components";
 import { useRouter } from "@/navigation";
 import { currencies } from "@/utils/constants";
 import { getModal, getZodErrorMessage } from "@/utils/functions";
@@ -52,6 +52,13 @@ export function CreateAccountModal({ account = undefined, onReset }: CreateAccou
           ))}
         </select>
       </label>
+      <AmountInput
+        className="mt-5"
+        placeholder={t("initialBalance")}
+        name="initialBalance"
+        defaultValue={account?.initialBalance}
+        errorMessage={getZodErrorMessage(t, "initialBalance", errors)}
+      />
       <div className="modal-action">
         <SubmitButton aria-label={buttonText} value={buttonText} />
       </div>

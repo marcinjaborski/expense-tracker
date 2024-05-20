@@ -70,6 +70,7 @@
     "noAccounts": "Na razie nie masz żadnych kont, stwórz jedne!",
     "name": "Nazwa",
     "currency": "Waluta",
+    "initialBalance": "Kwota początkowa",
     "PLN": "Zlotówki zł",
     "EUR": "Euro €",
     "USD": "Dolary amerykańskie $",
