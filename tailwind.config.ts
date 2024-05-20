@@ -1,5 +1,6 @@
 import daisyui from "daisyui";
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 
 const config: Config = {
   content: [
@@ -9,7 +10,12 @@ const config: Config = {
     "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        expense: colors.red["300"],
+        income: colors.green["300"],
+      },
+    },
   },
   plugins: [daisyui],
 };

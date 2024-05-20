@@ -18,7 +18,11 @@
   "Dashboard": {
     "title": "Pulpit",
     "income": "Przychody",
-    "expense": "Wydatki"
+    "expense": "Wydatki",
+    "currentExpenses": "Wydatki z tego miesiąca",
+    "averageExpenses": "Średnie wydatki z 6 miesięcy",
+    "totalMoney": "Wszystkie pieniądze",
+    "currentNetProfit": "Zysk w tym miesiącu"
   },
   "CreateExpense": {
     "amount": "Kwota",

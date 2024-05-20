@@ -56,8 +56,8 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
       </td>
       <td
         className={cn("text-right", {
-          "text-red-300": expense.type === ExpenseTypes.enum.expense,
-          "text-green-300": expense.type === ExpenseTypes.enum.income,
+          "text-expense": expense.type === ExpenseTypes.enum.expense,
+          "text-income": expense.type === ExpenseTypes.enum.income,
         })}
       >
         {formatCurrency(expense.amount, expense.account?.currency)}

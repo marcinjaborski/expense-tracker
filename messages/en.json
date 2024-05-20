@@ -18,7 +18,11 @@
   "Dashboard": {
     "title": "Dashboard",
     "income": "Incomes",
-    "expense": "Expenses"
+    "expense": "Expenses",
+    "currentExpenses": "Current month expenses",
+    "averageExpenses": "Average expenses",
+    "totalMoney": "Total money",
+    "currentNetProfit": "Net profit this month"
   },
   "CreateExpense": {
     "amount": "Amount",
