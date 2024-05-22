@@ -2,7 +2,6 @@
 
 import { LuPlus } from "react-icons/lu";
 
-import { createButtonStyles } from "@/utils/constants";
 import { getModal } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
 import { UPDATE_ID } from "@/utils/searchParams";
@@ -21,7 +20,12 @@ export function CreateButton({ label, modal }: CreateButtonProps) {
   };
 
   return (
-    <button className={createButtonStyles} type="button" onClick={onClick} aria-label={label}>
+    <button
+      className="btn btn-circle btn-primary fixed bottom-20 [&_svg]:text-xl"
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+    >
       <LuPlus />
     </button>
   );
