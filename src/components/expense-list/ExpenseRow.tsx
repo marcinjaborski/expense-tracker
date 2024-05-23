@@ -3,7 +3,7 @@
 import { useClickAway } from "@uidotdev/usehooks";
 import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
-import { LuArrowDown, LuArrowRight } from "react-icons/lu";
+import { LuArrowDown } from "react-icons/lu";
 import { useLongPress } from "use-long-press";
 
 import { DynamicIcon } from "@/components/shared";
