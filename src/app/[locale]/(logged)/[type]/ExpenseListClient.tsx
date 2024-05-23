@@ -92,11 +92,13 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
         </div>
         <ExpenseFiltersButton />
       </div>
-      {sort === SORT.date ? (
-        <ExpenseTableWithPinnedRows expenses={expenses} dir={dir} />
-      ) : (
-        <ExpenseTable expenses={expenses} />
-      )}
+      <div className="w-[calc(100vw-0.75rem)] overflow-x-auto">
+        {sort === SORT.date ? (
+          <ExpenseTableWithPinnedRows expenses={expenses} dir={dir} />
+        ) : (
+          <ExpenseTable expenses={expenses} />
+        )}
+      </div>
       <div ref={observerTarget} />
       <ExpenseFiltersModal />
       <ConfirmModal
