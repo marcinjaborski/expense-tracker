@@ -6,7 +6,6 @@ import { useFormState } from "react-dom";
 
 import { AmountInput, ErrorToast, LabeledInput, Modal, SubmitButton } from "@/components";
 import { useRouter } from "@/navigation";
-import { currencies } from "@/utils/constants";
 import { getModal, getZodErrorMessage } from "@/utils/functions";
 import { CREATE_ACCOUNT_MODAL } from "@/utils/ids";
 import { createAccount } from "@/utils/serverActions";
@@ -40,18 +39,6 @@ export function CreateAccountModal({ account = undefined, onReset }: CreateAccou
         errorMessage={getZodErrorMessage(t, "name", errors)}
         defaultValue={account?.name}
       />
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text">{t("currency")}</span>
-        </div>
-        <select className="select select-bordered w-full" name="currency" defaultValue={account?.currency}>
-          {currencies.map((code) => (
-            <option key={code} value={code}>
-              {t(code)}
-            </option>
-          ))}
-        </select>
-      </label>
       <AmountInput
         className="mt-5"
         placeholder={t("initialBalance")}

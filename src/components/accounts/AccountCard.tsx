@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { LuPencil, LuTrash } from "react-icons/lu";
 
-import { getModal, toCurrency } from "@/utils/functions";
+import { getModal } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
 import { useFormatCurrency } from "@/utils/hooks/useFormatCurrency";
 import { CONFIRM_MODAL, CREATE_ACCOUNT_MODAL } from "@/utils/ids";
@@ -33,7 +33,6 @@ export function AccountCard({ account }: AccountCardProps) {
     <div className="card w-full bg-base-100 shadow-xl">
       <div className="card-body">
         <div className="card-title">{account.name}</div>
-        <p>{t(toCurrency(account.currency))}</p>
         <p>{formatCurrency(account.initialBalance)}</p>
         <div className="card-actions justify-end [&_svg]:text-xl">
           <button className="btn" type="button" aria-label={t("edit")} onClick={onEdit}>

@@ -16,7 +16,6 @@ import {
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { useAccounts } from "@/repository/useAccounts";
 import { cn, getToday, getZodErrorMessage } from "@/utils/functions";
-import { useCurrencySymbol } from "@/utils/hooks";
 import { createExpense } from "@/utils/serverActions";
 import { ExpenseType, ExpenseTypes } from "@/utils/types";
 
@@ -30,7 +29,6 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
   const [type, setType] = useState<ExpenseType>(ExpenseTypes.enum.expense);
   const [{ message, errors }, formAction] = useFormState(createExpense, { message: "", errors: [] });
   const { data: accounts } = useAccounts();
-  const getCurrencySymbol = useCurrencySymbol();
   const buttonText = expense ? t("update") : t("create");
 
   return (
@@ -67,7 +65,7 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
         <select className="select select-bordered w-full" name="account" defaultValue={expense?.account || undefined}>
           {accounts?.map((account) => (
             <option key={account.id} value={account.id}>
-              {account.name} - {getCurrencySymbol(account.currency)}
+              {account.name}
             </option>
           ))}
         </select>

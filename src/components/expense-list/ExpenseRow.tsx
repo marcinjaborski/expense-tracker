@@ -60,7 +60,7 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
           "text-income": expense.type === ExpenseTypes.enum.income,
         })}
       >
-        {formatCurrency(expense.amount, expense.account?.currency)}
+        {formatCurrency(expense.amount)}
       </td>
       {menuVisible ? (
         <td className={cn("menu absolute left-0 top-full z-30 w-56 rounded-box bg-base-200")}>
