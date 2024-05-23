@@ -4,9 +4,8 @@ import { useState } from "react";
 import CurrencyInput from "react-currency-input-field";
 import { LuCoins } from "react-icons/lu";
 
-import { defaultCurrency } from "@/utils/constants";
+import { defaultCurrency, defaultLocale } from "@/utils/constants";
 import { cn } from "@/utils/functions";
-import { useLocale } from "@/utils/hooks";
 
 type AmountInputProps = {
   placeholder: string;
@@ -23,7 +22,6 @@ export function AmountInput({
   errorMessage = "",
   className = "",
 }: AmountInputProps) {
-  const locale = useLocale();
   const [value, setValue] = useState<number | "">(defaultValue || "");
 
   return (
@@ -35,7 +33,7 @@ export function AmountInput({
           placeholder={placeholder}
           defaultValue={defaultValue}
           decimalsLimit={2}
-          intlConfig={{ locale, currency: defaultCurrency }}
+          intlConfig={{ locale: defaultLocale, currency: defaultCurrency }}
           onValueChange={(newValue) => newValue && setValue(Number(newValue.replace(",", ".")))}
         />
         <LuCoins />

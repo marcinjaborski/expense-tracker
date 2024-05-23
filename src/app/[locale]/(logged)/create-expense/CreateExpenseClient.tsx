@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useFormState } from "react-dom";
-import { LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
+import { LuArrowDown, LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 
 import {
   AmountInput,
@@ -61,6 +61,25 @@ export function CreateExpenseClient({ expense }: CreateExpenseClientProps) {
         <CategoryCarousel type={type} defaultCategoryId={expense?.category?.id} />
         {message === "parsingError" ? (
           <span className="label-text-alt text-error">{getZodErrorMessage(t, "category", errors)}</span>
+        ) : null}
+        {type === ExpenseTypes.enum.transfer ? (
+          <>
+            <select
+              className="select select-bordered w-full"
+              name="from_account"
+              defaultValue={expense?.from_account || undefined}
+            >
+              {accounts?.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.name}
+                </option>
+              ))}
+            </select>
+            {message === "parsingError" ? (
+              <span className="label-text-alt text-error">{getZodErrorMessage(t, "from_account", errors)}</span>
+            ) : null}
+            <LuArrowDown />
+          </>
         ) : null}
         <select className="select select-bordered w-full" name="account" defaultValue={expense?.account || undefined}>
           {accounts?.map((account) => (

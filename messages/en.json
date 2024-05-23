@@ -38,7 +38,9 @@
     "createCategory": "Create new category",
     "name": "Name",
     "missingCategory": "Select category",
-    "nonEmptyName": "Name cannot be empty"
+    "nonEmptyName": "Name cannot be empty",
+    "missingFromAccount": "Select from which account to make transfer",
+    "theSameAccounts": "Cannot transfer money to the same account"
   },
   "ExpenseList": {
     "title": "List of transactions",

@@ -3,6 +3,7 @@
 import { useClickAway } from "@uidotdev/usehooks";
 import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
+import { LuArrowDown, LuArrowRight } from "react-icons/lu";
 import { useLongPress } from "use-long-press";
 
 import { DynamicIcon } from "@/components/shared";
@@ -50,9 +51,16 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
       <td>{expense.description}</td>
       <td className="flex items-center gap-2">
         <DynamicIcon icon={expense.category?.icon} />
-        {expense.category?.name}
-        <br />
-        {expense.account?.name}
+        <div className="flex flex-col gap-0.5">
+          <span>{expense.category?.name}</span>
+          {expense.type === ExpenseTypes.enum.transfer ? (
+            <span className="flex items-center">
+              {expense.from_account?.name}
+              <LuArrowDown />
+            </span>
+          ) : null}
+          <span>{expense.account?.name}</span>
+        </div>
       </td>
       <td
         className={cn("text-right", {

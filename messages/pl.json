@@ -38,7 +38,9 @@
     "createCategory": "Stwórz nową kategorię",
     "name": "Nazwa",
     "missingCategory": "Wybierz kategorię",
-    "nonEmptyName": "Nazwa nie może być pusta"
+    "nonEmptyName": "Nazwa nie może być pusta",
+    "missingFromAccount": "Wybierz z którego konta dokonać transfer",
+    "theSameAccounts": "Nie można wykonać transferu do tego samego konta"
   },
   "ExpenseList": {
     "title": "Lista transakcji",
