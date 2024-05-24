@@ -2,10 +2,11 @@ import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 
 import { localePrefix, locales, pathnames } from "@/config";
+import { defaultLocale } from "@/utils/constants";
 import { updateSession } from "@/utils/supabase/middleware";
 
 const handleI18nRouting = createIntlMiddleware({
-  defaultLocale: "en",
+  defaultLocale,
   locales,
   pathnames,
   localePrefix,
