@@ -4,8 +4,9 @@ import { ArcElement, Chart as ChartJS, Colors, Legend, Tooltip } from "chart.js"
 import React from "react";
 import { Pie } from "react-chartjs-2";
 
-import { useCategoriesChartData } from "@/utils/hooks";
 import { ExpenseType } from "@/utils/types";
+
+import { useCategoriesChartData } from "./hooks";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 

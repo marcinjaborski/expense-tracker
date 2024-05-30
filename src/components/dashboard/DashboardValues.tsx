@@ -1,15 +1,16 @@
 import { useTranslations } from "next-intl";
 
-import { ValueCard } from "@/components/dashboard/ValueCard";
-import { useAverageExpenses } from "@/utils/hooks/useAverageExpenses";
-import { useMonthExpenses } from "@/utils/hooks/useMonthExpenses";
-import { useTotalMoney } from "@/utils/hooks/useTotalMoney";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+
+import { useAverageExpenses, useMonthExpenses, useTotalMoney } from "./hooks";
+import { ValueCard } from "./ValueCard";
 
 export function DashboardValues() {
   const t = useTranslations("Dashboard");
+  const { endDate } = useDashboardContext();
   const { monthExpenses, monthIncomes } = useMonthExpenses();
   const averageExpenses = useAverageExpenses();
-  const totalMoney = useTotalMoney();
+  const totalMoney = useTotalMoney(endDate);
 
   return (
     <div className="grid grid-cols-2 gap-2">

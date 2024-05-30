@@ -10,7 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-import { useExpenseTypeChartData } from "./hooks";
+import { useTotalMoneyOverTimeChartData } from "./hooks";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -18,8 +18,8 @@ const options = {
   responsive: true,
 } as const;
 
-export function ExpenseTypeLineChart() {
-  const { data } = useExpenseTypeChartData();
+export function TotalMoneyOverTimeChart() {
+  const { data } = useTotalMoneyOverTimeChartData();
 
   return <Line options={options} data={data} />;
 }

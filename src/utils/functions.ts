@@ -37,3 +37,7 @@ export function toCurrency(value?: string): Currency {
 export function containsAll<T>(array: T[], values: T[]) {
   return values.every((value) => array.includes(value));
 }
+
+export function formatDate(date: string) {
+  return new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "2-digit" });
+}

@@ -1,12 +1,11 @@
 import { groupBy, sum, sumBy } from "lodash";
+import { DateTime } from "luxon";
 
-import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAccounts } from "@/repository/useAccounts";
 import { useTotalExpenses } from "@/repository/useTotalExpenses";
 
-export function useTotalMoney() {
+export function useTotalMoney(endDate: DateTime) {
   const { data: accounts } = useAccounts();
-  const { endDate } = useDashboardContext();
   const totalExpensesQuery = useTotalExpenses(endDate);
   if (totalExpensesQuery.isLoading) return NaN;
 

@@ -3,12 +3,13 @@
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 
-import { DashboardValues } from "@/components/dashboard/DashboardValues";
 import { ExpenseTypes } from "@/utils/types";
 
 import { CategoriesPieChart } from "./CategoriesPieChart";
 import { DashboardContext } from "./DashboardContext";
+import { DashboardValues } from "./DashboardValues";
 import { ExpenseTypeLineChart } from "./ExpenseTypeLineChart";
+import { TotalMoneyOverTimeChart } from "./TotalMoneyOverTimeChart";
 
 export function DashboardClient() {
   const contextValue = useMemo(
@@ -23,6 +24,7 @@ export function DashboardClient() {
     <DashboardContext.Provider value={contextValue}>
       <DashboardValues />
       <ExpenseTypeLineChart />
+      <TotalMoneyOverTimeChart />
       <CategoriesPieChart type={ExpenseTypes.enum.expense} />
     </DashboardContext.Provider>
   );
