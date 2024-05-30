@@ -1,3 +1,5 @@
+"use client";
+
 import { MutableRefObject, useEffect } from "react";
 
 export const useObserver = (observerTarget: MutableRefObject<Element | null>, onIntersect: () => void) => {

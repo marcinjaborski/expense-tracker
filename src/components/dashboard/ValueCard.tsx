@@ -15,9 +15,13 @@ export function ValueCard({ value, label }: ValueCardProps) {
     <div className="card bg-neutral">
       <div className="card-body justify-between">
         <div className="card-title justify-center text-center">{label}</div>
-        <div className={cn("text-center", { "text-expense": value < 0, "text-income": value > 0 })}>
-          {formatCurrency(Math.abs(value))}
-        </div>
+        {Number.isNaN(value) ? (
+          <div className="loading loading-spinner self-center" />
+        ) : (
+          <div className={cn("text-center", { "text-expense": value < 0, "text-income": value > 0 })}>
+            {formatCurrency(Math.abs(value))}
+          </div>
+        )}
       </div>
     </div>
   );

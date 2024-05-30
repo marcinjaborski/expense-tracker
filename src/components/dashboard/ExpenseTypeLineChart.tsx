@@ -1,5 +1,3 @@
-"use client";
-
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -10,10 +8,9 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { DateTime } from "luxon";
 import { Line } from "react-chartjs-2";
 
-import { useExpenseTypeChartData } from "@/repository/useExpenseTypeChartData";
+import { useExpenseTypeChartData } from "@/utils/hooks";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -22,9 +19,7 @@ const options = {
 } as const;
 
 export function ExpenseTypeLineChart() {
-  const startDate = DateTime.now().minus({ months: 5 }).startOf("month").toSQLDate();
-  const endDate = DateTime.now().toSQLDate();
-  const { data } = useExpenseTypeChartData(startDate, endDate);
+  const { data } = useExpenseTypeChartData();
 
   return <Line options={options} data={data} />;
 }

@@ -1,25 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
 import { groupBy, sortedUniq, sumBy } from "lodash";
 import { useTranslations } from "next-intl";
 import colors from "tailwindcss/colors";
 
-import { createClient } from "@/utils/supabase/client";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { useAmountByCategoryAndDate } from "@/repository/useAmountByCategoryAndDate";
 
-export function useExpenseTypeChartData(startDate: string, endDate: string) {
-  const supabase = createClient();
+export function useExpenseTypeChartData() {
   const t = useTranslations("Dashboard");
+  const { startDate, endDate } = useDashboardContext();
+  const query = useAmountByCategoryAndDate(startDate, endDate);
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "2-digit" });
-
-  const query = useQuery({
-    queryKey: ["expenseTypeChart", startDate, endDate],
-    queryFn: async () =>
-      supabase.rpc("get_amount_by_category_and_date", {
-        date_start: startDate,
-        date_end: endDate,
-      }),
-  });
 
   const { income, expense } = groupBy(query.data?.data, "type");
   const incomesByMonth = Object.values(groupBy(income, "month")).map((incomes) => sumBy(incomes, "sum"));
