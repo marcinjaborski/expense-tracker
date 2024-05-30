@@ -19,12 +19,11 @@ export function useTotalMoneyOverTimeChartData() {
   const expensesByMonth = Object.values(groupBy(expense, "month")).map((expenses) => sumBy(expenses, "sum"));
 
   const monthsDifference = Math.ceil(Interval.fromDateTimes(startDate, endDate).length("months"));
-  const totalMoneyOverMonths = Array.from({ length: monthsDifference }, () => startTotalMoney);
   let totalProfit = 0;
-  for (let i = 0; i < totalMoneyOverMonths.length; i++) {
-    totalProfit += incomesByMonth[i] - expensesByMonth[i];
-    totalMoneyOverMonths[i] += totalProfit;
-  }
+  const totalMoneyOverMonths = Array.from({ length: monthsDifference }, () => startTotalMoney).map((value, index) => {
+    totalProfit += incomesByMonth[index] - expensesByMonth[index];
+    return value + totalProfit;
+  });
 
   return {
     ...query,
