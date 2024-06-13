@@ -10,6 +10,7 @@ import { DashboardContext } from "./DashboardContext";
 import { DashboardValues } from "./DashboardValues";
 import { ExpenseTypeLineChart } from "./ExpenseTypeLineChart";
 import { TotalMoneyOverTimeChart } from "./TotalMoneyOverTimeChart";
+import { TotalMoneyPerAccountPieChart } from "./TotalMoneyPerAccountPieChart";
 
 export function DashboardClient() {
   const contextValue = useMemo(
@@ -26,6 +27,7 @@ export function DashboardClient() {
       <ExpenseTypeLineChart />
       <TotalMoneyOverTimeChart />
       <CategoriesPieChart type={ExpenseTypes.enum.expense} />
+      <TotalMoneyPerAccountPieChart />
     </DashboardContext.Provider>
   );
 }
