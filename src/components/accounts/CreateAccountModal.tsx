@@ -29,7 +29,11 @@ export function CreateAccountModal({ account = undefined, onReset }: CreateAccou
   }, [queryClient, onReset, message]);
 
   return (
-    <Modal id={CREATE_ACCOUNT_MODAL} title={t("createAccountTitle")} action={formAction}>
+    <Modal
+      id={CREATE_ACCOUNT_MODAL}
+      title={account ? t("updateAccountTitle") : t("createAccountTitle")}
+      action={formAction}
+    >
       <Fragment key={account?.id}>
         <input type="hidden" name="id" defaultValue={account?.id} />
         <LabeledInput

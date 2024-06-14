@@ -27,6 +27,7 @@ export function CreateDebtModal({ debt = undefined, onReset }: CreateDebtModalPr
     .filter(notUndefined);
   const [{ message, errors }, formAction] = useFormState(createDebt, { message: "", errors: [] });
   const [type, setType] = useState<"borrow" | "reimburse">("borrow");
+  const buttonText = debt ? t("edit") : t("create");
 
   useEffect(() => {
     if (message !== "OK") return;
@@ -36,7 +37,7 @@ export function CreateDebtModal({ debt = undefined, onReset }: CreateDebtModalPr
   }, [message, queryClient, onReset]);
 
   return (
-    <Modal id={CREATE_DEBT_MODAL} title={t("createDebt")} action={formAction}>
+    <Modal id={CREATE_DEBT_MODAL} title={debt ? t("updateDebt") : t("createDebt")} action={formAction}>
       <Fragment key={debt?.id}>
         <input type="hidden" name="id" defaultValue={debt?.id} />
         <input type="hidden" name="type" value={type} />
@@ -73,7 +74,7 @@ export function CreateDebtModal({ debt = undefined, onReset }: CreateDebtModalPr
         />
         <LabeledInput label={t("description")} name="description" defaultValue={debt?.description} />
         <div className="modal-action">
-          <SubmitButton aria-label={t("create")} value={t("create")} />
+          <SubmitButton aria-label={buttonText} value={buttonText} />
         </div>
         <ErrorToast message={tFeedback("error")} show={message === "serverError"} />
       </Fragment>

@@ -29,6 +29,7 @@ export function CreateCategoryModal({
   const queryClient = useQueryClient();
   const [{ message, errors }, formAction] = useFormState(createCategory, { message: "", errors: [] });
   const [type, setType] = useState<ExpenseType>(initialType);
+  const buttonText = category ? t("update") : t("create");
 
   useEffect(() => {
     setType(initialType);
@@ -42,7 +43,7 @@ export function CreateCategoryModal({
   }, [message, queryClient, onReset]);
 
   return (
-    <Modal id={CREATE_CATEGORY_MODAL} title={t("createCategory")} action={formAction}>
+    <Modal id={CREATE_CATEGORY_MODAL} title={category ? t("updateCategory") : t("createCategory")} action={formAction}>
       <Fragment key={category?.id}>
         <input type="hidden" name="id" defaultValue={category?.id} />
         <LabeledInput
@@ -90,7 +91,7 @@ export function CreateCategoryModal({
           />
         </div>
         <div className="modal-action">
-          <SubmitButton aria-label={t("create")} value={t("create")} />
+          <SubmitButton aria-label={buttonText} value={buttonText} />
         </div>
         <ErrorToast message={tFeedback("error")} show={message === "serverError"} />
       </Fragment>

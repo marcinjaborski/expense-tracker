@@ -1,3 +1,4 @@
+export * from "./useDebtsByPerson";
 export * from "./useFormatCurrency";
 export * from "./useLocale";
 export * from "./useMutateModals";
