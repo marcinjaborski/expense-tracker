@@ -34,18 +34,10 @@ export type ExpenseListSearchParams = {
   searchParams: Record<typeof QUERY | typeof SORT.name | typeof DIR.name, SearchParamType>;
 };
 
-export const DELETE_ID = "deleteId";
-
 export const UPDATE_ID = "updateId";
 
 export type UpdateSearchParams = {
   searchParams: {
     [UPDATE_ID]: SearchParamType;
-  };
-};
-
-export type DeleteSearchParams = {
-  searchParams: {
-    [DELETE_ID]: SearchParamType;
   };
 };

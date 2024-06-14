@@ -2,10 +2,7 @@ import { useTranslations } from "next-intl";
 import { LuPencil, LuTrash } from "react-icons/lu";
 
 import { DynamicIcon } from "@/components";
-import { getModal } from "@/utils/functions";
-import { useUpdateParams } from "@/utils/hooks";
-import { CONFIRM_MODAL, CREATE_CATEGORY_MODAL } from "@/utils/ids";
-import { DELETE_ID, UPDATE_ID } from "@/utils/searchParams";
+import { useModalContext } from "@/utils/context/ModalContext";
 import { Tables } from "@/utils/supabase/database.types";
 
 type CategoryCardProps = {
@@ -14,17 +11,7 @@ type CategoryCardProps = {
 
 export function CategoryCard({ category }: CategoryCardProps) {
   const t = useTranslations("Categories");
-  const updateParams = useUpdateParams();
-
-  const onEdit = () => {
-    getModal(CREATE_CATEGORY_MODAL).showModal();
-    updateParams(UPDATE_ID, String(category.id));
-  };
-
-  const onDelete = () => {
-    getModal(CONFIRM_MODAL).showModal();
-    updateParams(DELETE_ID, String(category.id));
-  };
+  const { showUpdateModal, showDeleteModal } = useModalContext();
 
   return (
     <div className="card w-full bg-base-100 shadow-xl">
@@ -32,10 +19,10 @@ export function CategoryCard({ category }: CategoryCardProps) {
         <DynamicIcon icon={category.icon} className="text-xl" />
         <div className="flex-1">{category.name}</div>
         <div className="flex gap-2 [&_svg]:text-xl">
-          <button className="btn" type="button" aria-label={t("edit")} onClick={onEdit}>
+          <button className="btn" type="button" aria-label={t("edit")} onClick={() => showUpdateModal(category.id)}>
             <LuPencil />
           </button>
-          <button className="btn" type="button" aria-label={t("delete")} onClick={onDelete}>
+          <button className="btn" type="button" aria-label={t("delete")} onClick={() => showDeleteModal(category.id)}>
             <LuTrash />
           </button>
         </div>

@@ -3,9 +3,8 @@ import { pick } from "lodash";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 
-import { CreateButton, PageHeader } from "@/components";
+import { PageHeader } from "@/components";
 import { prefetchCategories } from "@/repository/prefetchCategories";
-import { CREATE_CATEGORY_MODAL } from "@/utils/ids";
 import { LocaleParams } from "@/utils/params";
 
 import { CategoriesClient } from "./CategoriesClient";
@@ -22,7 +21,6 @@ export default async function Categories({ params: { locale } }: LocaleParams) {
         <div className="relative flex w-full flex-col items-center self-stretch">
           <PageHeader title={t("title")} />
           <CategoriesClient />
-          <CreateButton label={t("createCategory")} modal={CREATE_CATEGORY_MODAL} />
         </div>
       </HydrationBoundary>
     </NextIntlClientProvider>

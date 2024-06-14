@@ -5,14 +5,8 @@ import { useState } from "react";
 import { useFormState } from "react-dom";
 import { LuArrowDown, LuArrowRightLeft, LuMinus, LuPlus } from "react-icons/lu";
 
-import {
-  AmountInput,
-  CategoryCarousel,
-  CreateCategoryModal,
-  ErrorToast,
-  ExpenseSelect,
-  SubmitButton,
-} from "@/components";
+import { AmountInput, CategoryCarousel, ErrorToast, ExpenseSelect, SubmitButton } from "@/components";
+import { CreateCategoryModal } from "@/components/categories";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
 import { useAccounts } from "@/repository/useAccounts";
 import { cn, getToday, getZodErrorMessage } from "@/utils/functions";

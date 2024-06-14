@@ -1,33 +1,36 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-import { ConfirmModal } from "@/components";
-import { useRouter } from "@/navigation";
+import { ConfirmModal, CreateButton } from "@/components";
+import { AccountCard, CreateAccountModal } from "@/components/accounts";
+import { FormWrap } from "@/components/shared/FormWrap";
+import { useAccounts } from "@/repository/useAccounts";
 import { useDeleteAccount } from "@/repository/useDeleteAccount";
-import { useUpdateParams } from "@/utils/hooks";
-import { DELETE_ID } from "@/utils/searchParams";
+import { ModalContext } from "@/utils/context/ModalContext";
+import { useMutateModals } from "@/utils/hooks";
+import { CREATE_ACCOUNT_MODAL } from "@/utils/ids";
 
 export function AccountsClient() {
   const t = useTranslations("Accounts");
-  const searchParams = useSearchParams();
-  const updateParams = useUpdateParams();
-  const router = useRouter();
+  const { data: accounts } = useAccounts();
   const { mutate: deleteAccount } = useDeleteAccount();
+  const { contextValue, deleteId, updateId } = useMutateModals(CREATE_ACCOUNT_MODAL);
 
-  const onConfirmDelete = () => {
-    if (!searchParams.has(DELETE_ID)) return;
-    deleteAccount(Number(searchParams.get(DELETE_ID)));
-    router.refresh();
-    updateParams(DELETE_ID, null);
-  };
+  const accountToUpdate = accounts?.find((acc) => acc.id === updateId);
 
   return (
-    <ConfirmModal
-      title={t("confirmDelete")}
-      onConfirm={onConfirmDelete}
-      onCancel={() => updateParams(DELETE_ID, null)}
-    />
+    <ModalContext.Provider value={contextValue}>
+      <div className="mt-3 flex h-full w-full flex-col gap-4">
+        {!accounts?.length ? (
+          <div>{t("noAccounts")}</div>
+        ) : (
+          accounts.map((account) => <AccountCard key={account.id} account={account} />)
+        )}
+      </div>
+      <CreateButton label={t("createAccount")} createFn={contextValue.showCreateModal} />
+      <FormWrap<typeof CreateAccountModal> Form={CreateAccountModal} account={accountToUpdate} />
+      <ConfirmModal title={t("confirmDelete")} onConfirm={() => deleteId && deleteAccount(deleteId)} />
+    </ModalContext.Provider>
   );
 }

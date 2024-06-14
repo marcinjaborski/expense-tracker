@@ -7,10 +7,9 @@ import { Portal } from "./Portal";
 type ConfirmModalProps = {
   title: string;
   onConfirm: () => void;
-  onCancel: () => void;
 };
 
-export function ConfirmModal({ title, onConfirm, onCancel }: ConfirmModalProps) {
+export function ConfirmModal({ title, onConfirm }: ConfirmModalProps) {
   const t = useTranslations("Shared");
 
   return (
@@ -20,7 +19,7 @@ export function ConfirmModal({ title, onConfirm, onCancel }: ConfirmModalProps) 
           <h3 className="text-lg font-bold">{title}</h3>
           <form method="dialog">
             <div className="modal-action">
-              <button className="btn" type="submit" onClick={onCancel}>
+              <button className="btn" type="submit">
                 {t("cancel")}
               </button>
               <button className="btn" type="submit" onClick={onConfirm}>
@@ -30,9 +29,7 @@ export function ConfirmModal({ title, onConfirm, onCancel }: ConfirmModalProps) 
           </form>
         </div>
         <form method="dialog" className="modal-backdrop">
-          <button type="submit" onClick={onCancel}>
-            {t("cancel")}
-          </button>
+          <button type="submit">{t("cancel")}</button>
         </form>
       </dialog>
     </Portal>

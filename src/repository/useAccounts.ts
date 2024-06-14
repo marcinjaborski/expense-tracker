@@ -11,6 +11,6 @@ export const getAccountsClient = () => {
 
 export const useAccounts = () =>
   useQuery({
-    queryKey: ["categories"],
+    queryKey: ["accounts"],
     queryFn: async () => getAccountsClient().then((result) => result.data),
   });

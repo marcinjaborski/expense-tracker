@@ -16,10 +16,11 @@ import { ExpenseFiltersModal } from "@/components/expense-list";
 import { redirect } from "@/navigation";
 import { useDeleteExpense } from "@/repository/useDeleteExpense";
 import { useExpenses } from "@/repository/useExpenses";
+import { ModalContext } from "@/utils/context/ModalContext";
 import { notNull } from "@/utils/functions";
-import { useUpdateParams } from "@/utils/hooks";
+import { useMutateModals } from "@/utils/hooks";
 import { useObserver } from "@/utils/hooks/useObserver";
-import { DELETE_ID, parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
+import { parseDirOption, parseQuery, parseSortOption, SORT } from "@/utils/searchParams";
 import { ExpenseOption, ExpenseTypes } from "@/utils/types";
 
 type ExpenseListClientProps = {
@@ -29,7 +30,7 @@ type ExpenseListClientProps = {
 export function ExpenseListClient({ type }: ExpenseListClientProps) {
   const t = useTranslations("ExpenseList");
   const searchParams = useSearchParams();
-  const updateParams = useUpdateParams();
+  const { deleteId, contextValue } = useMutateModals("");
 
   const query = new URLSearchParams(searchParams).toString();
   const sort = parseSortOption(searchParams.get("sort"));
@@ -46,7 +47,7 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
   useObserver(observerTarget, fetchNextPage);
 
   return (
-    <>
+    <ModalContext.Provider value={contextValue}>
       <div className="flex gap-2">
         <div className="join flex flex-wrap gap-y-2">
           <ExpenseLink
@@ -92,7 +93,7 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
         </div>
         <ExpenseFiltersButton />
       </div>
-      <div className="w-[calc(100vw-0.75rem)] overflow-x-auto">
+      <div className="w-[calc(100vw-1rem)] flex-1 overflow-x-auto">
         {sort === SORT.date ? (
           <ExpenseTableWithPinnedRows expenses={expenses} dir={dir} />
         ) : (
@@ -101,11 +102,7 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
       </div>
       <div ref={observerTarget} />
       <ExpenseFiltersModal />
-      <ConfirmModal
-        title={t("confirmDelete")}
-        onConfirm={() => searchParams.has(DELETE_ID) && deleteExpense(Number(searchParams.get(DELETE_ID)))}
-        onCancel={() => updateParams(DELETE_ID, null)}
-      />
-    </>
+      <ConfirmModal title={t("confirmDelete")} onConfirm={() => deleteId && deleteExpense(deleteId)} />
+    </ModalContext.Provider>
   );
 }

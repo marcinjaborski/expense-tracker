@@ -9,11 +9,9 @@ import { useLongPress } from "use-long-press";
 import { DynamicIcon } from "@/components/shared";
 import { Link } from "@/navigation";
 import { ExpenseReturnType } from "@/repository/buildExpensesQuery";
-import { cn, getModal } from "@/utils/functions";
-import { useUpdateParams } from "@/utils/hooks";
+import { useModalContext } from "@/utils/context/ModalContext";
+import { cn } from "@/utils/functions";
 import { useFormatCurrency } from "@/utils/hooks/useFormatCurrency";
-import { CONFIRM_MODAL } from "@/utils/ids";
-import { DELETE_ID } from "@/utils/searchParams";
 import { ExpenseTypes } from "@/utils/types";
 
 type ExpenseCellProps = {
@@ -22,10 +20,10 @@ type ExpenseCellProps = {
 
 export function ExpenseRow({ expense }: ExpenseCellProps) {
   const t = useTranslations("ExpenseList");
-  const updateParams = useUpdateParams();
   const formatCurrency = useFormatCurrency();
   const [holding, setHolding] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
+  const { showDeleteModal } = useModalContext();
   const ref = useClickAway<HTMLTableRowElement>(() => {
     setMenuVisible(false);
   });
@@ -42,8 +40,7 @@ export function ExpenseRow({ expense }: ExpenseCellProps) {
 
   const onDelete = () => {
     setMenuVisible(false);
-    getModal(CONFIRM_MODAL).showModal();
-    updateParams(DELETE_ID, String(expense.id));
+    showDeleteModal(expense.id);
   };
 
   return (
