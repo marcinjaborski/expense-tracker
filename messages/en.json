@@ -62,6 +62,7 @@
   },
   "Other": {
     "title": "More",
+    "language": "Select language",
     "accounts": "Accounts",
     "categories": "Categories",
     "import": "Import",
