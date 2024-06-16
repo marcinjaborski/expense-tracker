@@ -5,7 +5,7 @@ import { ExpenseTypes } from "@/utils/types";
 
 export const prefetchCategories = async (queryClient: QueryClient) => {
   const supabase = createClient();
-  const { data: categories } = await supabase.from("categories").select();
+  const { data: categories } = await supabase.from("categories").select().order("favourite", { ascending: false });
   if (!categories) return;
 
   await Promise.all([

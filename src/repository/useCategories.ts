@@ -7,7 +7,7 @@ import { ExpenseOption, ExpenseType } from "@/utils/types";
 
 export const getCategoriesClient = (type: ExpenseType | null) => {
   const supabase = createClient();
-  let query = supabase.from("categories").select();
+  let query = supabase.from("categories").select().order("favourite", { ascending: false });
   if (type) query = query.eq("type", type);
   return query.throwOnError();
 };
