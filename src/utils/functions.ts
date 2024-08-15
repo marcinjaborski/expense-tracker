@@ -55,6 +55,8 @@ export function getSumByMonth(
       .map((interval) => interval.start!)
       .map((month) => [month.toSQLDate(), 0]),
   );
-  collection?.forEach((element) => (sums[element.month.split(" ")[0]] += element.sum));
+  collection?.forEach((element) => {
+    sums[element.month.split(" ")[0]] += element.sum;
+  });
   return Object.values(sums);
 }
