@@ -5,7 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LuMoveDown, LuSearch } from "react-icons/lu";
 
-import { Modal } from "@/components/shared";
+import { Modal, MultipleSelect } from "@/components/shared";
+import { useAccounts } from "@/repository/useAccounts";
+import { useCategories } from "@/repository/useCategories";
 import { cn } from "@/utils/functions";
 import { useUpdateParams } from "@/utils/hooks";
 import { EXPENSE_FILTERS_MODAL } from "@/utils/ids";
@@ -15,6 +17,8 @@ export function ExpenseFiltersModal() {
   const t = useTranslations("ExpenseList");
   const searchParams = useSearchParams();
   const updateParams = useUpdateParams();
+  const { data: accounts } = useAccounts();
+  const { data: categories } = useCategories();
 
   const debouncedUpdateQ = debounce((q: string) => updateParams("q", q), 1000);
 
@@ -30,6 +34,26 @@ export function ExpenseFiltersModal() {
         />
         <LuSearch />
       </label>
+      <MultipleSelect
+        title={t("accounts")}
+        options={accounts?.map(({ name, id }) => ({ label: name, value: id }))}
+        onChange={(newValue) =>
+          updateParams(
+            "accounts",
+            newValue.map(({ value }) => String(value)),
+          )
+        }
+      />
+      <MultipleSelect
+        title={t("categories")}
+        options={categories?.map(({ name, id }) => ({ label: name, value: id }))}
+        onChange={(newValue) =>
+          updateParams(
+            "categories",
+            newValue.map(({ value }) => String(value)),
+          )
+        }
+      />
       <div className="flex items-end gap-2">
         <label className="form-control w-full">
           <div className="label">

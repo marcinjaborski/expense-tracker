@@ -36,8 +36,10 @@ export function ExpenseListClient({ type }: ExpenseListClientProps) {
   const sort = parseSortOption(searchParams.get("sort"));
   const dir = parseDirOption(searchParams.get("dir"));
   const q = parseQuery(searchParams.get("q"));
+  const accounts = searchParams.getAll("accounts").map((id) => Number(id));
+  const categories = searchParams.getAll("categories").map((id) => Number(id));
 
-  const { data, error, fetchNextPage } = useExpenses(type, q, sort, dir);
+  const { data, error, fetchNextPage } = useExpenses(type, q, sort, dir, accounts, categories);
   const { mutate: deleteExpense } = useDeleteExpense();
 
   if (error) redirect("/error");

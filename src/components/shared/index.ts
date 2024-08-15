@@ -5,6 +5,7 @@ export * from "./DynamicIcon";
 export * from "./ErrorToast";
 export * from "./LabeledInput";
 export * from "./Modal";
+export * from "./MultipleSelect";
 export * from "./PageHeader";
 export * from "./Portal";
 export * from "./SubmitButton";

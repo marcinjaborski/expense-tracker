@@ -18,10 +18,14 @@ export const buildExpensesQuery = (
   q: string,
   sort: SortOption,
   dir: DirOption,
+  accounts: number[],
+  categories: number[],
 ) => {
   let query = supabase.from("expenses").select("*, category (*), account (*), from_account (*)");
   if (type !== "all") query = query.eq("type", type);
   if (q !== "") query = query.ilike("description", `%${q}%`);
+  if (accounts.length) query = query.in("account", accounts);
+  if (categories.length) query = query.in("category", categories);
   query = query.order(sort, { ascending: dir === DIR.asc });
   query = query.range(page * EXPENSE_PAGE_SIZE, (page + 1) * EXPENSE_PAGE_SIZE - 1);
   return query.returns<ExpenseReturnType[]>();
