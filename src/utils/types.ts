@@ -15,3 +15,5 @@ export type DatabaseTable = keyof Database["public"]["Tables"];
 export function isDatabaseTable(value: string | null): value is DatabaseTable {
   return value !== null && ["expenses", "accounts", "categories", "debts"].includes(value);
 }
+
+export type Functions = Database["public"]["Functions"];
