@@ -40,7 +40,7 @@ export function DebtsClient() {
     await supabase
       .from("debts")
       .insert({ person, amount, description: t("settleAll", { date: DateTime.now().toLocaleString() }) });
-    await supabase.from("debts").update({ settled: true }).eq("settled", false);
+    await supabase.from("debts").update({ settled: true }).eq("settled", false).eq("person", person);
     await queryClient.invalidateQueries({ queryKey: ["debts"] });
     setShowSettled(true);
   };
