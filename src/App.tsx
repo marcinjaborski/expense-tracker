@@ -4,6 +4,7 @@ import TopBar from "@src/components/organisms/TopBar";
 import { Route, Routes } from "react-router-dom";
 import Navigation from "./components/organisms/Navigation";
 import routes from "./utils/routes";
+import CreateExpense from "@src/components/pages/CreateExpense";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Box sx={{ flex: 1 }}>
           <Routes>
             <Route path={routes.dashboard} element={<></>} />
-            <Route path={routes.createExpense} element={<></>} />
+            <Route path={routes.createExpense} element={<CreateExpense />} />
             <Route path={routes.expenses} element={<></>} />
             <Route path={routes.more} element={<></>} />
           </Routes>
