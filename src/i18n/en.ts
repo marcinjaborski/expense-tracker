@@ -1,17 +1,18 @@
 export default {
   TopBar: {
     title: {
-      dashboard: "Dashboard",
-      login: "Login",
-      register: "Register",
-      createExpense: "/createExpense",
-      expenses: "/expenses",
-      more: "/more",
-      accounts: "/accounts",
-      categories: "/categories",
-      debts: "/debts",
-      import: "/import",
-      export: "/export",
+      default: "Expense tracker",
+      "/": "Dashboard",
+      "/login": "Login",
+      "/register": "Register",
+      "/createExpense": "Create Expense",
+      "/expenses": "Expenses",
+      "/more": "More",
+      "/accounts": "Accounts",
+      "/categories": "Categories",
+      "/debts": "Debts",
+      "/import": "Import",
+      "/export": "Export",
     },
   },
   Login: {
@@ -29,6 +30,8 @@ export default {
     passwordMinLength: "Password must have at least 8 characters",
     invalidCredentials: "Invalid email or password",
     passwordsMismatch: "Passwords do not match",
+    emailRequired: "Email is required",
+    passwordRequired: "Password is required",
   },
   Dashboard: {
     title: "Dashboard",

@@ -1,6 +1,22 @@
 import { Resource } from "./i18n.ts";
 
 const resource: Resource = {
+  TopBar: {
+    title: {
+      default: "Tracker wydatków",
+      "/": "Pulpit",
+      "/login": "Logowanie",
+      "/register": "Rejestracja",
+      "/createExpense": "Stwórz wydatek",
+      "/expenses": "Wydatki",
+      "/more": "Więcej",
+      "/accounts": "Konta",
+      "/categories": "Kategorie",
+      "/debts": "Długi",
+      "/import": "Import",
+      "/export": "Export",
+    },
+  },
   Login: {
     login: "Logowanie",
     register: "Rejestracja",
@@ -16,6 +32,8 @@ const resource: Resource = {
     passwordMinLength: "Hasło musi zawierać conajmiej 8 znaków",
     invalidCredentials: "Niepoprawny email lub hasło",
     passwordsMismatch: "Hasła się nie zgadzają",
+    emailRequired: "Email jest wymagany",
+    passwordRequired: "Hasło jest wymagane",
   },
   Dashboard: {
     title: "Pulpit",

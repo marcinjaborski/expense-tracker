@@ -5,6 +5,8 @@ import { Route, Routes } from "react-router-dom";
 import Navigation from "./components/organisms/Navigation";
 import routes from "./utils/routes";
 import CreateExpense from "@src/components/pages/CreateExpense";
+import Login from "@src/components/pages/Login";
+import Register from "@src/components/pages/Register";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <TopBar />
         <Box sx={{ flex: 1 }}>
           <Routes>
+            <Route path={routes.login} element={<Login />} />
+            <Route path={routes.register} element={<Register />} />
             <Route path={routes.dashboard} element={<></>} />
             <Route path={routes.createExpense} element={<CreateExpense />} />
             <Route path={routes.expenses} element={<></>} />
