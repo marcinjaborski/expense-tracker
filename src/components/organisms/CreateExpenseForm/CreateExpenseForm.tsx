@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { FormControl, InputLabel, MenuItem, Select, ToggleButtonGroup } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { Button, InputAdornment, MenuItem, Stack, TextField, ToggleButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -7,28 +7,140 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import ToggleButtonWithIcon from "@src/components/molecules/ToggleButtonWithIcon";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
+import useCategories from "@src/repository/useCategories.ts";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import useCreateExpense from "@src/repository/useCreateExpense.ts";
+import useUpdateExpense from "@src/repository/useUpdateExpense.ts";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { ExpenseType } from "@src/utils/types.ts";
+import MyCurrencyInput from "../../atoms/MyCurrencyInput";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
-  const { register, handleSubmit } = useForm<CreateExpenseFormData>();
-  const { data: accounts } = useAccounts();
+  const { id } = useParams();
+  const [selectedType, setSelectedType] = useState<ExpenseType>("expense");
 
-  const onSubmit = () => {};
+  const { data: categories } = useCategories();
+  const { data: accounts } = useAccounts();
+  const filteredCategories = categories.filter(({ type }) => type === selectedType);
+  const {
+    register,
+    control,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<CreateExpenseFormData>({
+    defaultValues: {
+      type: "expense",
+      account: accounts.at(0)?.id,
+      category: filteredCategories.at(0)?.id,
+    },
+  });
+
+  const formType = watch("type");
+
+  useEffect(() => {
+    setSelectedType(formType);
+  }, [formType]);
+
+  const { mutate: createExpense } = useCreateExpense();
+  const { mutate: updateExpense } = useUpdateExpense();
+
+  const onSubmit = (data: CreateExpenseFormData) => {
+    console.log(data);
+    // if (id) updateExpense(data);
+    // else createExpense(data);
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <ToggleButtonGroup>
-        <ToggleButtonWithIcon text={t("income")} icon={<AddIcon />} value="income" />
-        <ToggleButtonWithIcon text={t("expense")} icon={<RemoveIcon />} value="expense" />
-        <ToggleButtonWithIcon text={t("transfer")} icon={<SwapHorizIcon />} value="transfer" />
-      </ToggleButtonGroup>
-      <FormControl fullWidth>
-        <InputLabel>{t("account")}</InputLabel>
-        <Select label={t("account")} {...register("account")}>
-          {accounts?.map((account) => <MenuItem value={account.id}>{account.name}</MenuItem>)}
-        </Select>
-      </FormControl>
-    </form>
+    <Stack
+      sx={{ p: 3, alignItems: "center", justifyContent: "center", height: "100%", gap: 2 }}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <Controller
+        control={control}
+        name="type"
+        render={({ field: { value, onChange } }) => (
+          <ToggleButtonGroup
+            exclusive
+            value={value}
+            onChange={(_, newValue) => newValue !== null && onChange(newValue)}
+          >
+            <ToggleButtonWithIcon text={t("income")} icon={<AddIcon />} value="income" />
+            <ToggleButtonWithIcon text={t("expense")} icon={<RemoveIcon />} value="expense" />
+            <ToggleButtonWithIcon text={t("transfer")} icon={<SwapHorizIcon />} value="transfer" />
+          </ToggleButtonGroup>
+        )}
+      />
+      <Controller
+        control={control}
+        name="category"
+        rules={{
+          required: true,
+          validate: (value) => !!filteredCategories.find((category) => category.id === value),
+        }}
+        render={({ field: { value, onChange } }) => (
+          <TextField
+            select
+            fullWidth
+            label={t("category")}
+            value={value}
+            error={!!errors?.category}
+            onChange={(event) => onChange(event.target.value)}
+          >
+            {filteredCategories.map((category) => (
+              <MenuItem value={category.id} key={category.id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="account"
+        rules={{ required: true }}
+        render={({ field: { value, onChange } }) => (
+          <TextField
+            select
+            fullWidth
+            label={t("account")}
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+          >
+            {accounts.map((account) => (
+              <MenuItem value={account.id} key={account.id}>
+                {account.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        )}
+      />
+
+      <TextField
+        fullWidth
+        label={t("amount")}
+        slotProps={{
+          input: {
+            inputComponent: MyCurrencyInput,
+            endAdornment: (
+              <InputAdornment position="end">
+                <AttachMoneyIcon />
+              </InputAdornment>
+            ),
+          },
+        }}
+        {...register("amount", { required: true, setValueAs: parseFloat })}
+      />
+      <TextField sx={{ colorScheme: "dark" }} type="date" {...register("date", { required: true })} />
+      <TextField multiline rows={3} fullWidth label={t("description")} {...register("description")} />
+      <Button type="submit" variant="contained">
+        {t("create")}
+      </Button>
+    </Stack>
   );
 }
 

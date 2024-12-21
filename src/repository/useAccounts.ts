@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import supabase from "@src/utils/supabase.ts";
 
 function useAccounts() {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["accounts"],
     queryFn: async () =>
       await supabase
@@ -10,7 +10,10 @@ function useAccounts() {
         .select()
         .order("favourite", { ascending: false })
         .throwOnError()
-        .then((result) => result.data),
+        .then((result) => {
+          if (result.error) throw result.error;
+          return result.data;
+        }),
   });
 }
 

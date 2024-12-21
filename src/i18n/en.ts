@@ -53,6 +53,7 @@ export default {
     expense: "Expense",
     transfer: "Transfer",
     close: "Close",
+    category: "Category",
     createCategory: "Create new category",
     updateCategory: "Update category",
     name: "Name",

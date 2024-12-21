@@ -19,7 +19,7 @@ function App() {
             <Route path={routes.login} element={<Login />} />
             <Route path={routes.register} element={<Register />} />
             <Route path={routes.dashboard} element={<></>} />
-            <Route path={routes.createExpense} element={<CreateExpense />} />
+            <Route path={`${routes.createExpense}/:id?`} element={<CreateExpense />} />
             <Route path={routes.expenses} element={<></>} />
             <Route path={routes.more} element={<></>} />
           </Routes>

@@ -1,3 +1,5 @@
+import { ExpenseType } from "@src/utils/types.ts";
+
 export type CreateExpenseFormData = {
   account: number;
   amount: number;
@@ -5,5 +7,5 @@ export type CreateExpenseFormData = {
   date: string;
   description: string;
   from_account: number;
-  type: string;
+  type: ExpenseType;
 };
