@@ -21,12 +21,14 @@ import useExpenses from "@src/repository/useExpenses.ts";
 import { groupBy } from "lodash";
 import Amount from "@src/components/atoms/Amount";
 import useObserver from "@src/utils/hooks/useObserver.ts";
+import ExpenseFilterDialog from "@src/components/organisms/ExpenseFilterDialog";
+import { useAppSelector } from "@src/store/store.ts";
 
 function ExpenseList() {
   const { t } = useTranslation("ExpenseList");
   const [type, setType] = useState<ExpenseOption>("expense");
-  const dir = "desc";
-  const { data: expenses, fetchNextPage } = useExpenses({ type, sort: "date", dir });
+  const { q, categories, accounts, dir, sort } = useAppSelector((state) => state.expenseFilter);
+  const { data: expenses, fetchNextPage } = useExpenses({ type, q, accounts, categories, sort, dir });
   const observerTarget = useRef(null);
   useObserver(observerTarget, fetchNextPage);
 
@@ -79,6 +81,7 @@ function ExpenseList() {
           </TableBody>
         </Table>
       </TableContainer>
+      <ExpenseFilterDialog />
     </Stack>
   );
 }
