@@ -8,6 +8,7 @@ import CreateExpense from "@src/components/pages/CreateExpense";
 import Login from "@src/components/pages/Login";
 import Register from "@src/components/pages/Register";
 import ExpenseList from "@src/components/pages/ExpenseList";
+import More from "@src/components/pages/More";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
             <Route path={routes.dashboard} element={<></>} />
             <Route path={`${routes.createExpense}/:id?`} element={<CreateExpense />} />
             <Route path={routes.expenses} element={<ExpenseList />} />
-            <Route path={routes.more} element={<></>} />
+            <Route path={routes.more} element={<More />} />
           </Routes>
         </Box>
         <Navigation />
