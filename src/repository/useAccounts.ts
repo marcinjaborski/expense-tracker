@@ -8,7 +8,6 @@ function useAccounts() {
       await supabase
         .from("accounts")
         .select()
-        .order("favourite", { ascending: false })
         .throwOnError()
         .then((result) => {
           if (result.error) throw result.error;
