@@ -9,7 +9,8 @@ function useUpsertAccounts() {
     mutationFn: async (accounts: TablesUpdate<"accounts">[]) => supabase.from("accounts").upsert(accounts),
     onMutate: async (newAccounts) => {
       await queryClient.cancelQueries({ queryKey: ["accounts"] });
-      const previousAccounts = queryClient.getQueryData(["accounts"]);
+      const previousAccounts = queryClient.getQueryData(["accounts"]) as TablesUpdate<"accounts">[];
+      if (newAccounts.length === 1) newAccounts = [...previousAccounts, { ...newAccounts[0], id: Math.random() }];
       queryClient.setQueryData(["accounts"], newAccounts);
       return { previousAccounts, newAccounts };
     },

@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button, InputAdornment, MenuItem, Stack, TextField, ToggleButtonGroup } from "@mui/material";
+import { Button, MenuItem, Stack, TextField, ToggleButtonGroup } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -8,13 +8,12 @@ import ToggleButtonWithIcon from "@src/components/molecules/ToggleButtonWithIcon
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import useCreateExpense from "@src/repository/useCreateExpense.ts";
 import useUpdateExpense from "@src/repository/useUpdateExpense.ts";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { ExpenseType } from "@src/utils/types.ts";
-import MyCurrencyInput from "../../atoms/MyCurrencyInput";
+import AmountTextField from "@src/components/atoms/AmountTextField";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
@@ -120,19 +119,9 @@ function CreateExpenseForm() {
         )}
       />
 
-      <TextField
+      <AmountTextField
         fullWidth
         label={t("amount")}
-        slotProps={{
-          input: {
-            inputComponent: MyCurrencyInput,
-            endAdornment: (
-              <InputAdornment position="end">
-                <AttachMoneyIcon />
-              </InputAdornment>
-            ),
-          },
-        }}
         {...register("amount", { required: true, setValueAs: parseFloat })}
       />
       <TextField sx={{ colorScheme: "dark" }} type="date" {...register("date", { required: true })} />

@@ -6,6 +6,7 @@ import useUpsertAccounts from "@src/repository/useUpsertAccounts.ts";
 import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AccountDialog from "@src/components/organisms/AccountDialog";
 
 function Accounts() {
   const { data: accounts } = useAccounts();
@@ -20,26 +21,29 @@ function Accounts() {
   };
 
   return (
-    <DraggableList
-      items={accounts.map((account) => ({
-        id: account.id,
-        primary: account.name,
-        listItemProps: {
-          sx: { pr: 10 },
-          secondaryAction: (
-            <Box>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-              <IconButton edge="end">
-                <DeleteIcon />
-              </IconButton>
-            </Box>
-          ),
-        },
-      }))}
-      onDragEnd={onDragEnd}
-    />
+    <>
+      <DraggableList
+        items={accounts.map((account) => ({
+          id: account.id,
+          primary: account.name,
+          listItemProps: {
+            sx: { pr: 10 },
+            secondaryAction: (
+              <Box>
+                <IconButton>
+                  <EditIcon />
+                </IconButton>
+                <IconButton edge="end">
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+            ),
+          },
+        }))}
+        onDragEnd={onDragEnd}
+      />
+      <AccountDialog />
+    </>
   );
 }
 
