@@ -7,10 +7,27 @@ import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AccountDialog from "@src/components/organisms/AccountDialog";
+import { useState } from "react";
+import { Tables } from "@src/utils/database.types.ts";
+import { useAppDispatch } from "@src/store/store.ts";
+import { setAccountDialogOpen } from "@src/store/DialogSlice.ts";
+import useDeleteAccount from "@src/repository/useDeleteAccount.ts";
+import ConfirmDialog from "@src/components/organisms/ConfirmDialog";
+import { useTranslation } from "react-i18next";
 
 function Accounts() {
+  const { t } = useTranslation("Accounts");
+  const dispatch = useAppDispatch();
   const { data: accounts } = useAccounts();
   const { mutate: upsertAccounts } = useUpsertAccounts();
+  const { mutate: deleteAccount } = useDeleteAccount();
+  const [accountToEdit, setAccountToEdit] = useState<Tables<"accounts"> | null>(null);
+  const [deleteAccountId, setDeleteAccountId] = useState<number | null>(null);
+
+  const onConfirmDelete = () => {
+    if (deleteAccountId) deleteAccount(deleteAccountId);
+    setDeleteAccountId(null);
+  };
 
   const onDragEnd = async ({ active, over }: DragEndEvent) => {
     if (!over || active.id === over.id) return;
@@ -30,10 +47,15 @@ function Accounts() {
             sx: { pr: 10 },
             secondaryAction: (
               <Box>
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    setAccountToEdit(account);
+                    dispatch(setAccountDialogOpen(true));
+                  }}
+                >
                   <EditIcon />
                 </IconButton>
-                <IconButton edge="end">
+                <IconButton edge="end" onClick={() => setDeleteAccountId(account.id)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>
@@ -42,7 +64,13 @@ function Accounts() {
         }))}
         onDragEnd={onDragEnd}
       />
-      <AccountDialog />
+      <AccountDialog account={accountToEdit} />
+      <ConfirmDialog
+        title={t("confirmDelete")}
+        open={deleteAccountId !== null}
+        onCancel={() => setDeleteAccountId(null)}
+        onConfirm={onConfirmDelete}
+      />
     </>
   );
 }

@@ -17,8 +17,8 @@ function DraggableListItem({ item }: Props) {
   };
 
   return (
-    <ListItem ref={setNodeRef} {...attributes} {...listeners} style={style} {...item.listItemProps}>
-      <ListItemIcon>
+    <ListItem ref={setNodeRef} style={style} {...item.listItemProps}>
+      <ListItemIcon {...attributes} {...listeners}>
         <DragIndicatorIcon />
       </ListItemIcon>
       <ListItemText primary={item.primary} secondary={item.secondary} />

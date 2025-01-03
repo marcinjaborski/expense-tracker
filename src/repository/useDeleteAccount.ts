@@ -1,17 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TablesUpdate } from "@src/utils/database.types.ts";
 import supabase from "@src/utils/supabase.ts";
-import { updateArray } from "@src/utils/functions.ts";
+import { TablesUpdate } from "@src/utils/database.types.ts";
 
-function useUpsertAccounts() {
+function useDeleteAccount() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (accounts: TablesUpdate<"accounts">[]) => supabase.from("accounts").upsert(accounts),
-    onMutate: async (newAccounts) => {
+    mutationFn: async (id: number) => supabase.from("accounts").delete().eq("id", id),
+    onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ["accounts"] });
       const previousAccounts = queryClient.getQueryData(["accounts"]) as TablesUpdate<"accounts">[];
-      const nextAccounts = updateArray(previousAccounts, newAccounts);
+      const nextAccounts = previousAccounts.filter((account) => account.id !== id);
       queryClient.setQueryData(["accounts"], nextAccounts);
       return { previousAccounts, nextAccounts };
     },
@@ -22,4 +21,4 @@ function useUpsertAccounts() {
   });
 }
 
-export default useUpsertAccounts;
+export default useDeleteAccount;

@@ -5,26 +5,40 @@ import { useTranslation } from "react-i18next";
 import useUpsertAccounts from "@src/repository/useUpsertAccounts.ts";
 import { useForm } from "react-hook-form";
 import AmountTextField from "@src/components/atoms/AmountTextField";
-import { useState } from "react";
+import { Tables } from "@src/utils/database.types.ts";
+import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
+import { setAccountDialogOpen } from "@src/store/DialogSlice.ts";
+import { useEffect } from "react";
 
 type FormData = {
   name: string;
   initialBalance: number;
 };
 
-function AccountDialog() {
+type Props = {
+  account: Tables<"accounts"> | null;
+};
+
+function AccountDialog({ account }: Props) {
   const { t } = useTranslation("Accounts");
-  const { register, handleSubmit } = useForm<FormData>({});
+  const dispatch = useAppDispatch();
+  const { accountDialogOpen } = useAppSelector((state) => state.dialog);
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const { mutate: upsertAccounts } = useUpsertAccounts();
-  const [closeDialog, setCloseDialog] = useState(() => () => {});
+
+  useEffect(() => {
+    if (account) reset({ name: account.name, initialBalance: account.initialBalance });
+  }, [reset, account]);
 
   const onSubmit = (data: FormData) => {
-    upsertAccounts([data]);
-    closeDialog();
+    upsertAccounts(account?.id ? [{ ...data, id: account.id }] : [data]);
+    dispatch(setAccountDialogOpen(false));
   };
 
   return (
     <ActionDialog
+      open={accountDialogOpen}
+      setOpen={(open) => dispatch(setAccountDialogOpen(open))}
       fabProps={{
         children: <AddIcon />,
         color: "primary",
@@ -49,7 +63,6 @@ function AccountDialog() {
           onSubmit: handleSubmit(onSubmit),
         },
       }}
-      setCloseFunction={setCloseDialog}
     />
   );
 }

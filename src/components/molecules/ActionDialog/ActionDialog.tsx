@@ -1,8 +1,10 @@
-import { ComponentProps, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 type Props = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
   fabProps: ComponentProps<typeof Fab>;
   title: string;
   content: ReactNode;
@@ -10,10 +12,11 @@ type Props = {
   submitText: string;
   submitButton?: boolean;
   dialogProps?: Omit<ComponentProps<typeof Dialog>, "open">;
-  setCloseFunction?: Dispatch<SetStateAction<() => void>>;
 };
 
 function ActionDialog({
+  open,
+  setOpen,
   fabProps,
   title,
   content,
@@ -21,14 +24,8 @@ function ActionDialog({
   submitText,
   submitButton = true,
   dialogProps,
-  setCloseFunction,
 }: Props) {
   const { t } = useTranslation("Shared");
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (setCloseFunction) setCloseFunction(() => () => setOpen(false));
-  }, [setCloseFunction]);
 
   return (
     <>
