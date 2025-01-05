@@ -10,6 +10,7 @@ import Register from "@src/components/pages/Register";
 import ExpenseList from "@src/components/pages/ExpenseList";
 import More from "@src/components/pages/More";
 import Accounts from "@src/components/pages/Accounts";
+import Categories from "@src/components/pages/Categories";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path={routes.expenses} element={<ExpenseList />} />
             <Route path={routes.more} element={<More />} />
             <Route path={routes.accounts} element={<Accounts />} />
+            <Route path={routes.categories} element={<Categories />} />
           </Routes>
         </Box>
         <Navigation />

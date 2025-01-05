@@ -17,9 +17,10 @@ type FormData = {
 
 type Props = {
   account: Tables<"accounts"> | null;
+  resetAccount: () => void;
 };
 
-function AccountDialog({ account }: Props) {
+function AccountDialog({ account, resetAccount }: Props) {
   const { t } = useTranslation("Accounts");
   const dispatch = useAppDispatch();
   const { accountDialogOpen } = useAppSelector((state) => state.dialog);
@@ -28,6 +29,7 @@ function AccountDialog({ account }: Props) {
 
   useEffect(() => {
     if (account) reset({ name: account.name, initialBalance: account.initialBalance });
+    else reset({ name: "", initialBalance: 0 });
   }, [reset, account]);
 
   const onSubmit = (data: FormData) => {
@@ -38,7 +40,10 @@ function AccountDialog({ account }: Props) {
   return (
     <ActionDialog
       open={accountDialogOpen}
-      setOpen={(open) => dispatch(setAccountDialogOpen(open))}
+      setOpen={(open) => {
+        if (open) resetAccount();
+        dispatch(setAccountDialogOpen(open));
+      }}
       fabProps={{
         children: <AddIcon />,
         color: "primary",

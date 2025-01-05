@@ -64,7 +64,7 @@ function Accounts() {
         }))}
         onDragEnd={onDragEnd}
       />
-      <AccountDialog account={accountToEdit} />
+      <AccountDialog account={accountToEdit} resetAccount={() => setAccountToEdit(null)} />
       <ConfirmDialog
         title={t("confirmDelete")}
         open={deleteAccountId !== null}

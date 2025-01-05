@@ -1,10 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button, MenuItem, Stack, TextField, ToggleButtonGroup } from "@mui/material";
+import { Button, MenuItem, Stack, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import ToggleButtonWithIcon from "@src/components/molecules/ToggleButtonWithIcon";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
@@ -14,6 +10,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { ExpenseType } from "@src/utils/types.ts";
 import AmountTextField from "@src/components/atoms/AmountTextField";
+import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
@@ -61,17 +58,7 @@ function CreateExpenseForm() {
       <Controller
         control={control}
         name="type"
-        render={({ field: { value, onChange } }) => (
-          <ToggleButtonGroup
-            exclusive
-            value={value}
-            onChange={(_, newValue) => newValue !== null && onChange(newValue)}
-          >
-            <ToggleButtonWithIcon text={t("income")} icon={<AddIcon />} value="income" />
-            <ToggleButtonWithIcon text={t("expense")} icon={<RemoveIcon />} value="expense" />
-            <ToggleButtonWithIcon text={t("transfer")} icon={<SwapHorizIcon />} value="transfer" />
-          </ToggleButtonGroup>
-        )}
+        render={({ field: { value, onChange } }) => <ExpenseTypeSelect value={value} onChange={onChange} />}
       />
       <Controller
         control={control}
