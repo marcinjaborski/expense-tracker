@@ -11,6 +11,7 @@ import ExpenseList from "@src/components/pages/ExpenseList";
 import More from "@src/components/pages/More";
 import Accounts from "@src/components/pages/Accounts";
 import Categories from "@src/components/pages/Categories";
+import Debts from "@src/components/pages/Debts";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path={routes.more} element={<More />} />
             <Route path={routes.accounts} element={<Accounts />} />
             <Route path={routes.categories} element={<Categories />} />
+            <Route path={routes.debts} element={<Debts />} />
           </Routes>
         </Box>
         <Navigation />

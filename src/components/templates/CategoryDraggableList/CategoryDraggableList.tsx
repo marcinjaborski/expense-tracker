@@ -5,9 +5,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DraggableList from "@src/components/organisms/DraggableList";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import useUpsertCategories from "@src/repository/useUpsertCategories.ts";
 import { useAppDispatch } from "@src/store/store.ts";
 import { Tables } from "@src/utils/database.types.ts";
+import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 
 type Props = {
   categories: Tables<"categories">[];
@@ -17,7 +17,7 @@ type Props = {
 
 function CategoryDraggableList({ categories, setCategoryToEdit, setCategoryDeleteId }: Props) {
   const dispatch = useAppDispatch();
-  const { mutate: upsertCategories } = useUpsertCategories();
+  const { mutate: upsertCategories } = useOptimisticUpsert("categories");
 
   const onDragEnd = async ({ active, over }: DragEndEvent) => {
     if (!over || active.id === over.id) return;

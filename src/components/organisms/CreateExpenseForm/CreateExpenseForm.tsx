@@ -4,13 +4,12 @@ import { useTranslation } from "react-i18next";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
-import useCreateExpense from "@src/repository/useCreateExpense.ts";
-import useUpdateExpense from "@src/repository/useUpdateExpense.ts";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { ExpenseType } from "@src/utils/types.ts";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
+import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
@@ -40,13 +39,10 @@ function CreateExpenseForm() {
     setSelectedType(formType);
   }, [formType]);
 
-  const { mutate: createExpense } = useCreateExpense();
-  const { mutate: updateExpense } = useUpdateExpense();
+  const { mutate: upsertExpenses } = useOptimisticUpsert("expenses");
 
   const onSubmit = (data: CreateExpenseFormData) => {
-    console.log(data);
-    // if (id) updateExpense(data);
-    // else createExpense(data);
+    upsertExpenses(id ? [{ ...data, id: Number(id) }] : [data]);
   };
 
   return (

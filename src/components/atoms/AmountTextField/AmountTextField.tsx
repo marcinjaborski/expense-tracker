@@ -3,9 +3,11 @@ import { InputAdornment, TextField } from "@mui/material";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { ComponentProps, ForwardedRef, forwardRef } from "react";
 
-type Props = ComponentProps<typeof TextField>;
+type Props = ComponentProps<typeof TextField> & {
+  myCurrencyInputProps?: ComponentProps<typeof MyCurrencyInput>;
+};
 
-function AmountTextField(props: Props, ref: ForwardedRef<HTMLInputElement>) {
+function AmountTextField({ myCurrencyInputProps, ...props }: Props, ref: ForwardedRef<HTMLInputElement>) {
   return (
     <TextField
       slotProps={{
@@ -16,6 +18,7 @@ function AmountTextField(props: Props, ref: ForwardedRef<HTMLInputElement>) {
               <AttachMoneyIcon />
             </InputAdornment>
           ),
+          inputProps: { ...myCurrencyInputProps },
         },
       }}
       ref={ref}

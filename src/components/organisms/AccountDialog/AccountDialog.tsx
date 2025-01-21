@@ -2,13 +2,13 @@ import AddIcon from "@mui/icons-material/Add";
 import { TextField } from "@mui/material";
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
-import useUpsertAccounts from "@src/repository/useUpsertAccounts.ts";
 import { useForm } from "react-hook-form";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import { Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setAccountDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect } from "react";
+import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 
 type FormData = {
   name: string;
@@ -25,7 +25,7 @@ function AccountDialog({ account, resetAccount }: Props) {
   const dispatch = useAppDispatch();
   const { accountDialogOpen } = useAppSelector((state) => state.dialog);
   const { register, handleSubmit, reset } = useForm<FormData>();
-  const { mutate: upsertAccounts } = useUpsertAccounts();
+  const { mutate: upsertAccounts } = useOptimisticUpsert("accounts");
 
   useEffect(() => {
     if (account) reset({ name: account.name, initialBalance: account.initialBalance });

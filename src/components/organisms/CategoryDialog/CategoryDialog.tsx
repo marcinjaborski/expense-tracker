@@ -7,10 +7,10 @@ import { Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setCategoryDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect } from "react";
-import useUpsertCategories from "@src/repository/useUpsertCategories.ts";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import { ExpenseType } from "@src/utils/types.ts";
 import categoryIcon from "@src/utils/categoryIcon.ts";
+import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 
 type FormData = {
   name: string;
@@ -28,7 +28,7 @@ function CategoryDialog({ category, resetCategory }: Props) {
   const dispatch = useAppDispatch();
   const { categoryDialogOpen } = useAppSelector((state) => state.dialog);
   const { register, control, handleSubmit, reset } = useForm<FormData>();
-  const { mutate: upsertCategories } = useUpsertCategories();
+  const { mutate: upsertCategories } = useOptimisticUpsert("categories");
 
   useEffect(() => {
     if (category) reset({ name: category.name, type: category.type as ExpenseType, icon: category.icon });
