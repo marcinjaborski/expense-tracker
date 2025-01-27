@@ -1,18 +1,9 @@
-import { Dir, ExpenseOption, Sort } from "@src/utils/types.ts";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import supabase from "@src/utils/supabase.ts";
 import { EXPENSE_PAGE_SIZE } from "@src/utils/constants.ts";
 import { Tables } from "@src/utils/database.types.ts";
 import { notNull } from "@src/utils/functions.ts";
-
-type ExpenseParams = {
-  type: ExpenseOption;
-  q?: string;
-  sort?: Sort;
-  dir?: Dir;
-  accounts?: number[];
-  categories?: number[];
-};
+import queryKey, { ExpenseFilters } from "@src/utils/queryKey.ts";
 
 export type ExpenseReturnType = Tables<"expenses"> & {
   category: Tables<"categories">;
@@ -20,9 +11,9 @@ export type ExpenseReturnType = Tables<"expenses"> & {
   from_account: Tables<"accounts"> | null;
 };
 
-function useExpenses({ type, q, sort, dir, accounts, categories }: ExpenseParams) {
+function useExpenses({ type, q, sort, dir, accounts, categories }: ExpenseFilters) {
   return useInfiniteQuery({
-    queryKey: ["expenses", type, q, sort, dir, accounts, categories],
+    queryKey: queryKey.expenses.list({ type, q, sort, dir, accounts, categories }),
     queryFn: async ({ pageParam }) => {
       let query = supabase.from("expenses").select("*, category (*), account (*), from_account (*)");
       if (type !== "all") query = query.eq("type", type);

@@ -1,9 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
 function useAccounts() {
   return useSuspenseQuery({
-    queryKey: ["accounts"],
+    queryKey: queryKey.accounts.all,
     queryFn: async () =>
       await supabase
         .from("accounts")

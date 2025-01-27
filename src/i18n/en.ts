@@ -148,6 +148,7 @@ export default {
     importError: "Error while importing data, check data",
     noMatchingTable: "Could not match data to any resource",
     exportTitle: "Export data",
+    exportError: "Could not export table",
     expenses: "Expenses",
     categories: "Categories",
     accounts: "Accounts",

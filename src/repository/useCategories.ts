@@ -1,9 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
 function useCategories() {
   return useSuspenseQuery({
-    queryKey: ["categories"],
+    queryKey: queryKey.categories.all,
     queryFn: async () => {
       const query = supabase.from("categories").select().order("favourite", { ascending: false });
       return await query.throwOnError().then((result) => {

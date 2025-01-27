@@ -16,7 +16,7 @@ function Export() {
   const exportTable = async (table: Table) => {
     const { data: csv } = await supabase.from(table).select().csv();
     if (!csv) {
-      dispatch(showFeedback({ message: "Could not export table", type: "error" }));
+      dispatch(showFeedback({ message: t("exportError"), type: "error" }));
       return;
     }
     downloadFile(csv, `${table}.csv`, "application/text");
@@ -28,9 +28,11 @@ function Export() {
         <ListItem
           key={table}
           secondaryAction={
-            <IconButton onClick={() => exportTable(table)}>
-              <DownloadIcon />
-            </IconButton>
+            count ? (
+              <IconButton onClick={() => exportTable(table)}>
+                <DownloadIcon />
+              </IconButton>
+            ) : null
           }
         >
           <ListItemText>

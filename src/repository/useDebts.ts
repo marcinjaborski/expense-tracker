@@ -2,14 +2,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { DEBT_PAGE_SIZE } from "@src/utils/constants.ts";
 import supabase from "@src/utils/supabase.ts";
 import { notNull } from "@src/utils/functions.ts";
+import queryKey, { DebtFilters } from "@src/utils/queryKey.ts";
 
-type DebtParams = {
-  showSettled: boolean;
-};
-
-function useDebts({ showSettled }: DebtParams) {
+function useDebts({ showSettled }: DebtFilters) {
   return useInfiniteQuery({
-    queryKey: ["debts", showSettled],
+    queryKey: queryKey.debts.list({ showSettled }),
     queryFn: async ({ pageParam }) => {
       let query = supabase.from("debts").select("*").order("created_at", { ascending: false });
       if (!showSettled) query = query.is("settled", false);
