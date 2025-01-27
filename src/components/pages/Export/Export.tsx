@@ -5,14 +5,20 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { Table } from "@src/utils/types.ts";
 import supabase from "@src/utils/supabase.ts";
 import { downloadFile } from "@src/utils/functions.ts";
+import { useAppDispatch } from "@src/store/store.ts";
+import { showFeedback } from "@src/store/FeedbackSlice.ts";
 
 function Export() {
   const { t } = useTranslation("Import");
   const { data: counts } = useCounts();
+  const dispatch = useAppDispatch();
 
   const exportTable = async (table: Table) => {
     const { data: csv } = await supabase.from(table).select().csv();
-    if (!csv) return;
+    if (!csv) {
+      dispatch(showFeedback({ message: "Could not export table", type: "error" }));
+      return;
+    }
     downloadFile(csv, `${table}.csv`, "application/text");
   };
 

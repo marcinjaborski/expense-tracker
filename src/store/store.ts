@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { expenseFilterReducer } from "@src/store/ExpenseFilterSlice.ts";
 import { dialogsReducer } from "@src/store/DialogSlice.ts";
+import { feedbackReducer } from "@src/store/FeedbackSlice.ts";
 
 const store = configureStore({
   reducer: {
     expenseFilter: expenseFilterReducer,
     dialog: dialogsReducer,
+    feedback: feedbackReducer,
   },
 });
 
