@@ -2,7 +2,7 @@ import { IconButton, List, ListItem, ListItemText } from "@mui/material";
 import useCounts from "@src/repository/useCounts.ts";
 import { useTranslation } from "react-i18next";
 import DownloadIcon from "@mui/icons-material/Download";
-import { Table } from "@src/utils/types.ts";
+import { TableType } from "@src/utils/types.ts";
 import supabase from "@src/utils/supabase.ts";
 import { downloadFile } from "@src/utils/functions.ts";
 import { useAppDispatch } from "@src/store/store.ts";
@@ -13,7 +13,7 @@ function Export() {
   const { data: counts } = useCounts();
   const dispatch = useAppDispatch();
 
-  const exportTable = async (table: Table) => {
+  const exportTable = async (table: TableType) => {
     const { data: csv } = await supabase.from(table).select().csv();
     if (!csv) {
       dispatch(showFeedback({ message: t("exportError"), type: "error" }));

@@ -129,7 +129,7 @@ export default {
     toggleTypeBorrow: "Switch to borrow",
     toggleTypeReimburse: "Switch to reimburse",
     toggleSettled: "Change visibility",
-    settleAll: "Settle all {date}",
+    settleAll: "Settle all {{date}}",
     settleAllButton: "Settle all debts",
     create: "Add",
     edit: "Edit",
@@ -144,7 +144,8 @@ export default {
   },
   Import: {
     importTitle: "Import data",
-    importButton: "Import {amount} {table}",
+    uploadButton: "Select csv file",
+    importButton: "Import {{amount}} {{table}}",
     importError: "Error while importing data, check data",
     noMatchingTable: "Could not match data to any resource",
     exportTitle: "Export data",

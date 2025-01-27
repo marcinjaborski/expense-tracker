@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TablesUpdate } from "@src/utils/database.types.ts";
 import supabase from "@src/utils/supabase.ts";
 import { updateArray } from "@src/utils/functions.ts";
-import { Table } from "@src/utils/types.ts";
+import { TableType } from "@src/utils/types.ts";
 import queryKey from "@src/utils/queryKey.ts";
 
-function useOptimisticUpsert(table: Table) {
+function useOptimisticUpsert(table: TableType) {
   const queryClient = useQueryClient();
 
   return useMutation({

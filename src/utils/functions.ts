@@ -28,3 +28,7 @@ export function downloadFile(content: string, name: string, type: string = "text
   document.body.appendChild(element);
   element.click();
 }
+
+export function containsAll<T>(array: T[], values: T[]) {
+  return values.every((value) => array.includes(value));
+}

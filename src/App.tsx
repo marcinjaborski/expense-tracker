@@ -14,6 +14,7 @@ import Categories from "@src/components/pages/Categories";
 import Debts from "@src/components/pages/Debts";
 import Export from "@src/components/pages/Export";
 import Feedback from "@src/components/atoms/Feedback";
+import Import from "@src/components/pages/Import";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path={routes.accounts} element={<Accounts />} />
             <Route path={routes.categories} element={<Categories />} />
             <Route path={routes.debts} element={<Debts />} />
+            <Route path={routes.import} element={<Import />} />
             <Route path={routes.export} element={<Export />} />
           </Routes>
         </Box>

@@ -6,4 +6,4 @@ export type ExpenseOption = ExpenseType | "all";
 export type Dir = "asc" | "desc";
 export type Sort = "date" | "amount";
 
-export type Table = keyof Database["public"]["Tables"];
+export type TableType = keyof Database["public"]["Tables"];
