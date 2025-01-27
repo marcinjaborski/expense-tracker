@@ -19,3 +19,12 @@ export function updateArray<T extends { id?: number }>(startingArray: T[], newOb
 
   return startingArray;
 }
+
+export function downloadFile(content: string, name: string, type: string = "text/plain") {
+  const element = document.createElement("a");
+  const file = new Blob([content], { type });
+  element.href = URL.createObjectURL(file);
+  element.download = name;
+  document.body.appendChild(element);
+  element.click();
+}

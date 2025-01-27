@@ -12,6 +12,7 @@ import More from "@src/components/pages/More";
 import Accounts from "@src/components/pages/Accounts";
 import Categories from "@src/components/pages/Categories";
 import Debts from "@src/components/pages/Debts";
+import Export from "@src/components/pages/Export";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path={routes.accounts} element={<Accounts />} />
             <Route path={routes.categories} element={<Categories />} />
             <Route path={routes.debts} element={<Debts />} />
+            <Route path={routes.export} element={<Export />} />
           </Routes>
         </Box>
         <Navigation />
