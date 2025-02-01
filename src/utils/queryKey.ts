@@ -15,6 +15,10 @@ export type AmountByCategoryAndDateFilters = {
   upToCurrentDay?: boolean;
 };
 
+export type OutgoingTransfersByAccountsFilters = {
+  endDate?: string;
+};
+
 export type DebtFilters = {
   showSettled: boolean;
 };
@@ -24,7 +28,16 @@ const queryKey = {
     all: ["expenses"] as const,
     list: (filters: ExpenseFilters) => [...queryKey.expenses.all, { filters }],
     total: (endDate?: string) => [...queryKey.expenses.all, "totalExpenses", endDate],
-    amountByCategoryAndDate: (filters: AmountByCategoryAndDateFilters) => [...queryKey.expenses.all, { filters }],
+    amountByCategoryAndDate: (filters: AmountByCategoryAndDateFilters) => [
+      ...queryKey.expenses.all,
+      "amountByCategoryAndDate",
+      { filters },
+    ],
+    outgoingTransfersByAccounts: (filters: OutgoingTransfersByAccountsFilters) => [
+      ...queryKey.expenses.all,
+      "outgoingTransfersByAccounts",
+      { filters },
+    ],
   },
   accounts: {
     all: ["accounts"] as const,

@@ -1,14 +1,14 @@
 import { Box, Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "@src/store/store.ts";
 import useMonthExpenses from "@src/utils/hooks/useMonthExpenses.ts";
 import Amount from "@src/components/atoms/Amount";
 import useTotalMoney from "@src/utils/hooks/useTotalMoney.ts";
 import useAverageExpenses from "@src/utils/hooks/useAverageExpenses.ts";
+import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 
 function DashboardValues() {
   const { t } = useTranslation("Dashboard");
-  const { endDate } = useAppSelector((state) => state.dashboard);
+  const { endDate } = useDashboardContext();
   const { monthExpenses, monthIncomes } = useMonthExpenses();
   const averageExpenses = useAverageExpenses();
   const totalMoney = useTotalMoney(endDate);

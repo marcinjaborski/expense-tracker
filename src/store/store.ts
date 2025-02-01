@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { expenseFilterReducer } from "@src/store/ExpenseFilterSlice.ts";
 import { dialogsReducer } from "@src/store/DialogSlice.ts";
 import { feedbackReducer } from "@src/store/FeedbackSlice.ts";
-import { dashboardReducer } from "@src/store/DashboardSlice.ts";
 
 const store = configureStore({
   reducer: {
     expenseFilter: expenseFilterReducer,
     dialog: dialogsReducer,
     feedback: feedbackReducer,
-    dashboard: dashboardReducer,
   },
 });
 

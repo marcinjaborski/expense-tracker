@@ -1,9 +1,9 @@
-import { useAppSelector } from "@src/store/store.ts";
 import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDate.ts";
 import { groupBy, sumBy } from "lodash";
+import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 
 function useMonthExpenses() {
-  const { endDate } = useAppSelector((state) => state.dashboard);
+  const { endDate } = useDashboardContext();
   const startDate = endDate.startOf("month");
   const { data: amounts, isLoading } = useAmountByCategoryAndDate(startDate, endDate);
 
