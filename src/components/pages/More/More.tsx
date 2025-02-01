@@ -9,11 +9,13 @@ import DownloadIcon from "@mui/icons-material/Download";
 import UploadIcon from "@mui/icons-material/Upload";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ReactNode } from "react";
+import supabase from "@src/utils/supabase.ts";
 
 type ItemData = {
   label: string;
   icon: ReactNode;
-  link: Route;
+  link?: Route;
+  onClick?: () => void;
 };
 
 function More() {
@@ -49,7 +51,10 @@ function More() {
     {
       label: t("logout"),
       icon: <LogoutIcon />,
-      link: routes.dashboard,
+      onClick: async () => {
+        await supabase.auth.signOut();
+        navigate(routes.login);
+      },
     },
   ];
 
@@ -57,7 +62,7 @@ function More() {
     <Box>
       <List>
         {items.map((item) => (
-          <ListItemButton key={item.label} onClick={() => navigate(item.link)}>
+          <ListItemButton key={item.label} onClick={item.link ? () => navigate(item.link!) : item.onClick}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText>{item.label}</ListItemText>
           </ListItemButton>

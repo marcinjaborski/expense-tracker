@@ -37,10 +37,10 @@ export default {
     title: "Dashboard",
     income: "Incomes",
     expense: "Expenses",
-    currentExpenses: "Current month expenses",
+    currentExpenses: "Monthly expenses",
     averageExpenses: "Average expenses",
     totalMoney: "Total money",
-    currentNetProfit: "Net profit this month",
+    currentNetProfit: "Net profit",
   },
   CreateExpense: {
     amount: "Amount",

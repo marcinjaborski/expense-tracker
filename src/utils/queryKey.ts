@@ -9,6 +9,12 @@ export type ExpenseFilters = {
   categories?: number[];
 };
 
+export type AmountByCategoryAndDateFilters = {
+  startDate: string;
+  endDate: string;
+  upToCurrentDay?: boolean;
+};
+
 export type DebtFilters = {
   showSettled: boolean;
 };
@@ -17,6 +23,8 @@ const queryKey = {
   expenses: {
     all: ["expenses"] as const,
     list: (filters: ExpenseFilters) => [...queryKey.expenses.all, { filters }],
+    total: (endDate?: string) => [...queryKey.expenses.all, "totalExpenses", endDate],
+    amountByCategoryAndDate: (filters: AmountByCategoryAndDateFilters) => [...queryKey.expenses.all, { filters }],
   },
   accounts: {
     all: ["accounts"] as const,

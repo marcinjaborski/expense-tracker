@@ -24,7 +24,9 @@ function Amount({ number, red, green, useNumberSignToColor }: Props) {
     return null;
   }, [red, green, number, useNumberSignToColor]);
 
-  return <Typography sx={{ color }}>{currencyFormat.format(number)}</Typography>;
+  return (
+    <Typography sx={{ color }}>{currencyFormat.format(useNumberSignToColor ? Math.abs(number) : number)}</Typography>
+  );
 }
 
 export default Amount;

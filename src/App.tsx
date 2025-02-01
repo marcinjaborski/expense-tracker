@@ -15,6 +15,7 @@ import Debts from "@src/components/pages/Debts";
 import Export from "@src/components/pages/Export";
 import Feedback from "@src/components/atoms/Feedback";
 import Import from "@src/components/pages/Import";
+import Dashboard from "@src/components/pages/Dashboard";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           <Routes>
             <Route path={routes.login} element={<Login />} />
             <Route path={routes.register} element={<Register />} />
-            <Route path={routes.dashboard} element={<></>} />
+            <Route path={routes.dashboard} element={<Dashboard />} />
             <Route path={`${routes.createExpense}/:id?`} element={<CreateExpense />} />
             <Route path={routes.expenses} element={<ExpenseList />} />
             <Route path={routes.more} element={<More />} />
