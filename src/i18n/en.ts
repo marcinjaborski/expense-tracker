@@ -57,6 +57,8 @@ export default {
     category: "Category",
     missingFromAccount: "Select from which account to make transfer",
     theSameAccounts: "Cannot transfer money to the same account",
+    success: "Expense created",
+    error: "Could not create expense",
   },
   ExpenseList: {
     title: "List of transactions",

@@ -10,11 +10,14 @@ import { ExpenseType } from "@src/utils/types.ts";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
+import { useAppDispatch } from "@src/store/store.ts";
+import { showFeedback } from "@src/store/FeedbackSlice.ts";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
   const { id } = useParams();
   const [selectedType, setSelectedType] = useState<ExpenseType>("expense");
+  const dispatch = useAppDispatch();
 
   const { data: categories } = useCategories();
   const { data: accounts } = useAccounts();
@@ -25,6 +28,7 @@ function CreateExpenseForm() {
     watch,
     formState: { errors },
     handleSubmit,
+    reset: resetForm,
   } = useForm<CreateExpenseFormData>({
     defaultValues: {
       type: "expense",
@@ -39,11 +43,21 @@ function CreateExpenseForm() {
     setSelectedType(formType);
   }, [formType]);
 
-  const { mutate: upsertExpenses } = useOptimisticUpsert("expenses");
+  const { mutate: upsertExpenses, status, reset: resetUpsert } = useOptimisticUpsert("expenses");
 
   const onSubmit = (data: CreateExpenseFormData) => {
     upsertExpenses(id ? [{ ...data, id: Number(id) }] : [data]);
   };
+
+  useEffect(() => {
+    if (status === "success") {
+      resetForm();
+      resetUpsert();
+      dispatch(showFeedback({ message: t("success"), type: "success" }));
+    } else if (status === "error") {
+      dispatch(showFeedback({ message: t("error"), type: "error" }));
+    }
+  }, [dispatch, status, resetForm, resetUpsert, t]);
 
   return (
     <Stack
@@ -102,11 +116,25 @@ function CreateExpenseForm() {
         )}
       />
 
-      <AmountTextField
-        fullWidth
-        label={t("amount")}
-        {...register("amount", { required: true, setValueAs: parseFloat })}
+      <Controller
+        control={control}
+        name="amount"
+        rules={{
+          required: true,
+        }}
+        render={({ field: { value, onChange }, fieldState: { error } }) => (
+          <AmountTextField
+            fullWidth
+            label={t("amount")}
+            value={value}
+            error={!!error}
+            myCurrencyInputProps={{
+              onValueChange: (value) => onChange(value || 0),
+            }}
+          />
+        )}
       />
+
       <TextField sx={{ colorScheme: "dark" }} type="date" {...register("date", { required: true })} />
       <TextField multiline rows={3} fullWidth label={t("description")} {...register("description")} />
       <Button type="submit" variant="contained">

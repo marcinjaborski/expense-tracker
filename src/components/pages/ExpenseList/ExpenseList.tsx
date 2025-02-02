@@ -39,7 +39,7 @@ function ExpenseList() {
 
   return (
     <Stack sx={{ height: "100%", p: 3 }}>
-      <ToggleButtonGroup exclusive value={type} onChange={(_, newValue) => setType(newValue)}>
+      <ToggleButtonGroup exclusive value={type} onChange={(_, newValue) => newValue !== null && setType(newValue)}>
         <ToggleButtonWithIcon text={t("all")} icon={<CategoryIcon />} value="all" />
         <ToggleButtonWithIcon text={t("incomes")} icon={<AddIcon />} value="income" />
         <ToggleButtonWithIcon text={t("expenses")} icon={<RemoveIcon />} value="expense" />
@@ -72,7 +72,7 @@ function ExpenseList() {
               </TableBody>
             </Fragment>
           ))}
-          <TableBody>
+          <TableBody sx={{ visibility: "hidden" }}>
             <TableRow>
               <TableCell>
                 <div ref={observerTarget} />

@@ -26,6 +26,7 @@ function ExpenseFilterDialog() {
   const { t } = useTranslation("ExpenseList");
   const {
     open,
+    q,
     categories: selectedCategories,
     accounts: selectedAccounts,
     sort,
@@ -51,7 +52,7 @@ function ExpenseFilterDialog() {
         <DialogTitle>{t("filtersModal")}</DialogTitle>
         <DialogContent>
           <Stack gap={2} sx={{ mt: 1 }}>
-            <TextField label={t("search")} onChange={(event) => debouncedSetQ(event.target.value)} />
+            <TextField label={t("search")} defaultValue={q} onChange={(event) => debouncedSetQ(event.target.value)} />
             <MultipleSelect
               label={t("categories")}
               value={selectedCategories}
