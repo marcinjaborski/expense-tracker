@@ -2,7 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { TextField } from "@mui/material";
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import { Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
@@ -24,7 +24,7 @@ function AccountDialog({ account, resetAccount }: Props) {
   const { t } = useTranslation("Accounts");
   const dispatch = useAppDispatch();
   const { accountDialogOpen } = useAppSelector((state) => state.dialog);
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const { register, handleSubmit, reset, control } = useForm<FormData>();
   const { mutate: upsertAccounts } = useOptimisticUpsert("accounts");
 
   useEffect(() => {
@@ -53,11 +53,18 @@ function AccountDialog({ account, resetAccount }: Props) {
       content={
         <>
           <TextField label={t("name")} {...register("name", { required: true })} />
-          <AmountTextField
-            label={t("initialBalance")}
-            {...register("initialBalance", {
-              setValueAs: (value: string) => (value === "" ? 0 : parseFloat(value)),
-            })}
+          <Controller
+            control={control}
+            name="initialBalance"
+            render={({ field: { value, onChange } }) => (
+              <AmountTextField
+                value={value}
+                myCurrencyInputProps={{
+                  onValueChange: (value) => onChange(value || 0),
+                }}
+                label={t("initialBalance")}
+              />
+            )}
           />
         </>
       }

@@ -10,8 +10,10 @@ function Navigation() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  if (pathname === routes.login || pathname === routes.register) return null;
+
   return (
-    <BottomNavigation value={pathname} onChange={(event, route) => navigate(route)}>
+    <BottomNavigation value={pathname} onChange={(_, route) => navigate(route)}>
       <BottomNavigationAction icon={<DashboardIcon />} value={routes.dashboard} />
       <BottomNavigationAction icon={<AddIcon />} value={routes.createExpense} />
       <BottomNavigationAction icon={<ListIcon />} value={routes.expenses} />

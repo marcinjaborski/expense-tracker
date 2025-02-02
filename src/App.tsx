@@ -1,7 +1,7 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { mainTheme } from "./utils/theme.ts";
 import TopBar from "@src/components/organisms/TopBar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Navigation from "./components/organisms/Navigation";
 import routes from "./utils/routes";
 import CreateExpense from "@src/components/pages/CreateExpense";
@@ -16,8 +16,25 @@ import Export from "@src/components/pages/Export";
 import Feedback from "@src/components/atoms/Feedback";
 import Import from "@src/components/pages/Import";
 import Dashboard from "@src/components/pages/Dashboard";
+import useUser from "@src/repository/useUser.ts";
+import { useEffect } from "react";
+import { useAppDispatch } from "@src/store/store.ts";
+import { showFeedback } from "@src/store/FeedbackSlice.ts";
+import { useTranslation } from "react-i18next";
 
 function App() {
+  const { t } = useTranslation("Login");
+  const { isError } = useUser();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isError) {
+      navigate(routes.login);
+      dispatch(showFeedback({ message: t("pleaseLogIn"), type: "error" }));
+    }
+  }, [navigate, isError, dispatch, t]);
+
   return (
     <ThemeProvider theme={mainTheme}>
       <CssBaseline />

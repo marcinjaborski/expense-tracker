@@ -5,6 +5,8 @@ import routes from "@src/utils/routes.ts";
 import supabase from "@src/utils/supabase.ts";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import queryKey from "@src/utils/queryKey.ts";
 
 type FormData = {
   email: string;
@@ -20,13 +22,18 @@ function Login() {
     formState: { errors },
   } = useForm<FormData>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const onSubmit = async (data: FormData) => {
-    const { error } = await supabase.auth.signInWithPassword(data);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword(data);
     if (error) {
       setErrorMessage(error.message);
       return;
     }
+    queryClient.setQueryData(queryKey.users.get(), user);
     navigate(routes.dashboard);
   };
 

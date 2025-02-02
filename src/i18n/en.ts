@@ -32,6 +32,7 @@ export default {
     passwordsMismatch: "Passwords do not match",
     emailRequired: "Email is required",
     passwordRequired: "Password is required",
+    pleaseLogIn: "Please log in",
   },
   Dashboard: {
     title: "Dashboard",

@@ -24,6 +24,10 @@ export type DebtFilters = {
 };
 
 const queryKey = {
+  users: {
+    all: ["users"] as const,
+    get: () => [...queryKey.users.all, "current"],
+  },
   expenses: {
     all: ["expenses"] as const,
     list: (filters: ExpenseFilters) => [...queryKey.expenses.all, { filters }],

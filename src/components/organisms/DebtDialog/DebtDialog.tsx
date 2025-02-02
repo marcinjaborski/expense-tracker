@@ -77,14 +77,15 @@ function DebtDialog({ debt, resetDebt }: Props) {
           <Controller
             control={control}
             name="person"
-            render={({ field: { value, onChange } }) => (
+            rules={{ required: true }}
+            render={({ field: { value, onChange }, fieldState: { error } }) => (
               <Autocomplete
                 freeSolo
                 disableClearable
                 options={persons}
                 inputValue={value}
                 onInputChange={(_, value) => onChange(value)}
-                renderInput={(params) => <TextField label={t("person")} {...params} />}
+                renderInput={(params) => <TextField label={t("person")} error={!!error} {...params} />}
               />
             )}
           />

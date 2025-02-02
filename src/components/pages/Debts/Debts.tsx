@@ -49,7 +49,14 @@ function Debts() {
   const groupedDebts = groupBy(debts, "person");
 
   const settleAll = async (person: string, amount: number) => {
-    upsertDebts([{ person, amount, description: t("settleAll", { date: DateTime.now().toLocaleString() }) }]);
+    upsertDebts([
+      {
+        person,
+        amount: -amount,
+        description: t("settleAll", { date: DateTime.now().toLocaleString() }),
+        settled: true,
+      },
+    ]);
     await supabase.from("debts").update({ settled: true }).eq("settled", false).eq("person", person);
   };
 
