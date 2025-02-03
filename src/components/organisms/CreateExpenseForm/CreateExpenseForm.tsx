@@ -1,21 +1,23 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button, MenuItem, Stack, TextField } from "@mui/material";
+import { Button, MenuItem, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
-import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { ExpenseType } from "@src/utils/types.ts";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
-import { useAppDispatch } from "@src/store/store.ts";
+import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { showFeedback } from "@src/store/FeedbackSlice.ts";
+import { setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
+import ControlledTextField from "@src/components/atoms/ControlledTextField";
+import { DateTime } from "luxon";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
-  const { id } = useParams();
+  const { expenseToEdit } = useAppSelector((state) => state.expense);
   const [selectedType, setSelectedType] = useState<ExpenseType>("expense");
   const dispatch = useAppDispatch();
 
@@ -23,21 +25,35 @@ function CreateExpenseForm() {
   const { data: accounts } = useAccounts();
   const filteredCategories = categories.filter(({ type }) => type === selectedType);
   const {
-    register,
     control,
     watch,
-    formState: { errors },
     handleSubmit,
     reset: resetForm,
   } = useForm<CreateExpenseFormData>({
     defaultValues: {
       type: "expense",
-      account: accounts.at(0)?.id,
       category: filteredCategories.at(0)?.id,
+      account: accounts.at(0)?.id,
+      amount: 0,
+      date: DateTime.now().toSQLDate(),
+      description: "",
     },
   });
 
   const formType = watch("type");
+
+  useEffect(() => {
+    if (expenseToEdit)
+      resetForm({
+        account: expenseToEdit.account.id,
+        amount: expenseToEdit.amount,
+        category: expenseToEdit.category.id,
+        date: expenseToEdit.date,
+        description: expenseToEdit.description,
+        from_account: expenseToEdit.from_account ?? undefined,
+        type: expenseToEdit.type as ExpenseType,
+      });
+  }, [expenseToEdit, resetForm]);
 
   useEffect(() => {
     setSelectedType(formType);
@@ -46,7 +62,9 @@ function CreateExpenseForm() {
   const { mutate: upsertExpenses, status, reset: resetUpsert } = useOptimisticUpsert("expenses");
 
   const onSubmit = (data: CreateExpenseFormData) => {
-    upsertExpenses(id ? [{ ...data, id: Number(id) }] : [data]);
+    upsertExpenses(expenseToEdit ? [{ ...data, id: Number(expenseToEdit.id) }] : [data]);
+    dispatch(setExpenseToEdit(null));
+    resetForm();
   };
 
   useEffect(() => {
@@ -70,57 +88,35 @@ function CreateExpenseForm() {
         name="type"
         render={({ field: { value, onChange } }) => <ExpenseTypeSelect value={value} onChange={onChange} />}
       />
-      <Controller
+      <ControlledTextField
         control={control}
         name="category"
         rules={{
           required: true,
           validate: (value) => !!filteredCategories.find((category) => category.id === value),
         }}
-        render={({ field: { value, onChange } }) => (
-          <TextField
-            select
-            fullWidth
-            label={t("category")}
-            value={value}
-            error={!!errors?.category}
-            onChange={(event) => onChange(event.target.value)}
-          >
-            {filteredCategories.map((category) => (
-              <MenuItem value={category.id} key={category.id}>
-                {category.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="account"
-        rules={{ required: true }}
-        render={({ field: { value, onChange } }) => (
-          <TextField
-            select
-            fullWidth
-            label={t("account")}
-            value={value}
-            onChange={(event) => onChange(event.target.value)}
-          >
-            {accounts.map((account) => (
-              <MenuItem value={account.id} key={account.id}>
-                {account.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
-      />
-
+        select
+        label={t("category")}
+      >
+        {filteredCategories.map((category) => (
+          <MenuItem value={category.id} key={category.id}>
+            {category.name}
+          </MenuItem>
+        ))}
+      </ControlledTextField>
+      <ControlledTextField control={control} name="account" rules={{ required: true }} select label={t("account")}>
+        {accounts.map((account) => (
+          <MenuItem value={account.id} key={account.id}>
+            {account.name}
+          </MenuItem>
+        ))}
+      </ControlledTextField>
       <Controller
         control={control}
         name="amount"
         rules={{
           required: true,
+          min: 0.01,
         }}
         render={({ field: { value, onChange }, fieldState: { error } }) => (
           <AmountTextField
@@ -134,11 +130,18 @@ function CreateExpenseForm() {
           />
         )}
       />
+      <ControlledTextField
+        control={control}
+        name="date"
+        rules={{ required: true }}
+        sx={{ colorScheme: "dark" }}
+        type="date"
+        fullWidth={false}
+      />
+      <ControlledTextField control={control} name="description" multiline rows={3} label={t("description")} />
 
-      <TextField sx={{ colorScheme: "dark" }} type="date" {...register("date", { required: true })} />
-      <TextField multiline rows={3} fullWidth label={t("description")} {...register("description")} />
       <Button type="submit" variant="contained">
-        {t("create")}
+        {expenseToEdit ? t("update") : t("create")}
       </Button>
     </Stack>
   );

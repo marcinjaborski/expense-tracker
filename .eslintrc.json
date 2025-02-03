@@ -2,9 +2,11 @@
   "extends": ["airbnb", "airbnb/hooks", "airbnb-typescript", "next/core-web-vitals", "prettier"],
   "plugins": ["simple-import-sort", "@tanstack/query"],
   "rules": {
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
+        "ignoreRestSiblings": true,
         "argsIgnorePattern": "^_"
       }
     ],

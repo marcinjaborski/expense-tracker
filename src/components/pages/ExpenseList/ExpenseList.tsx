@@ -1,41 +1,37 @@
-import {
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { Stack, ToggleButtonGroup } from "@mui/material";
 import ToggleButtonWithIcon from "@src/components/molecules/ToggleButtonWithIcon";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CategoryIcon from "@mui/icons-material/Category";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { useTranslation } from "react-i18next";
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ExpenseOption } from "@src/utils/types.ts";
 import useExpenses from "@src/repository/useExpenses.ts";
-import { groupBy } from "lodash";
-import Amount from "@src/components/atoms/Amount";
 import useObserver from "@src/utils/hooks/useObserver.ts";
 import ExpenseFilterDialog from "@src/components/organisms/ExpenseFilterDialog";
-import { useAppSelector } from "@src/store/store.ts";
+import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
+import ExpensesTableByDate from "../../organisms/ExpensesTableByDate";
+import ExpensesTable from "@src/components/organisms/ExpensesTable";
+import ConfirmDialog from "@src/components/organisms/ConfirmDialog";
+import { setExpenseDeleteId } from "@src/store/ExpenseSlice.ts";
+import useDeleteExpense from "@src/repository/useDeleteExpense.ts";
 
 function ExpenseList() {
   const { t } = useTranslation("ExpenseList");
   const [type, setType] = useState<ExpenseOption>("expense");
+  const dispatch = useAppDispatch();
   const { q, categories, accounts, dir, sort } = useAppSelector((state) => state.expenseFilter);
+  const { expenseDeleteId } = useAppSelector((state) => state.expense);
   const { data: expenses, fetchNextPage } = useExpenses({ type, q, accounts, categories, sort, dir });
+  const { mutate: deleteExpense } = useDeleteExpense();
   const observerTarget = useRef(null);
   useObserver(observerTarget, fetchNextPage);
 
-  const expensesByDate = groupBy(expenses, "date");
-  const sortedDates = Object.keys(expensesByDate).sort((date1, date2) =>
-    dir === "desc" ? date2.localeCompare(date1) : date1.localeCompare(date2),
-  );
+  const onConfirmDelete = () => {
+    if (expenseDeleteId) deleteExpense(expenseDeleteId);
+    dispatch(setExpenseDeleteId(null));
+  };
 
   return (
     <Stack sx={{ height: "100%", p: 3 }}>
@@ -45,43 +41,19 @@ function ExpenseList() {
         <ToggleButtonWithIcon text={t("expenses")} icon={<RemoveIcon />} value="expense" />
         <ToggleButtonWithIcon text={t("transfers")} icon={<SwapHorizIcon />} value="transfer" />
       </ToggleButtonGroup>
-      <TableContainer component={Paper} sx={{ height: "100%" }}>
-        <Table stickyHeader size="small">
-          {sortedDates.map((date) => (
-            <Fragment key={date}>
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={5}>{date}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {expensesByDate[date].map((expense) => (
-                  <TableRow key={expense.id}>
-                    <TableCell>{expense.description}</TableCell>
-                    <TableCell>
-                      <Amount
-                        number={expense.amount}
-                        red={expense.type === "expense"}
-                        green={expense.type === "income"}
-                      />
-                    </TableCell>
-                    <TableCell>{expense.category.name}</TableCell>
-                    <TableCell>{expense.account.name}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Fragment>
-          ))}
-          <TableBody sx={{ visibility: "hidden" }}>
-            <TableRow>
-              <TableCell>
-                <div ref={observerTarget} />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {sort === "date" ? (
+        <ExpensesTableByDate expenses={expenses || []} />
+      ) : (
+        <ExpensesTable expenses={expenses || []} />
+      )}
+      <div ref={observerTarget} />
       <ExpenseFilterDialog />
+      <ConfirmDialog
+        title={t("confirmDelete")}
+        open={expenseDeleteId !== null}
+        onCancel={() => dispatch(setExpenseDeleteId(null))}
+        onConfirm={onConfirmDelete}
+      />
     </Stack>
   );
 }
