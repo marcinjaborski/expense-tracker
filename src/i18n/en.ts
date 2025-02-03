@@ -46,6 +46,8 @@ export default {
   CreateExpense: {
     amount: "Amount",
     account: "Account",
+    fromAccount: "From account",
+    toAccount: "To account",
     description: "Description",
     create: "Create",
     update: "Update",

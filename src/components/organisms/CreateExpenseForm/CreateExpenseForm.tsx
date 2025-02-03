@@ -34,6 +34,7 @@ function CreateExpenseForm() {
       type: "expense",
       category: filteredCategories.at(0)?.id,
       account: accounts.at(0)?.id,
+      from_account: accounts.at(1)?.id,
       amount: 0,
       date: DateTime.now().toSQLDate(),
       description: "",
@@ -104,7 +105,28 @@ function CreateExpenseForm() {
           </MenuItem>
         ))}
       </ControlledTextField>
-      <ControlledTextField control={control} name="account" rules={{ required: true }} select label={t("account")}>
+      {selectedType === "transfer" ? (
+        <ControlledTextField
+          control={control}
+          name="from_account"
+          rules={{ required: true, validate: (value, formData) => value !== formData.account }}
+          select
+          label={t("fromAccount")}
+        >
+          {accounts.map((account) => (
+            <MenuItem value={account.id} key={account.id}>
+              {account.name}
+            </MenuItem>
+          ))}
+        </ControlledTextField>
+      ) : null}
+      <ControlledTextField
+        control={control}
+        name="account"
+        rules={{ required: true }}
+        select
+        label={t(selectedType === "transfer" ? "toAccount" : "account")}
+      >
         {accounts.map((account) => (
           <MenuItem value={account.id} key={account.id}>
             {account.name}
