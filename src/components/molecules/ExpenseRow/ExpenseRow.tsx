@@ -1,4 +1,4 @@
-import { Menu, MenuItem, PopoverPosition, TableCell, TableRow } from "@mui/material";
+import { Box, Menu, MenuItem, PopoverPosition, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 import Amount from "@src/components/atoms/Amount";
 import { ExpenseReturnType } from "@src/repository/useExpenses.ts";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
@@ -8,6 +8,7 @@ import { useAppDispatch } from "@src/store/store.ts";
 import { setExpenseDeleteId, setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import { useNavigate } from "react-router-dom";
 import routes from "@src/utils/routes.ts";
+import CategoryIcon from "@src/components/atoms/CategoryIcon";
 
 type ExpenseRowProps = {
   expense: ExpenseReturnType;
@@ -50,8 +51,22 @@ function ExpenseRow({ expense }: ExpenseRowProps) {
         <TableCell>
           <Amount number={expense.amount} red={expense.type === "expense"} green={expense.type === "income"} />
         </TableCell>
-        <TableCell>{expense.category.name}</TableCell>
-        <TableCell>{expense.account.name}</TableCell>
+        <TableCell>
+          <Tooltip title={expense.category.name} disableHoverListener>
+            <Box>
+              <CategoryIcon icon={expense.category.icon} />
+            </Box>
+          </Tooltip>
+        </TableCell>
+        <TableCell>
+          {expense.type === "transfer" ? (
+            <Typography variant="body2" whiteSpace="nowrap">
+              {expense.from_account?.name} &#8594; {expense.account.name}
+            </Typography>
+          ) : (
+            expense.account.name
+          )}
+        </TableCell>
       </TableRow>
       <Menu
         open={!!menuPosition}
