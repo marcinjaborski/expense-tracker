@@ -1,8 +1,8 @@
 import { ArcElement, Chart as ChartJS, ChartOptions, Colors, Legend, Tooltip } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { ExpenseType } from "@src/utils/types.ts";
 import useCategoriesChartData from "@src/utils/hooks/useCategoriesChartData.ts";
 import { labelCallback } from "@src/utils/functions.ts";
+import { Enums } from "@src/utils/database.types.ts";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
@@ -20,7 +20,7 @@ const options: ChartOptions<"pie"> = {
 };
 
 type CategoriesPieChartProps = {
-  type: ExpenseType;
+  type: Enums<"expense_type">;
 };
 
 function CategoriesPieChart({ type }: CategoriesPieChartProps) {

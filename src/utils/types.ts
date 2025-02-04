@@ -1,7 +1,6 @@
-import { Database } from "@src/utils/database.types.ts";
+import { Database, Enums } from "@src/utils/database.types.ts";
 
-export type ExpenseType = "expense" | "income" | "transfer";
-export type ExpenseOption = ExpenseType | "all";
+export type ExpenseOption = Enums<"expense_type"> | "all";
 
 export type Dir = "asc" | "desc";
 export type Sort = "date" | "amount";

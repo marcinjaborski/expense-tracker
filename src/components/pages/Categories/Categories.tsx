@@ -7,7 +7,6 @@ import useDeleteCategory from "@src/repository/useDeleteCategory.ts";
 import CategoryDialog from "@src/components/organisms/CategoryDialog";
 import CategoryDraggableList from "@src/components/templates/CategoryDraggableList";
 import { Typography } from "@mui/material";
-import { ExpenseType } from "@src/utils/types.ts";
 
 function Categories() {
   const { t } = useTranslation("Categories");
@@ -23,7 +22,7 @@ function Categories() {
 
   return (
     <>
-      {(["income", "expense", "transfer"] satisfies ExpenseType[]).map((type) => (
+      {(["income", "expense", "transfer"] as const).map((type) => (
         <Fragment key={type}>
           <Typography variant="subtitle2" sx={{ p: 2 }}>
             {t(`${type}s`)}

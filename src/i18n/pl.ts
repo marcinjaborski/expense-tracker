@@ -107,7 +107,6 @@ const resource: Resource = {
     EUR: "Euro €",
     USD: "Dolary amerykańskie $",
     nameMinLength: "Nazwa musi mieć conajmniej 3 znaki",
-    favourite: "Przełącz ulubione",
     edit: "Edytuj konto",
     delete: "Usuń konto",
     confirmDelete: "Czy na pewno chcesz usunąć to konto?",

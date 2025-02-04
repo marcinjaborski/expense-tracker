@@ -1,10 +1,10 @@
 import { groupBy, sumBy, uniq } from "lodash";
 import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDate.ts";
-import { ExpenseType } from "@src/utils/types.ts";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 import { sortChartData } from "@src/utils/functions.ts";
+import { Enums } from "@src/utils/database.types.ts";
 
-function useCategoriesChartData(expenseType: ExpenseType) {
+function useCategoriesChartData(expenseType: Enums<"expense_type">) {
   const { startDate, endDate } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
 

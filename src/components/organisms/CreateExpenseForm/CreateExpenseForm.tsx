@@ -5,7 +5,6 @@ import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
 import { useEffect, useState } from "react";
-import { ExpenseType } from "@src/utils/types.ts";
 import AmountTextField from "@src/components/atoms/AmountTextField";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
@@ -14,11 +13,12 @@ import { showFeedback } from "@src/store/FeedbackSlice.ts";
 import { setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
+import { Enums } from "@src/utils/database.types.ts";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
   const { expenseToEdit } = useAppSelector((state) => state.expense);
-  const [selectedType, setSelectedType] = useState<ExpenseType>("expense");
+  const [selectedType, setSelectedType] = useState<Enums<"expense_type">>("expense");
   const dispatch = useAppDispatch();
 
   const { data: categories } = useCategories();
@@ -52,7 +52,7 @@ function CreateExpenseForm() {
         date: expenseToEdit.date,
         description: expenseToEdit.description,
         from_account: expenseToEdit.from_account ?? undefined,
-        type: expenseToEdit.type as ExpenseType,
+        type: expenseToEdit.type,
       });
   }, [expenseToEdit, resetForm]);
 

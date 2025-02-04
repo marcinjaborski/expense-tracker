@@ -105,7 +105,6 @@ export default {
     EUR: "Euro €",
     USD: "American dollars $",
     nameMinLength: "Name must have at least 3 characters",
-    favourite: "Toggle favourite",
     edit: "Edit account",
     delete: "Delete account",
     confirmDelete: "Are you sure you want to delete this account?",

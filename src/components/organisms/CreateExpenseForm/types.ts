@@ -1,4 +1,4 @@
-import { ExpenseType } from "@src/utils/types.ts";
+import { Enums } from "@src/utils/database.types.ts";
 
 export type CreateExpenseFormData = {
   account: number;
@@ -7,5 +7,5 @@ export type CreateExpenseFormData = {
   date: string;
   description: string;
   from_account: number;
-  type: ExpenseType;
+  type: Enums<"expense_type">;
 };

@@ -5,10 +5,10 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import { ToggleButtonGroup } from "@mui/material";
 import { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
-import { ExpenseType } from "@src/utils/types.ts";
+import { Enums } from "@src/utils/database.types.ts";
 
 type Props = ComponentProps<typeof ToggleButtonGroup> & {
-  onChange: (value: ExpenseType) => void;
+  onChange: (value: Enums<"expense_type">) => void;
 };
 
 function ExpenseTypeSelect({ onChange, ...props }: Props) {

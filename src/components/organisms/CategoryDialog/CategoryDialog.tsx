@@ -3,18 +3,17 @@ import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/mater
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
-import { Tables } from "@src/utils/database.types.ts";
+import { Enums, Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setCategoryDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect } from "react";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
-import { ExpenseType } from "@src/utils/types.ts";
 import categoryIcon from "@src/utils/categoryIcon.ts";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 
 type FormData = {
   name: string;
-  type: ExpenseType;
+  type: Enums<"expense_type">;
   icon: string;
 };
 
@@ -31,7 +30,7 @@ function CategoryDialog({ category, resetCategory }: Props) {
   const { mutate: upsertCategories } = useOptimisticUpsert("categories");
 
   useEffect(() => {
-    if (category) reset({ name: category.name, type: category.type as ExpenseType, icon: category.icon });
+    if (category) reset({ name: category.name, type: category.type, icon: category.icon });
     else reset({ name: "", type: "expense", icon: "" });
   }, [reset, category]);
 
