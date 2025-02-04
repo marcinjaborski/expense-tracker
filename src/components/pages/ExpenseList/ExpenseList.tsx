@@ -36,7 +36,7 @@ function ExpenseList() {
   };
 
   return (
-    <Stack sx={{ height: "100%", p: 3 }}>
+    <Stack sx={{ height: "100%", p: 2 }}>
       <ToggleButtonGroup exclusive value={type} onChange={(_, newValue) => newValue !== null && setType(newValue)}>
         <ToggleButtonWithIcon text={t("all")} icon={<CategoryIcon />} value="all" />
         <ToggleButtonWithIcon text={t("incomes")} icon={<AddIcon />} value="income" />

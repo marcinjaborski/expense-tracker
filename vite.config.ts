@@ -17,7 +17,7 @@ export default defineConfig({
         name: "Expense Tracker",
         short_name: "Expenses",
         description: "Application to monitor and track expenses",
-        theme_color: "#ffffff",
+        theme_color: "#f49ac2",
         icons: [
           {
             src: "icon-192x192.png",
