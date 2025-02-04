@@ -16,6 +16,7 @@ import ExpensesTable from "@src/components/organisms/ExpensesTable";
 import ConfirmDialog from "@src/components/organisms/ConfirmDialog";
 import { setExpenseDeleteId } from "@src/store/ExpenseSlice.ts";
 import useDeleteExpense from "@src/repository/useDeleteExpense.ts";
+import { notNull } from "@src/utils/functions.ts";
 
 function ExpenseList() {
   const { t } = useTranslation("ExpenseList");
@@ -23,7 +24,8 @@ function ExpenseList() {
   const dispatch = useAppDispatch();
   const { q, categories, accounts, dir, sort } = useAppSelector((state) => state.expenseFilter);
   const { expenseDeleteId } = useAppSelector((state) => state.expense);
-  const { data: expenses, fetchNextPage } = useExpenses({ type, q, accounts, categories, sort, dir });
+  const { data, fetchNextPage } = useExpenses({ type, q, accounts, categories, sort, dir });
+  const expenses = data?.pages.flat().filter(notNull) || [];
   const { mutate: deleteExpense } = useDeleteExpense();
   const observerTarget = useRef(null);
   useObserver(observerTarget, fetchNextPage);
@@ -41,11 +43,7 @@ function ExpenseList() {
         <ToggleButtonWithIcon text={t("expenses")} icon={<RemoveIcon />} value="expense" />
         <ToggleButtonWithIcon text={t("transfers")} icon={<SwapHorizIcon />} value="transfer" />
       </ToggleButtonGroup>
-      {sort === "date" ? (
-        <ExpensesTableByDate expenses={expenses || []} />
-      ) : (
-        <ExpensesTable expenses={expenses || []} />
-      )}
+      {sort === "date" ? <ExpensesTableByDate expenses={expenses} /> : <ExpensesTable expenses={expenses} />}
       <div ref={observerTarget} />
       <ExpenseFilterDialog />
       <ConfirmDialog

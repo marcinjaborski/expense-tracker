@@ -2,7 +2,6 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import supabase from "@src/utils/supabase.ts";
 import { EXPENSE_PAGE_SIZE } from "@src/utils/constants.ts";
 import { Tables } from "@src/utils/database.types.ts";
-import { notNull } from "@src/utils/functions.ts";
 import queryKey, { ExpenseFilters } from "@src/utils/queryKey.ts";
 
 export type ExpenseReturnType = Tables<"expenses"> & {
@@ -27,7 +26,6 @@ function useExpenses({ type, q, sort, dir, accounts, categories }: ExpenseFilter
         .returns<ExpenseReturnType[]>()
         .then((result) => result.data);
     },
-    select: (data) => data.pages.flat().filter(notNull),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, lastPageParam) =>
       lastPage?.length === EXPENSE_PAGE_SIZE ? lastPageParam + 1 : null,
