@@ -1,14 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
+import { useQuery } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
-import { createClient } from "@/utils/supabase/client";
-
-export function useOutgoingTransfersByAccounts(endDate?: DateTime<true>) {
-  const supabase = createClient();
-
-  const endDateSql = endDate?.toSQLDate();
+function useOutgoingTransfersByAccounts(endDateObj?: DateTime<true>) {
+  const endDate = endDateObj?.toSQLDate();
   return useQuery({
-    queryKey: ["outgoingTransfersByAccounts", endDateSql],
-    queryFn: async () => supabase.rpc("get_outgoing_transfers_by_accounts", { date_end: endDateSql }),
+    queryKey: queryKey.expenses.outgoingTransfersByAccounts({ endDate }),
+    queryFn: async () => supabase.rpc("get_outgoing_transfers_by_accounts", { date_end: endDate }),
   });
 }
+
+export default useOutgoingTransfersByAccounts;

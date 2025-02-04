@@ -1,39 +1,37 @@
-import { ClassValue, clsx } from "clsx";
+import { Database } from "@src/utils/database.types.ts";
 import { DateTime, Interval } from "luxon";
-import { useTranslations } from "next-intl";
-import { twMerge } from "tailwind-merge";
-import { ZodIssue } from "zod";
+import { sortBy, unzip, zip } from "lodash";
+import { TooltipItem } from "chart.js";
 
-import { currencies, Currency, defaultCurrency } from "@/utils/constants";
-import { Functions } from "@/utils/types";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function notNull<T>(value: T | null): value is T {
+  return value !== null;
 }
 
-export function getModal(id: string) {
-  return document.getElementById(id) as HTMLDialogElement;
+export function updateArray<T extends { id?: number }>(startingArray: T[], newObjects: T[]) {
+  // Create a map for quick lookup of existing IDs in the starting array
+  const startingMap = new Map(startingArray.map((obj) => [obj.id, obj]));
+
+  // Process the new objects
+  newObjects.forEach((newObj) => {
+    if (startingMap.has(newObj.id)) {
+      // If the ID exists, override the existing object
+      Object.assign(startingMap.get(newObj.id)!, newObj);
+    } else {
+      // If the ID doesn't exist, append the new object
+      startingArray.push(newObj);
+    }
+  });
+
+  return startingArray;
 }
 
-export function getZodErrorMessage(t: ReturnType<typeof useTranslations>, field: string, errors: ZodIssue[]): string {
-  const fieldError = errors.find(({ path }) => path.includes(field));
-  return fieldError ? t(fieldError.message as any) : "";
-}
-
-export function getToday() {
-  return new Date().toISOString().split("T")[0];
-}
-
-export function notNull<T>(x: T | null): x is T {
-  return x !== null;
-}
-
-export function notUndefined<T>(x: T | undefined): x is T {
-  return x !== undefined;
-}
-
-export function toCurrency(value?: string): Currency {
-  return currencies.includes(value as Currency) ? (value as Currency) : defaultCurrency;
+export function downloadFile(content: string, name: string, type: string = "text/plain") {
+  const element = document.createElement("a");
+  const file = new Blob([content], { type });
+  element.href = URL.createObjectURL(file);
+  element.download = name;
+  document.body.appendChild(element);
+  element.click();
 }
 
 export function containsAll<T>(array: T[], values: T[]) {
@@ -45,7 +43,7 @@ export function formatDate(date: string) {
 }
 
 export function getSumByMonth(
-  collection: Functions["get_amount_by_category_and_date"]["Returns"],
+  collection: Database["public"]["Functions"]["get_amount_by_category_and_date"]["Returns"],
   dateStart: DateTime<true>,
   dateEnd: DateTime<true>,
 ): number[] {
@@ -60,3 +58,26 @@ export function getSumByMonth(
   });
   return Object.values(sums);
 }
+
+export function sortChartData(labels: string[], data: number[]) {
+  const arrays = sortBy(zip(labels, data), (item) => item[1]).reverse();
+  return unzip(arrays);
+}
+
+export const currencyFormat = (options?: Intl.NumberFormatOptions) =>
+  new Intl.NumberFormat("pl", { style: "currency", currency: "PLN", ...options });
+
+export const labelCallback = (context: TooltipItem<"line" | "pie">) => {
+  let label = context.dataset.label || "";
+
+  if (label) {
+    label += ": ";
+  }
+  if (typeof context.parsed === "number") {
+    label += currencyFormat().format(context.parsed);
+  }
+  if (context.parsed.y) {
+    label += currencyFormat().format(context.parsed.y);
+  }
+  return label;
+};

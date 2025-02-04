@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
-import { createClient } from "@/utils/supabase/client";
-
-export function useTotalDebts() {
-  const supabase = createClient();
-
+function useTotalDebts() {
   return useQuery({
-    queryKey: ["debts", "totalDebts"],
+    queryKey: queryKey.debts.total(),
     queryFn: async () => supabase.rpc("get_total_debts"),
   });
 }
+
+export default useTotalDebts;

@@ -1,14 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
+import { useQuery } from "@tanstack/react-query";
+import queryKey from "@src/utils/queryKey.ts";
+import supabase from "@src/utils/supabase.ts";
 
-import { createClient } from "@/utils/supabase/client";
+function useTotalExpenses(endDateObj?: DateTime<true>) {
+  const endDate = endDateObj?.toSQLDate();
 
-export function useTotalExpenses(endDate?: DateTime<true>) {
-  const supabase = createClient();
-
-  const endDateSql = endDate?.toSQLDate();
   return useQuery({
-    queryKey: ["totalExpenses", endDateSql],
-    queryFn: async () => supabase.rpc("get_total_expenses", { date_end: endDateSql }),
+    queryKey: queryKey.expenses.total(endDate),
+    queryFn: async () => supabase.rpc("get_total_expenses", { date_end: endDate }),
   });
 }
+
+export default useTotalExpenses;

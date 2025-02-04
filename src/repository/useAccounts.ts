@@ -1,16 +1,20 @@
-"use client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { createClient } from "@/utils/supabase/client";
-
-export const getAccountsClient = () => {
-  const supabase = createClient();
-  return supabase.from("accounts").select().order("favourite", { ascending: false }).throwOnError();
-};
-
-export const useAccounts = () =>
-  useQuery({
-    queryKey: ["accounts"],
-    queryFn: async () => getAccountsClient().then((result) => result.data),
+function useAccounts() {
+  return useSuspenseQuery({
+    queryKey: queryKey.accounts.all,
+    queryFn: async () =>
+      await supabase
+        .from("accounts")
+        .select()
+        .throwOnError()
+        .then((result) => {
+          if (result.error) throw result.error;
+          return result.data;
+        }),
   });
+}
+
+export default useAccounts;

@@ -1,24 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
+import { useQuery } from "@tanstack/react-query";
+import queryKey from "@src/utils/queryKey.ts";
+import supabase from "@src/utils/supabase.ts";
 
-import { createClient } from "@/utils/supabase/client";
-
-export function useAmountByCategoryAndDate(
-  startDate: DateTime<true>,
-  endDate: DateTime<true>,
+function useAmountByCategoryAndDate(
+  startDateObj: DateTime<true>,
+  endDateObj: DateTime<true>,
   upToCurrentDay?: boolean,
 ) {
-  const supabase = createClient();
+  const startDate = startDateObj.toSQLDate();
+  const endDate = endDateObj.toSQLDate();
 
-  const startDateSql = startDate.toSQLDate();
-  const endDateSql = endDate.toSQLDate();
   return useQuery({
-    queryKey: ["amountByCategoryAndDate", startDateSql, endDateSql, upToCurrentDay],
+    queryKey: queryKey.expenses.amountByCategoryAndDate({ startDate, endDate, upToCurrentDay }),
     queryFn: async () =>
       supabase.rpc("get_amount_by_category_and_date", {
-        date_start: startDateSql,
-        date_end: endDateSql,
+        date_start: startDate,
+        date_end: endDate,
         up_to_current_day: upToCurrentDay,
       }),
   });
 }
+
+export default useAmountByCategoryAndDate;

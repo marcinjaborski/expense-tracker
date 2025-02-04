@@ -1,5 +1,2 @@
-export const currencies = ["PLN", "EUR", "USD"] as const;
-export type Currency = (typeof currencies)[number];
-export const defaultCurrency = "PLN";
-
-export const defaultLocale = "pl";
+export const EXPENSE_PAGE_SIZE = 50;
+export const DEBT_PAGE_SIZE = 50;

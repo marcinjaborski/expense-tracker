@@ -1,19 +1,18 @@
-"use client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { createClient } from "@/utils/supabase/client";
-import { ExpenseOption, ExpenseType } from "@/utils/types";
-
-export const getCategoriesClient = (type: ExpenseType | null) => {
-  const supabase = createClient();
-  let query = supabase.from("categories").select().order("favourite", { ascending: false });
-  if (type) query = query.eq("type", type);
-  return query.throwOnError();
-};
-
-export const useCategories = (type: ExpenseOption = "all") =>
-  useQuery({
-    queryKey: ["categories", type],
-    queryFn: async () => getCategoriesClient(type === "all" ? null : type).then((result) => result.data),
+function useCategories() {
+  return useSuspenseQuery({
+    queryKey: queryKey.categories.all,
+    queryFn: async () => {
+      const query = supabase.from("categories").select().order("favourite", { ascending: false });
+      return await query.throwOnError().then((result) => {
+        if (result.error) throw result.error;
+        return result.data;
+      });
+    },
   });
+}
+
+export default useCategories;

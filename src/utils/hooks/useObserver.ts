@@ -1,8 +1,6 @@
-"use client";
-
 import { MutableRefObject, useEffect } from "react";
 
-export const useObserver = (observerTarget: MutableRefObject<Element | null>, onIntersect: () => void) => {
+function useObserver(observerTarget: MutableRefObject<Element | null>, onIntersect: () => void) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -18,4 +16,6 @@ export const useObserver = (observerTarget: MutableRefObject<Element | null>, on
       if (observerTargetNode) observer.unobserve(observerTargetNode);
     };
   }, [onIntersect, observerTarget]);
-};
+}
+
+export default useObserver;

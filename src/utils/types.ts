@@ -1,19 +1,9 @@
-import { z } from "zod";
+import { Database } from "@src/utils/database.types.ts";
 
-import { Database } from "@/utils/supabase/database.types";
-
-export const ExpenseTypes = z.enum(["expense", "income", "transfer"]);
-export type ExpenseType = z.infer<typeof ExpenseTypes>;
+export type ExpenseType = "expense" | "income" | "transfer";
 export type ExpenseOption = ExpenseType | "all";
 
-export function isExpenseType(value: string): value is ExpenseType {
-  return ExpenseTypes.safeParse(value).success;
-}
+export type Dir = "asc" | "desc";
+export type Sort = "date" | "amount";
 
-export type DatabaseTable = keyof Database["public"]["Tables"];
-
-export function isDatabaseTable(value: string | null): value is DatabaseTable {
-  return value !== null && ["expenses", "accounts", "categories", "debts"].includes(value);
-}
-
-export type Functions = Database["public"]["Functions"];
+export type TableType = keyof Database["public"]["Tables"];

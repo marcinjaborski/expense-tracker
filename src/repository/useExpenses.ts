@@ -1,39 +1,35 @@
-"use client";
-
 import { useInfiniteQuery } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import { EXPENSE_PAGE_SIZE } from "@src/utils/constants.ts";
+import { Tables } from "@src/utils/database.types.ts";
+import queryKey, { ExpenseFilters } from "@src/utils/queryKey.ts";
 
-import { DirOption, SortOption } from "@/utils/searchParams";
-import { createClient } from "@/utils/supabase/client";
-import { ExpenseOption } from "@/utils/types";
-
-import { buildExpensesQuery, EXPENSE_PAGE_SIZE } from "./buildExpensesQuery";
-
-export const getExpensesClient = (
-  type: ExpenseOption,
-  page: number,
-  q: string,
-  sort: SortOption,
-  dir: DirOption,
-  accounts: number[],
-  categories: number[],
-) => {
-  const supabase = createClient();
-  return buildExpensesQuery(supabase, type, page, q, sort, dir, accounts, categories).throwOnError();
+export type ExpenseReturnType = Tables<"expenses"> & {
+  category: Tables<"categories">;
+  account: Tables<"accounts">;
+  from_account: Tables<"accounts"> | null;
 };
 
-export const useExpenses = (
-  type: ExpenseOption,
-  q: string,
-  sort: SortOption,
-  dir: DirOption,
-  accounts: number[],
-  categories: number[],
-) =>
-  useInfiniteQuery({
-    queryKey: ["expenses", type, q, sort, dir, accounts, categories],
-    queryFn: async ({ pageParam }) =>
-      getExpensesClient(type, pageParam, q, sort, dir, accounts, categories).then((result) => result.data),
+function useExpenses({ type, q, sort, dir, accounts, categories }: ExpenseFilters) {
+  return useInfiniteQuery({
+    queryKey: queryKey.expenses.list({ type, q, sort, dir, accounts, categories }),
+    queryFn: async ({ pageParam }) => {
+      let query = supabase.from("expenses").select("*, category (*), account (*), from_account (*)");
+      if (type !== "all") query = query.eq("type", type);
+      if (q) query = query.ilike("description", `%${q}%`);
+      if (accounts?.length) query = query.in("account", accounts);
+      if (categories?.length) query = query.in("category", categories);
+      if (sort) query = query.order(sort, { ascending: dir === "asc" });
+      query = query.range(pageParam * EXPENSE_PAGE_SIZE, (pageParam + 1) * EXPENSE_PAGE_SIZE - 1);
+      return query
+        .throwOnError()
+        .returns<ExpenseReturnType[]>()
+        .then((result) => result.data);
+    },
     initialPageParam: 0,
-    getNextPageParam: (lastPage, __, lastPageParam) =>
+    getNextPageParam: (lastPage, _, lastPageParam) =>
       lastPage?.length === EXPENSE_PAGE_SIZE ? lastPageParam + 1 : null,
   });
+}
+
+export default useExpenses;

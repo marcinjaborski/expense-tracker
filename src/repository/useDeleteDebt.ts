@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import supabase from "@src/utils/supabase.ts";
+import queryKey from "@src/utils/queryKey.ts";
 
-import { createClient } from "@/utils/supabase/client";
-
-export function useDeleteDebt() {
-  const supabase = createClient();
+function useDeleteDebt() {
   const queryClient = useQueryClient();
 
-  return useMutation<unknown, Error, number>({
-    mutationFn: async (id) => supabase.from("debts").delete().eq("id", id).select(),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["debts"] }),
+  return useMutation({
+    mutationFn: async (id: number) => supabase.from("debts").delete().eq("id", id).select(),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey.debts.all }),
   });
 }
+
+export default useDeleteDebt;
