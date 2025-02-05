@@ -162,6 +162,8 @@ export default {
   },
   Feedback: {
     error: "Something went wrong",
+    usedAccount: "This account is used in expenses",
+    usedCategory: "This category is used in expenses",
   },
   Shared: {
     confirm: "Confirm",

@@ -1,6 +1,4 @@
-import { Resource } from "./i18n.ts";
-
-const resource: Resource = {
+const resource = {
   TopBar: {
     title: {
       default: "Tracker wydatków",
