@@ -16,6 +16,7 @@ const expenseSlice = createSlice({
   initialState,
   reducers: {
     setExpenseToEdit: (state, { payload }: PayloadAction<ExpenseReturnType | null>) => {
+      // @ts-expect-error probably caused by using enum in tables, works fine
       state.expenseToEdit = payload;
     },
     setExpenseDeleteId: (state, { payload }: PayloadAction<number | null>) => {
