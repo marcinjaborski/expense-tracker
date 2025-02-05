@@ -26,7 +26,7 @@ function ExpenseList() {
     (state) => state.expenseFilter,
   );
   const { expenseDeleteId } = useAppSelector((state) => state.expense);
-  const { data, fetchNextPage } = useExpenses({
+  const { data, fetchNextPage, isLoading } = useExpenses({
     type,
     q,
     accounts,
@@ -56,8 +56,11 @@ function ExpenseList() {
         <ToggleButtonWithIcon text={t("expenses")} icon={<RemoveIcon />} value="expense" />
         <ToggleButtonWithIcon text={t("transfers")} icon={<SwapHorizIcon />} value="transfer" />
       </ToggleButtonGroup>
-      {sort === "date" ? <ExpensesTableByDate expenses={expenses} /> : <ExpensesTable expenses={expenses} />}
-      <div ref={observerTarget} />
+      {sort === "date" ? (
+        <ExpensesTableByDate expenses={expenses} fetchNextPage={fetchNextPage} isLoading={isLoading} />
+      ) : (
+        <ExpensesTable expenses={expenses} fetchNextPage={fetchNextPage} isLoading={isLoading} />
+      )}
       <ExpenseFilterDialog />
       <ConfirmDialog
         title={t("confirmDelete")}
