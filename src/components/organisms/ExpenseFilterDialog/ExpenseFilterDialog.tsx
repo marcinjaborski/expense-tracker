@@ -1,6 +1,8 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Fab,
@@ -19,6 +21,11 @@ import {
   toggleDir,
   setQ,
   setSort,
+  setDateFrom,
+  setDateTo,
+  setAmountFrom,
+  setAmountTo,
+  resetFilters,
 } from "@src/store/ExpenseFilterSlice.ts";
 import { useTranslation } from "react-i18next";
 import { useDebouncedCallback } from "use-debounce";
@@ -28,6 +35,7 @@ import MultipleSelect from "@src/components/atoms/MultipleSelect";
 import { Sort } from "@src/utils/types.ts";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
+import AmountTextField from "@src/components/atoms/AmountTextField";
 
 function getMultipleSelectValue<T>(value: T) {
   return typeof value === "string" ? value.split(",").map(Number) : (value as number[]);
@@ -42,12 +50,18 @@ function ExpenseFilterDialog() {
     accounts: selectedAccounts,
     sort,
     dir,
+    dateFrom,
+    dateTo,
+    amountFrom,
+    amountTo,
   } = useAppSelector((state) => state.expenseFilter);
   const dispatch = useAppDispatch();
   const { data: categories } = useCategories();
   const { data: accounts } = useAccounts();
 
   const debouncedSetQ = useDebouncedCallback((value: string) => dispatch(setQ(value)), 1000);
+  const debouncedSetAmountFrom = useDebouncedCallback((value: number) => dispatch(setAmountFrom(value)), 1000);
+  const debouncedSetAmountTo = useDebouncedCallback((value: number) => dispatch(setAmountTo(value)), 1000);
 
   return (
     <>
@@ -101,8 +115,48 @@ function ExpenseFilterDialog() {
                 />
               </IconButton>
             </Stack>
+            <Stack direction="row" gap={1}>
+              <TextField
+                type="date"
+                label={t("dateFrom")}
+                sx={{ colorScheme: "dark" }}
+                slotProps={{ inputLabel: { shrink: true } }}
+                value={dateFrom}
+                onChange={(event) => dispatch(setDateFrom(event.target.value))}
+              />
+              <TextField
+                type="date"
+                label={t("dateTo")}
+                sx={{ colorScheme: "dark" }}
+                slotProps={{ inputLabel: { shrink: true } }}
+                value={dateTo}
+                onChange={(event) => dispatch(setDateTo(event.target.value))}
+              />
+            </Stack>
+            <Stack direction="row" gap={1}>
+              <AmountTextField
+                label={t("amountFrom")}
+                defaultValue={amountFrom}
+                myCurrencyInputProps={{
+                  onValueChange: (value) => debouncedSetAmountFrom(Number(value || 0)),
+                }}
+              />
+              <AmountTextField
+                label={t("amountTo")}
+                defaultValue={amountTo}
+                myCurrencyInputProps={{
+                  onValueChange: (value) => debouncedSetAmountTo(Number(value || 0)),
+                }}
+              />
+            </Stack>
           </Stack>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => dispatch(resetFilters())}>{t("clear")}</Button>
+          <Button variant="contained" onClick={() => dispatch(closeDialog())}>
+            {t("close")}
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );

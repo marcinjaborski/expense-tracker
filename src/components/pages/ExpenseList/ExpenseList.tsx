@@ -22,9 +22,22 @@ function ExpenseList() {
   const { t } = useTranslation("ExpenseList");
   const [type, setType] = useState<ExpenseOption>("expense");
   const dispatch = useAppDispatch();
-  const { q, categories, accounts, dir, sort } = useAppSelector((state) => state.expenseFilter);
+  const { q, categories, accounts, dir, sort, dateFrom, dateTo, amountFrom, amountTo } = useAppSelector(
+    (state) => state.expenseFilter,
+  );
   const { expenseDeleteId } = useAppSelector((state) => state.expense);
-  const { data, fetchNextPage } = useExpenses({ type, q, accounts, categories, sort, dir });
+  const { data, fetchNextPage } = useExpenses({
+    type,
+    q,
+    accounts,
+    categories,
+    sort,
+    dir,
+    dateFrom,
+    dateTo,
+    amountFrom,
+    amountTo,
+  });
   const expenses = data?.pages.flat().filter(notNull) || [];
   const { mutate: deleteExpense } = useDeleteExpense();
   const observerTarget = useRef(null);

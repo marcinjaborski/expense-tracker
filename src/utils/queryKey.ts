@@ -7,6 +7,10 @@ export type ExpenseFilters = {
   dir?: Dir;
   accounts?: number[];
   categories?: number[];
+  dateFrom?: string;
+  dateTo?: string;
+  amountFrom?: number;
+  amountTo?: number;
 };
 
 export type AmountByCategoryAndDateFilters = {
