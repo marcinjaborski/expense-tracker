@@ -1,5 +1,15 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { Dialog, DialogContent, DialogTitle, Fab, IconButton, MenuItem, Stack, TextField } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Fab,
+  IconButton,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import {
   closeDialog,
@@ -17,6 +27,7 @@ import useAccounts from "@src/repository/useAccounts.ts";
 import MultipleSelect from "@src/components/atoms/MultipleSelect";
 import { Sort } from "@src/utils/types.ts";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import CategoryIcon from "@src/components/atoms/CategoryIcon";
 
 function getMultipleSelectValue<T>(value: T) {
   return typeof value === "string" ? value.split(",").map(Number) : (value as number[]);
@@ -56,7 +67,15 @@ function ExpenseFilterDialog() {
             <MultipleSelect
               label={t("categories")}
               value={selectedCategories}
-              values={categories}
+              values={categories.map((category) => ({
+                id: category.id,
+                name: (
+                  <Typography sx={{ display: "flex", gap: 2 }}>
+                    <CategoryIcon icon={category.icon} />
+                    {category.name}
+                  </Typography>
+                ),
+              }))}
               onChange={(event) => dispatch(setCategories(getMultipleSelectValue(event.target.value)))}
             />
             <MultipleSelect

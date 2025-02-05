@@ -1,4 +1,4 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { setCategoryDialogOpen } from "@src/store/DialogSlice.ts";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,6 +8,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useAppDispatch } from "@src/store/store.ts";
 import { Tables } from "@src/utils/database.types.ts";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
+import CategoryIcon from "@src/components/atoms/CategoryIcon";
 
 type Props = {
   categories: Tables<"categories">[];
@@ -31,7 +32,12 @@ function CategoryDraggableList({ categories, setCategoryToEdit, setCategoryDelet
     <DraggableList
       items={categories.map((category) => ({
         id: category.id,
-        primary: category.name,
+        primary: (
+          <Typography sx={{ display: "flex", gap: 2 }}>
+            <CategoryIcon icon={category.icon} />
+            {category.name}
+          </Typography>
+        ),
         listItemProps: {
           sx: { pr: 10 },
           secondaryAction: (

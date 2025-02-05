@@ -9,11 +9,11 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { ComponentProps } from "react";
+import { ComponentProps, ReactNode } from "react";
 
 type Props = ComponentProps<typeof Select<number[]>> & {
   label: string;
-  values: { id: number; name: string }[];
+  values: { id: number; name: ReactNode }[];
 };
 
 function MultipleSelect({ label, value, values, ...other }: Props) {

@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Button, MenuItem, Stack } from "@mui/material";
+import { Button, MenuItem, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
@@ -14,6 +14,7 @@ import { setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
 import { Enums } from "@src/utils/database.types.ts";
+import CategoryIcon from "@src/components/atoms/CategoryIcon";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
@@ -101,7 +102,10 @@ function CreateExpenseForm() {
       >
         {filteredCategories.map((category) => (
           <MenuItem value={category.id} key={category.id}>
-            {category.name}
+            <Typography sx={{ display: "flex", gap: 2 }}>
+              <CategoryIcon icon={category.icon} />
+              {category.name}
+            </Typography>
           </MenuItem>
         ))}
       </ControlledTextField>
