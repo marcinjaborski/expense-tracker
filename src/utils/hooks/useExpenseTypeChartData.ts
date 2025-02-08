@@ -5,6 +5,7 @@ import { Interval } from "luxon";
 import { colors } from "@mui/material";
 import { formatDate, getSumByMonth } from "@src/utils/functions.ts";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
+import { CHART_POINT_RADIUS, CHART_TENSION } from "@src/utils/constants.ts";
 
 function useExpenseTypeChartData() {
   const { t } = useTranslation("Dashboard");
@@ -29,16 +30,16 @@ function useExpenseTypeChartData() {
           data: incomesByMonth,
           borderColor: colors.lightGreen["500"],
           backgroundColor: colors.lightGreen["300"],
-          tension: 0.3,
-          pointRadius: 5,
+          tension: CHART_TENSION,
+          pointRadius: CHART_POINT_RADIUS,
         },
         {
           label: t("expense"),
           data: expensesByMonth,
           borderColor: colors.red["500"],
           backgroundColor: colors.red["300"],
-          tension: 0.3,
-          pointRadius: 5,
+          tension: CHART_TENSION,
+          pointRadius: CHART_POINT_RADIUS,
         },
       ],
     },

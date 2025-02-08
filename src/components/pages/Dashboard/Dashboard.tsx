@@ -6,6 +6,8 @@ import { DashboardContext } from "@src/utils/context/dashboardContext.ts";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import TotalMoneyPerAccountPieChart from "@src/components/organisms/TotalMoneyPerAccountPieChart";
+import CategoriesLineChart from "@src/components/organisms/CategoriesLineChart";
+import { Divider, Stack } from "@mui/material";
 
 function Dashboard() {
   const contextValue = useMemo(
@@ -18,11 +20,14 @@ function Dashboard() {
 
   return (
     <DashboardContext.Provider value={contextValue}>
-      <DashboardValues />
-      <ExpenseTypeLineChart />
-      <TotalMoneyOverTimeChart />
-      <CategoriesPieChart type="expense" />
-      <TotalMoneyPerAccountPieChart />
+      <Stack gap={1} divider={<Divider />}>
+        <DashboardValues />
+        <ExpenseTypeLineChart />
+        <TotalMoneyOverTimeChart />
+        <CategoriesLineChart type="expense" />
+        <CategoriesPieChart type="expense" />
+        <TotalMoneyPerAccountPieChart />
+      </Stack>
     </DashboardContext.Provider>
   );
 }
