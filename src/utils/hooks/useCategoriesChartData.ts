@@ -18,8 +18,8 @@ function useCategoriesChartData(expenseType: Enums<"expense_type">) {
   return {
     ...query,
     data: {
-      labels: sortedLabels,
-      datasets: [{ data: sortedData }],
+      labels: sortedLabels || [],
+      datasets: [{ data: sortedData || [] }],
     },
   };
 }

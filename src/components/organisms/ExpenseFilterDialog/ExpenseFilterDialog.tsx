@@ -118,6 +118,7 @@ function ExpenseFilterDialog() {
             <Stack direction="row" gap={1}>
               <TextField
                 type="date"
+                fullWidth
                 label={t("dateFrom")}
                 sx={{ colorScheme: "dark" }}
                 slotProps={{ inputLabel: { shrink: true } }}
@@ -126,6 +127,7 @@ function ExpenseFilterDialog() {
               />
               <TextField
                 type="date"
+                fullWidth
                 label={t("dateTo")}
                 sx={{ colorScheme: "dark" }}
                 slotProps={{ inputLabel: { shrink: true } }}

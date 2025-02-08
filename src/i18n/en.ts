@@ -42,6 +42,8 @@ export default {
     averageExpenses: "Average expenses",
     totalMoney: "Total money",
     currentNetProfit: "Net profit",
+    from: "From",
+    to: "To",
   },
   CreateExpense: {
     amount: "Amount",

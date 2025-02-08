@@ -28,8 +28,8 @@ function useTotalMoneyPerAccountChartData() {
   return {
     ...totalExpensesQuery,
     data: {
-      labels: sortedLabels,
-      datasets: [{ data: sortedData }],
+      labels: sortedLabels || [],
+      datasets: [{ data: sortedData || [] }],
     },
   };
 }

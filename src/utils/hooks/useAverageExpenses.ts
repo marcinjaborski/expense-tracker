@@ -1,10 +1,15 @@
 import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDate.ts";
 import { groupBy, mean, sumBy } from "lodash";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
+import { DateTime } from "luxon";
 
 function useAverageExpenses() {
   const { startDate, endDate } = useDashboardContext();
-  const { data: amounts, isLoading } = useAmountByCategoryAndDate(startDate, endDate, true);
+  const { data: amounts, isLoading } = useAmountByCategoryAndDate(
+    startDate,
+    endDate,
+    endDate.hasSame(DateTime.now(), "month"),
+  );
 
   if (isLoading || !amounts) return NaN;
 

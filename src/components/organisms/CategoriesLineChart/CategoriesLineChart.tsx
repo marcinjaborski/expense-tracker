@@ -3,6 +3,7 @@ import {
   CategoryScale,
   Chart as ChartJS,
   ChartOptions,
+  Colors,
   Legend,
   LinearScale,
   LineElement,
@@ -14,7 +15,7 @@ import { currencyFormat, labelCallback } from "@src/utils/functions.ts";
 import { Enums } from "@src/utils/database.types.ts";
 import useCategoriesLineChartData from "@src/utils/hooks/useCategoriesLineChartData.ts";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Colors);
 
 const options: ChartOptions<"line"> = {
   responsive: true,
