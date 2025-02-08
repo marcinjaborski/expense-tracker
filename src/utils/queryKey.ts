@@ -24,6 +24,7 @@ export type OutgoingTransfersByAccountsFilters = {
 };
 
 export type DebtFilters = {
+  person: string;
   showSettled: boolean;
 };
 

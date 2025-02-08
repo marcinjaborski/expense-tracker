@@ -9,10 +9,10 @@ import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setDebtDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect, useState } from "react";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
-import useDebts from "@src/repository/useDebts.ts";
 import { uniq } from "lodash";
 import PersonIcon from "@mui/icons-material/Person";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import useTotalDebts from "@src/repository/useTotalDebts.ts";
 
 type FormData = {
   person: string;
@@ -32,8 +32,8 @@ function DebtDialog({ debt, resetDebt }: Props) {
   const { debtDialogOpen } = useAppSelector((state) => state.dialog);
   const { register, handleSubmit, reset, control } = useForm<FormData>();
   const { mutate: upsertDebts } = useOptimisticUpsert("debts");
-  const { data: debts } = useDebts({ showSettled: true });
-  const persons = uniq(debts?.map((debt) => debt.person)) || [];
+  const { data: totalDebts } = useTotalDebts();
+  const persons = uniq(Object.keys(totalDebts || {}));
 
   useEffect(() => {
     if (debt) reset({ person: debt.person, amount: Math.abs(debt.amount), description: debt.description });
@@ -41,9 +41,8 @@ function DebtDialog({ debt, resetDebt }: Props) {
   }, [reset, debt]);
 
   const onSubmit = (data: FormData) => {
-    upsertDebts(
-      debt?.id ? [{ ...data, id: debt.id, amount: type === "reimburse" ? -data.amount : data.amount }] : [data],
-    );
+    if (type === "reimburse") data.amount *= -1;
+    upsertDebts(debt?.id ? [{ ...data, id: debt.id }] : [data]);
     dispatch(setDebtDialogOpen(false));
   };
 
