@@ -6,3 +6,4 @@ export const CHART_TENSION = 0.3;
 export const CHART_POINT_RADIUS = 5;
 export const CHART_PIE_RADIUS = 125;
 export const MONTH_FIELD_FORMAT = "yyyy-MM";
+export const EXPORT_LIMIT = 1000;
