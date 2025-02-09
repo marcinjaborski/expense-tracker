@@ -12,22 +12,34 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["favicon.ico", "apple-icon.png"],
+      includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
         name: "Expense Tracker",
-        short_name: "Expenses",
+        short_name: "Expense Tracker",
         description: "Application to monitor and track expenses",
         theme_color: "#f49ac2",
         icons: [
           {
-            src: "icon-192x192.png",
+            src: "icon-192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "icon-512x512.png",
+            src: "icon-512.png",
             sizes: "512x512",
             type: "image/png",
+          },
+          {
+            src: "icon-192-maskable.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
+            src: "icon-512-maskable.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },
