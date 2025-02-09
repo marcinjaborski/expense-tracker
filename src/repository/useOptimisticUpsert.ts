@@ -9,7 +9,7 @@ function useOptimisticUpsert(table: TableType) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: TablesUpdate<typeof table>[]) => supabase.from(table).upsert(data),
+    mutationFn: async (data: TablesUpdate<typeof table>[]) => supabase.from(table).upsert(data).throwOnError(),
     onMutate: async (newData) => {
       await queryClient.cancelQueries({ queryKey: queryKey[table].all });
       const previousData = (queryClient.getQueryData(queryKey[table].all) as TablesUpdate<typeof table>[]) || [];

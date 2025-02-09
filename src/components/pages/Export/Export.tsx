@@ -29,7 +29,7 @@ function Export() {
         dispatch(showFeedback({ message: t("exportError"), type: "error" }));
         return;
       }
-      const fileCounter = offset === 0 ? "" : `_${String(offset / 1000 + 1)}`;
+      const fileCounter = offset === 0 ? "" : `_${String(offset / EXPORT_LIMIT + 1)}`;
       downloadFile(csv, `${table}${fileCounter}_${DateTime.now().toFormat("dd_MM_yyyy")}.csv`, "application/text");
     }
   };

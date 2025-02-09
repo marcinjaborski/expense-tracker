@@ -6,7 +6,7 @@ function useDeleteDebt() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: number) => supabase.from("debts").delete().eq("id", id).select(),
+    mutationFn: async (id: number) => supabase.from("debts").delete().eq("id", id).select().throwOnError(),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey.debts.all }),
   });
 }

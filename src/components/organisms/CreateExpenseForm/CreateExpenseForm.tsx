@@ -1,11 +1,22 @@
-import { Controller, useForm } from "react-hook-form";
-import { Button, MenuItem, Stack, Typography } from "@mui/material";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Fab,
+  IconButton,
+  List,
+  ListItem,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CreateExpenseFormData } from "./types.ts";
 import useAccounts from "@src/repository/useAccounts.ts";
 import useCategories from "@src/repository/useCategories.ts";
 import { useEffect, useState } from "react";
-import AmountTextField from "@src/components/atoms/AmountTextField";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
@@ -15,11 +26,19 @@ import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
 import { Enums } from "@src/utils/database.types.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
+import BottomFab from "@src/components/atoms/BottomFab";
+import ListIcon from "@mui/icons-material/List";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
+import { CompoundData } from "@src/utils/types.ts";
+import { sumBy } from "lodash";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
   const { expenseToEdit } = useAppSelector((state) => state.expense);
   const [selectedType, setSelectedType] = useState<Enums<"expense_type">>("expense");
+  const [compoundDialogOpen, setCompoundDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   const { data: categories } = useCategories();
@@ -29,6 +48,7 @@ function CreateExpenseForm() {
     control,
     watch,
     handleSubmit,
+    setValue,
     reset: resetForm,
   } = useForm<CreateExpenseFormData>({
     defaultValues: {
@@ -39,10 +59,14 @@ function CreateExpenseForm() {
       amount: 0,
       date: DateTime.now().toSQLDate(),
       description: "",
+      compound: [],
     },
   });
 
+  const { fields, append, remove } = useFieldArray({ control, name: "compound" });
+
   const formType = watch("type");
+  const compound = watch("compound");
 
   useEffect(() => {
     if (expenseToEdit)
@@ -52,14 +76,25 @@ function CreateExpenseForm() {
         category: expenseToEdit.category.id,
         date: expenseToEdit.date,
         description: expenseToEdit.description,
-        from_account: expenseToEdit.from_account ?? undefined,
+        from_account: expenseToEdit.from_account?.id,
         type: expenseToEdit.type,
+        compound: expenseToEdit.compound as CompoundData,
       });
   }, [expenseToEdit, resetForm]);
 
   useEffect(() => {
     setSelectedType(formType);
-  }, [formType]);
+    if (filteredCategories.at(0)) setValue("category", filteredCategories[0].id);
+  }, [filteredCategories, formType, setValue]);
+
+  const onCompoundDialogClose = () => {
+    setCompoundDialogOpen(false);
+    if (compound && compound.length > 0)
+      setValue(
+        "amount",
+        sumBy(compound, ({ amount }) => Number(amount)),
+      );
+  };
 
   const { mutate: upsertExpenses, status, reset: resetUpsert } = useOptimisticUpsert("expenses");
 
@@ -137,24 +172,15 @@ function CreateExpenseForm() {
           </MenuItem>
         ))}
       </ControlledTextField>
-      <Controller
+      <ControlledAmountTextField
         control={control}
         name="amount"
         rules={{
           required: true,
-          min: 0.01,
         }}
-        render={({ field: { value, onChange }, fieldState: { error } }) => (
-          <AmountTextField
-            fullWidth
-            label={t("amount")}
-            value={value}
-            error={!!error}
-            myCurrencyInputProps={{
-              onValueChange: (value) => onChange(value || 0),
-            }}
-          />
-        )}
+        fullWidth
+        label={t("amount")}
+        disabled={compound && compound.length > 0}
       />
       <ControlledTextField
         control={control}
@@ -169,6 +195,45 @@ function CreateExpenseForm() {
       <Button type="submit" variant="contained">
         {expenseToEdit ? t("update") : t("create")}
       </Button>
+
+      <BottomFab onClick={() => setCompoundDialogOpen(true)}>
+        <ListIcon />
+      </BottomFab>
+
+      <Dialog open={compoundDialogOpen} onClose={onCompoundDialogClose}>
+        <DialogTitle>{t("compoundTitle")}</DialogTitle>
+        <DialogContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 2 }}>
+          <List>
+            {fields.map((field, index) => (
+              <ListItem key={field.id} sx={{ gap: 1 }} disableGutters>
+                <ControlledAmountTextField
+                  control={control}
+                  name={`compound.${index}.amount`}
+                  rules={{
+                    required: true,
+                  }}
+                  label={t("amount")}
+                  hideMoneyIcon
+                  sx={{ flex: 2 }}
+                />
+                <ControlledTextField
+                  control={control}
+                  rules={{ required: true }}
+                  name={`compound.${index}.description`}
+                  label={t("description")}
+                  sx={{ flex: 3 }}
+                />
+                <IconButton onClick={() => remove(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItem>
+            ))}
+          </List>
+          <Fab color="primary" size="small" onClick={() => append({ amount: 0, description: "" })}>
+            <AddIcon />
+          </Fab>
+        </DialogContent>
+      </Dialog>
     </Stack>
   );
 }

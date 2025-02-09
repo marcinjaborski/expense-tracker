@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Fab,
   IconButton,
   MenuItem,
   Stack,
@@ -36,6 +35,7 @@ import { Sort } from "@src/utils/types.ts";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
 import AmountTextField from "@src/components/atoms/AmountTextField";
+import BottomFab from "@src/components/atoms/BottomFab";
 
 function getMultipleSelectValue<T>(value: T) {
   return typeof value === "string" ? value.split(",").map(Number) : (value as number[]);
@@ -65,14 +65,9 @@ function ExpenseFilterDialog() {
 
   return (
     <>
-      <Fab
-        color="primary"
-        size="medium"
-        sx={{ position: "fixed", right: "1rem", bottom: "4.375rem" }}
-        onClick={() => dispatch(openDialog())}
-      >
+      <BottomFab onClick={() => dispatch(openDialog())}>
         <FilterListIcon />
-      </Fab>
+      </BottomFab>
       <Dialog open={open} onClose={() => dispatch(closeDialog())}>
         <DialogTitle>{t("filtersModal")}</DialogTitle>
         <DialogContent>

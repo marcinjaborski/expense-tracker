@@ -3,7 +3,6 @@ import { Autocomplete, IconButton, Stack, TextField } from "@mui/material";
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
-import AmountTextField from "@src/components/atoms/AmountTextField";
 import { Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setDebtDialogOpen } from "@src/store/DialogSlice.ts";
@@ -13,6 +12,8 @@ import { uniq } from "lodash";
 import PersonIcon from "@mui/icons-material/Person";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import useTotalDebts from "@src/repository/useTotalDebts.ts";
+import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
+import ControlledTextField from "@src/components/atoms/ControlledTextField";
 
 type FormData = {
   person: string;
@@ -30,7 +31,7 @@ function DebtDialog({ debt, resetDebt }: Props) {
   const dispatch = useAppDispatch();
   const [type, setType] = useState<"borrow" | "reimburse">("borrow");
   const { debtDialogOpen } = useAppSelector((state) => state.dialog);
-  const { register, handleSubmit, reset, control } = useForm<FormData>();
+  const { handleSubmit, reset, control } = useForm<FormData>();
   const { mutate: upsertDebts } = useOptimisticUpsert("debts");
   const { data: totalDebts } = useTotalDebts();
   const persons = uniq(Object.keys(totalDebts || {}));
@@ -88,22 +89,13 @@ function DebtDialog({ debt, resetDebt }: Props) {
               />
             )}
           />
-
-          <Controller
+          <ControlledAmountTextField control={control} name="amount" label={t("amount")} />
+          <ControlledTextField
             control={control}
-            name="amount"
-            render={({ field: { value, onChange } }) => (
-              <AmountTextField
-                value={value}
-                myCurrencyInputProps={{
-                  onValueChange: (value) => onChange(value || 0),
-                }}
-                label={t("amount")}
-              />
-            )}
+            name="description"
+            rules={{ required: true }}
+            label={t("description")}
           />
-
-          <TextField label={t("description")} {...register("description", { required: true })} />
         </>
       }
       submitText={t("createDebt")}

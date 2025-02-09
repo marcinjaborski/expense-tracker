@@ -1,7 +1,8 @@
-import { Database } from "@src/utils/database.types.ts";
+import { Database, Json } from "@src/utils/database.types.ts";
 import { DateTime, Interval } from "luxon";
 import { sortBy, unzip, zip } from "lodash";
 import { TooltipItem } from "chart.js";
+import { CompoundData } from "@src/utils/types.ts";
 
 export function notNull<T>(value: T | null): value is T {
   return value !== null;
@@ -80,4 +81,12 @@ export const labelCallback = (context: TooltipItem<"line" | "pie">) => {
     label += currencyFormat().format(context.parsed.y);
   }
   return label;
+};
+
+export const isValidCompound = (compound: Json): compound is CompoundData => {
+  if (!compound || !Array.isArray(compound)) return false;
+  if (compound.length === 0) return false;
+  return compound.every(
+    (element) => typeof element === "object" && element !== null && "amount" in element && "description" in element,
+  );
 };

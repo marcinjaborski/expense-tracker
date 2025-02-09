@@ -1,14 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
-import { TextField } from "@mui/material";
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
-import { Controller, useForm } from "react-hook-form";
-import AmountTextField from "@src/components/atoms/AmountTextField";
+import { useForm } from "react-hook-form";
 import { Tables } from "@src/utils/database.types.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setAccountDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect } from "react";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
+import ControlledTextField from "@src/components/atoms/ControlledTextField";
+import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
 
 type FormData = {
   name: string;
@@ -24,7 +24,7 @@ function AccountDialog({ account, resetAccount }: Props) {
   const { t } = useTranslation("Accounts");
   const dispatch = useAppDispatch();
   const { accountDialogOpen } = useAppSelector((state) => state.dialog);
-  const { register, handleSubmit, reset, control } = useForm<FormData>();
+  const { handleSubmit, reset, control } = useForm<FormData>();
   const { mutate: upsertAccounts } = useOptimisticUpsert("accounts");
 
   useEffect(() => {
@@ -52,20 +52,8 @@ function AccountDialog({ account, resetAccount }: Props) {
       title={t("createAccountTitle")}
       content={
         <>
-          <TextField label={t("name")} {...register("name", { required: true })} />
-          <Controller
-            control={control}
-            name="initialBalance"
-            render={({ field: { value, onChange } }) => (
-              <AmountTextField
-                value={value}
-                myCurrencyInputProps={{
-                  onValueChange: (value) => onChange(value || 0),
-                }}
-                label={t("initialBalance")}
-              />
-            )}
-          />
+          <ControlledTextField control={control} name="name" rules={{ required: true }} label={t("name")} />
+          <ControlledAmountTextField control={control} name="initialBalance" label={t("initialBalance")} />
         </>
       }
       submitText={t("createAccount")}

@@ -8,4 +8,5 @@ export type CreateExpenseFormData = {
   description: string;
   from_account: number;
   type: Enums<"expense_type">;
+  compound?: { amount: number; description: string }[];
 };

@@ -63,6 +63,7 @@ export default {
     theSameAccounts: "Cannot transfer money to the same account",
     success: "Expense created",
     error: "Could not create expense",
+    compoundTitle: "Compounds",
   },
   ExpenseList: {
     title: "List of transactions",

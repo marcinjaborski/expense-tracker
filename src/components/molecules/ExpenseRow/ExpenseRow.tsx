@@ -1,4 +1,4 @@
-import { Box, Menu, MenuItem, PopoverPosition, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, Menu, MenuItem, PopoverPosition, Stack, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 import Amount from "@src/components/atoms/Amount";
 import { ExpenseReturnType } from "@src/repository/useExpenses.ts";
 import { LongPressReactEvents, useLongPress } from "use-long-press";
@@ -9,6 +9,7 @@ import { setExpenseDeleteId, setExpenseToEdit } from "@src/store/ExpenseSlice.ts
 import { useNavigate } from "react-router-dom";
 import routes from "@src/utils/routes.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
+import CompoundTooltip from "@src/components/atoms/CompoundTooltip";
 
 type ExpenseRowProps = {
   expense: ExpenseReturnType;
@@ -47,7 +48,12 @@ function ExpenseRow({ expense }: ExpenseRowProps) {
   return (
     <>
       <TableRow ref={rowRef} {...bind()} hover={holding}>
-        <TableCell>{expense.description}</TableCell>
+        <TableCell>
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {expense.description}
+            <CompoundTooltip compound={expense.compound} />
+          </Stack>
+        </TableCell>
         <TableCell>
           <Amount number={expense.amount} red={expense.type === "expense"} green={expense.type === "income"} />
         </TableCell>

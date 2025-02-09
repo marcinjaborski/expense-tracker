@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import ActionDialog from "@src/components/molecules/ActionDialog";
 import { useTranslation } from "react-i18next";
 import { Controller, useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import categoryIcon from "@src/utils/categoryIcon.ts";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
+import ControlledTextField from "@src/components/atoms/ControlledTextField";
 
 type FormData = {
   name: string;
@@ -26,7 +27,7 @@ function CategoryDialog({ category, resetCategory }: Props) {
   const { t } = useTranslation("Categories");
   const dispatch = useAppDispatch();
   const { categoryDialogOpen } = useAppSelector((state) => state.dialog);
-  const { register, control, handleSubmit, reset } = useForm<FormData>();
+  const { control, handleSubmit, reset } = useForm<FormData>();
   const { mutate: upsertCategories } = useOptimisticUpsert("categories");
 
   useEffect(() => {
@@ -54,7 +55,7 @@ function CategoryDialog({ category, resetCategory }: Props) {
       title={t("createCategoryTitle")}
       content={
         <>
-          <TextField label={t("name")} {...register("name", { required: true })} />
+          <ControlledTextField control={control} name="name" rules={{ required: true }} label={t("name")} />
           <Controller
             control={control}
             name="type"
