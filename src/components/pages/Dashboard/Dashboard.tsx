@@ -59,11 +59,13 @@ function Dashboard() {
             onChange={(event) => setEndDate(event.target.value)}
           />
         </Stack>
-        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "center" }}>
-          <Typography>{t("real")}</Typography>
-          <Switch checked={planned} onChange={(_, checked) => setPlanned(checked)} />
-          <Typography>{t("planned")}</Typography>
-        </Stack>
+        {DateTime.fromFormat(endDate, MONTH_FIELD_FORMAT).hasSame(DateTime.now(), "month") ? (
+          <Stack direction="row" sx={{ alignItems: "center", justifyContent: "center" }}>
+            <Typography>{t("real")}</Typography>
+            <Switch checked={planned} onChange={(_, checked) => setPlanned(checked)} />
+            <Typography>{t("planned")}</Typography>
+          </Stack>
+        ) : null}
         <DashboardValues />
         <ExpenseTypeLineChart />
         <TotalMoneyOverTimeChart />

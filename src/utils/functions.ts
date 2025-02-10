@@ -39,6 +39,8 @@ export function containsAll<T>(array: T[], values: T[]) {
   return values.every((value) => array.includes(value));
 }
 
+export const isCurrentMonth = (date: string) => DateTime.fromSQL(date).hasSame(DateTime.now(), "month");
+
 export function formatDate(date: string) {
   return new Date(date).toLocaleDateString(undefined, { year: "numeric", month: "2-digit" });
 }
@@ -47,6 +49,7 @@ export function getSumByMonth(
   collection: Database["public"]["Functions"]["get_amount_by_category_and_date"]["Returns"],
   dateStart: DateTime<true>,
   dateEnd: DateTime<true>,
+  plannedValue: number = 0,
 ): number[] {
   const sums = Object.fromEntries(
     Interval.fromDateTimes(dateStart, dateEnd)
@@ -55,7 +58,7 @@ export function getSumByMonth(
       .map((month) => [month.toSQLDate(), 0]),
   );
   collection?.forEach((element) => {
-    sums[element.month.split(" ")[0]] += element.sum;
+    sums[element.month.split(" ")[0]] += element.sum + (isCurrentMonth(element.month) ? plannedValue : 0);
   });
   return Object.values(sums);
 }
@@ -93,5 +96,5 @@ export const isValidCompound = (compound: Json): compound is CompoundData => {
 
 export const isPlannedExpenseRealized = (realized: Tables<"planned_expenses">["realized"]) => {
   if (!realized) return false;
-  return DateTime.fromSQL(realized).hasSame(DateTime.now(), "month");
+  return isCurrentMonth(realized);
 };

@@ -5,11 +5,12 @@ import { Interval } from "luxon";
 import { formatDate, getSumByMonth } from "@src/utils/functions.ts";
 import { Enums } from "@src/utils/database.types.ts";
 import { CHART_POINT_RADIUS, CHART_TENSION } from "@src/utils/constants.ts";
+import useUnrealizedPlannedExpensesByCategory from "@src/utils/hooks/useUnrealizedPlannedExpensesByCategory.ts";
 
 function useCategoriesLineChartData(expenseType: Enums<"expense_type">) {
   const { startDate, endDate } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
-
+  const plannedExpenses = useUnrealizedPlannedExpensesByCategory();
   const expensesByCategory = groupBy(
     query.data?.data?.filter(({ type }) => type === expenseType),
     "category",
@@ -25,7 +26,7 @@ function useCategoriesLineChartData(expenseType: Enums<"expense_type">) {
     })
     .map(([category, data], index) => ({
       label: category,
-      data: getSumByMonth(data, startDate, endDate),
+      data: getSumByMonth(data, startDate, endDate, plannedExpenses[category]),
       tension: CHART_TENSION,
       pointRadius: CHART_POINT_RADIUS,
       hidden: index > 2,

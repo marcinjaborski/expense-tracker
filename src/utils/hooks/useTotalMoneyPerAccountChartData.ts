@@ -4,12 +4,14 @@ import useAccounts from "@src/repository/useAccounts.ts";
 import useTotalExpenses from "@src/repository/useTotalExpenses.ts";
 import useOutgoingTransfersByAccounts from "@src/repository/useOutgoingTransfersByAccounts.ts";
 import { sortChartData } from "@src/utils/functions.ts";
+import useUnrealizedPlannedExpensesByAccount from "@src/utils/hooks/useUnrealizedPlannedExpensesByAccount.ts";
 
 function useTotalMoneyPerAccountChartData() {
   const { endDate } = useDashboardContext();
   const { data: accounts } = useAccounts();
   const totalExpensesQuery = useTotalExpenses(endDate);
   const outgoingTransfersByAccountsQuery = useOutgoingTransfersByAccounts(endDate);
+  const plannedExpenses = useUnrealizedPlannedExpensesByAccount();
 
   const outgoingTransfersByAccounts = outgoingTransfersByAccountsQuery.data?.data || [];
   const expensesByAccount = groupBy(totalExpensesQuery.data?.data, "account");
@@ -20,7 +22,9 @@ function useTotalMoneyPerAccountChartData() {
     const incomingTransfers = accountExpenses.find((expense) => expense.type === "transfer")?.sum || 0;
     const outgoingTransfers =
       outgoingTransfersByAccounts.find((transfer) => transfer.from_account === accountName)?.sum || 0;
-    return initialBalance + incomes - expenses + incomingTransfers - outgoingTransfers;
+    return (
+      initialBalance + incomes - expenses + incomingTransfers - outgoingTransfers + (plannedExpenses[accountName] || 0)
+    );
   });
   const labels = uniq(totalExpensesQuery.data?.data?.map(({ account }) => account));
   const [sortedLabels, sortedData] = sortChartData(labels, totalMoneyForAccounts);
