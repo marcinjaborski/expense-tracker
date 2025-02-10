@@ -66,6 +66,7 @@ export default {
     success: "Expense created",
     error: "Could not create expense",
     compoundTitle: "Compounds",
+    plannedExpensesTitle: "Planned expenses",
   },
   ExpenseList: {
     title: "List of transactions",
