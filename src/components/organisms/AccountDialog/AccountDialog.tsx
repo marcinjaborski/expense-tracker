@@ -46,8 +46,6 @@ function AccountDialog({ account, resetAccount }: Props) {
       }}
       fabProps={{
         children: <AddIcon />,
-        color: "primary",
-        sx: { position: "absolute", bottom: "5rem", left: "50%", transform: "translateX(-50%)" },
       }}
       title={t("createAccountTitle")}
       content={

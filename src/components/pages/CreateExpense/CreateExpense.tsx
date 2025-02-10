@@ -2,7 +2,11 @@ import CreateExpenseForm from "@src/components/organisms/CreateExpenseForm";
 import { Suspense } from "react";
 import { CircularProgress, Stack } from "@mui/material";
 
-function CreateExpense() {
+type CreateExpenseProps = {
+  planned: boolean;
+};
+
+function CreateExpense({ planned }: CreateExpenseProps) {
   return (
     <Suspense
       fallback={
@@ -11,7 +15,7 @@ function CreateExpense() {
         </Stack>
       }
     >
-      <CreateExpenseForm />
+      <CreateExpenseForm planned={planned} />
     </Suspense>
   );
 }

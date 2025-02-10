@@ -54,6 +54,9 @@ const queryKey = {
   categories: {
     all: ["categories"] as const,
   },
+  planned_expenses: {
+    all: ["plannedExpenses"] as const,
+  },
   debts: {
     all: ["debts"] as const,
     list: (filters: DebtFilters) => [...queryKey.debts.all, { filters }],

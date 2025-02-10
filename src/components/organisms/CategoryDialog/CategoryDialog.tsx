@@ -49,8 +49,6 @@ function CategoryDialog({ category, resetCategory }: Props) {
       }}
       fabProps={{
         children: <AddIcon />,
-        color: "primary",
-        sx: { position: "absolute", bottom: "5rem", left: "50%", transform: "translateX(-50%)" },
       }}
       title={t("createCategoryTitle")}
       content={

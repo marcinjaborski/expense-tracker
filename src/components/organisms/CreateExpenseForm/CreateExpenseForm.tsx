@@ -34,9 +34,13 @@ import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTex
 import { sumBy } from "lodash";
 import { isValidCompound } from "@src/utils/functions.ts";
 
-function CreateExpenseForm() {
+type CreateExpenseFormProps = {
+  planned: boolean;
+};
+
+function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const { t } = useTranslation("CreateExpense");
-  const { expenseToEdit } = useAppSelector((state) => state.expense);
+  const { expenseToEdit, plannedExpenseToEdit } = useAppSelector((state) => state.expense);
   const [selectedType, setSelectedType] = useState<Enums<"expense_type">>("expense");
   const [compoundDialogOpen, setCompoundDialogOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -57,7 +61,7 @@ function CreateExpenseForm() {
       account: accounts.at(0)?.id,
       from_account: accounts.at(1)?.id,
       amount: 0,
-      date: DateTime.now().toSQLDate(),
+      ...(!planned ? { date: DateTime.now().toSQLDate() } : {}),
       description: "",
       compound: [],
     },
@@ -67,6 +71,8 @@ function CreateExpenseForm() {
 
   const formType = watch("type");
   const compound = watch("compound");
+
+  const isEdit = planned ? !!plannedExpenseToEdit : !!expenseToEdit;
 
   useEffect(() => {
     if (!expenseToEdit) return;
@@ -79,6 +85,17 @@ function CreateExpenseForm() {
     setValue("type", expenseToEdit.type);
     if (isValidCompound(expenseToEdit.compound)) setValue("compound", expenseToEdit.compound);
   }, [expenseToEdit, setValue]);
+
+  useEffect(() => {
+    if (!plannedExpenseToEdit) return;
+    setValue("account", plannedExpenseToEdit.account);
+    setValue("amount", plannedExpenseToEdit.amount);
+    setValue("category", plannedExpenseToEdit.category);
+    setValue("description", plannedExpenseToEdit.description);
+    if (plannedExpenseToEdit.from_account) setValue("from_account", plannedExpenseToEdit.from_account);
+    setValue("type", plannedExpenseToEdit.type);
+    if (isValidCompound(plannedExpenseToEdit.compound)) setValue("compound", plannedExpenseToEdit.compound);
+  }, [plannedExpenseToEdit, setValue]);
 
   useEffect(() => {
     setSelectedType(formType);
@@ -94,7 +111,11 @@ function CreateExpenseForm() {
       );
   };
 
-  const { mutate: upsertExpenses, status, reset: resetUpsert } = useOptimisticUpsert("expenses");
+  const {
+    mutate: upsertExpenses,
+    status,
+    reset: resetUpsert,
+  } = useOptimisticUpsert(planned ? "planned_expenses" : "expenses");
 
   const onSubmit = (data: CreateExpenseFormData) => {
     upsertExpenses(expenseToEdit ? [{ ...data, id: Number(expenseToEdit.id) }] : [data]);
@@ -179,18 +200,20 @@ function CreateExpenseForm() {
         label={t("amount")}
         disabled={compound && compound.length > 0}
       />
-      <ControlledTextField
-        control={control}
-        name="date"
-        rules={{ required: true }}
-        sx={{ colorScheme: "dark" }}
-        type="date"
-        fullWidth={false}
-      />
+      {!planned ? (
+        <ControlledTextField
+          control={control}
+          name="date"
+          rules={{ required: true }}
+          sx={{ colorScheme: "dark" }}
+          type="date"
+          fullWidth={false}
+        />
+      ) : null}
       <ControlledTextField control={control} name="description" multiline rows={3} label={t("description")} />
 
       <Button type="submit" variant="contained">
-        {expenseToEdit ? t("update") : t("create")}
+        {isEdit ? t("update") : t("create")}
       </Button>
 
       <BottomFab onClick={() => setCompoundDialogOpen(true)}>

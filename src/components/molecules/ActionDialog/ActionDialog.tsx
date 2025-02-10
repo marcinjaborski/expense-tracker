@@ -1,6 +1,7 @@
 import { ComponentProps, ReactNode } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import BottomFab from "@src/components/atoms/BottomFab";
 
 type Props = {
   open: boolean;
@@ -29,7 +30,7 @@ function ActionDialog({
 
   return (
     <>
-      <Fab {...fabProps} onClick={() => setOpen(true)} />
+      <BottomFab {...fabProps} onClick={() => setOpen(true)} />
       <Dialog open={open} onClose={() => setOpen(false)} {...dialogProps}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
