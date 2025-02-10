@@ -7,7 +7,7 @@ import { DateTime } from "luxon";
 import { useMemo, useState } from "react";
 import TotalMoneyPerAccountPieChart from "@src/components/organisms/TotalMoneyPerAccountPieChart";
 import CategoriesLineChart from "@src/components/organisms/CategoriesLineChart";
-import { Divider, Stack, TextField } from "@mui/material";
+import { Divider, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { MONTH_FIELD_FORMAT } from "@src/utils/constants.ts";
 
@@ -15,13 +15,15 @@ function Dashboard() {
   const { t } = useTranslation("Dashboard");
   const [startDate, setStartDate] = useState(DateTime.now().minus({ month: 5 }).toFormat(MONTH_FIELD_FORMAT));
   const [endDate, setEndDate] = useState(DateTime.now().toFormat(MONTH_FIELD_FORMAT));
+  const [planned, setPlanned] = useState(true);
 
   const contextValue = useMemo(
     () => ({
       startDate: DateTime.fromFormat(startDate, MONTH_FIELD_FORMAT),
       endDate: DateTime.fromFormat(endDate, MONTH_FIELD_FORMAT).endOf("month"),
+      planned,
     }),
-    [startDate, endDate],
+    [startDate, endDate, planned],
   );
 
   return (
@@ -56,6 +58,11 @@ function Dashboard() {
             value={endDate}
             onChange={(event) => setEndDate(event.target.value)}
           />
+        </Stack>
+        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "center" }}>
+          <Typography>{t("real")}</Typography>
+          <Switch checked={planned} onChange={(_, checked) => setPlanned(checked)} />
+          <Typography>{t("planned")}</Typography>
         </Stack>
         <DashboardValues />
         <ExpenseTypeLineChart />

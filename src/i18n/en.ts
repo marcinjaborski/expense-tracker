@@ -46,6 +46,8 @@ export default {
     currentNetProfit: "Net profit",
     from: "From",
     to: "To",
+    planned: "Planned",
+    real: "Real",
   },
   CreateExpense: {
     amount: "Amount",

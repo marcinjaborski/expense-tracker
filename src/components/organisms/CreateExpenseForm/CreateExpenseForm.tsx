@@ -215,6 +215,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
         control={control}
         name="amount"
         rules={{
+          min: 0.01,
           required: true,
         }}
         fullWidth
@@ -257,6 +258,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
                   control={control}
                   name={`compound.${index}.amount`}
                   rules={{
+                    min: 0.01,
                     required: true,
                   }}
                   label={t("amount")}

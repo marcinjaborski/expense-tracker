@@ -8,10 +8,10 @@ import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 
 function DashboardValues() {
   const { t } = useTranslation("Dashboard");
-  const { endDate } = useDashboardContext();
+  const { endDate, planned } = useDashboardContext();
   const { monthExpenses, monthIncomes } = useMonthExpenses();
   const averageExpenses = useAverageExpenses();
-  const totalMoney = useTotalMoney(endDate);
+  const totalMoney = useTotalMoney(endDate, planned);
 
   const values = [
     {
