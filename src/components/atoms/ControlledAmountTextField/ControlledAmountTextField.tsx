@@ -17,10 +17,7 @@ function ControlledAmountTextField<T extends FieldValues>({
       control={control}
       name={name}
       shouldUnregister={shouldUnregister}
-      rules={{
-        min: 0.01,
-        ...rules,
-      }}
+      rules={rules}
       render={({ field: { value, onChange }, fieldState: { error } }) => (
         <AmountTextField
           {...amountTextFieldProps}

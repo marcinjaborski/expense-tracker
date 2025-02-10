@@ -12,7 +12,7 @@ function useTotalMoneyOverTimeChartData() {
   const { t } = useTranslation("Dashboard");
   const { startDate, endDate } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
-  const startTotalMoney = useTotalMoney(startDate.minus({ day: 1 }));
+  const startTotalMoney = useTotalMoney(startDate.minus({ day: 1 }), false);
 
   const { income, expense } = groupBy(query.data?.data, "type");
   const incomesByMonth = getSumByMonth(income, startDate, endDate);
