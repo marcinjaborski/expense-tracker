@@ -31,8 +31,8 @@ import ListIcon from "@mui/icons-material/List";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
-import { CompoundData } from "@src/utils/types.ts";
 import { sumBy } from "lodash";
+import { isValidCompound } from "@src/utils/functions.ts";
 
 function CreateExpenseForm() {
   const { t } = useTranslation("CreateExpense");
@@ -69,23 +69,21 @@ function CreateExpenseForm() {
   const compound = watch("compound");
 
   useEffect(() => {
-    if (expenseToEdit)
-      resetForm({
-        account: expenseToEdit.account.id,
-        amount: expenseToEdit.amount,
-        category: expenseToEdit.category.id,
-        date: expenseToEdit.date,
-        description: expenseToEdit.description,
-        from_account: expenseToEdit.from_account?.id,
-        type: expenseToEdit.type,
-        compound: expenseToEdit.compound as CompoundData,
-      });
-  }, [expenseToEdit, resetForm]);
+    if (!expenseToEdit) return;
+    setValue("account", expenseToEdit.account.id);
+    setValue("amount", expenseToEdit.amount);
+    setValue("category", expenseToEdit.category.id);
+    setValue("date", expenseToEdit.date);
+    setValue("description", expenseToEdit.description);
+    if (expenseToEdit.from_account) setValue("from_account", expenseToEdit.from_account.id);
+    setValue("type", expenseToEdit.type);
+    if (isValidCompound(expenseToEdit.compound)) setValue("compound", expenseToEdit.compound);
+  }, [expenseToEdit, setValue]);
 
   useEffect(() => {
     setSelectedType(formType);
-    if (filteredCategories.at(0)) setValue("category", filteredCategories[0].id);
-  }, [filteredCategories, formType, setValue]);
+    if (!expenseToEdit?.category && filteredCategories.at(0)) setValue("category", filteredCategories[0].id);
+  }, [expenseToEdit, filteredCategories, formType, setValue]);
 
   const onCompoundDialogClose = () => {
     setCompoundDialogOpen(false);
@@ -100,14 +98,13 @@ function CreateExpenseForm() {
 
   const onSubmit = (data: CreateExpenseFormData) => {
     upsertExpenses(expenseToEdit ? [{ ...data, id: Number(expenseToEdit.id) }] : [data]);
-    dispatch(setExpenseToEdit(null));
-    resetForm();
   };
 
   useEffect(() => {
     if (status === "success") {
       resetForm();
       resetUpsert();
+      dispatch(setExpenseToEdit(null));
       dispatch(showFeedback({ message: t("success"), type: "success" }));
     } else if (status === "error") {
       dispatch(showFeedback({ message: t("error"), type: "error" }));
