@@ -56,8 +56,6 @@ function DebtDialog({ debt, resetDebt }: Props) {
       }}
       fabProps={{
         children: <AddIcon />,
-        color: "primary",
-        sx: { position: "absolute", bottom: "5rem", left: "50%", transform: "translateX(-50%)" },
       }}
       title={t("createDebt")}
       content={

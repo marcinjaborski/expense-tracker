@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { useAppDispatch } from "@src/store/store.ts";
 import { showFeedback } from "@src/store/FeedbackSlice.ts";
 import { useTranslation } from "react-i18next";
+import PlannedExpenses from "@src/components/pages/PlannedExpenses";
 
 function App() {
   const { t } = useTranslation("Login");
@@ -45,11 +46,13 @@ function App() {
             <Route path={routes.login} element={<Login />} />
             <Route path={routes.register} element={<Register />} />
             <Route path={routes.dashboard} element={<Dashboard />} />
-            <Route path={routes.createExpense} element={<CreateExpense />} />
+            <Route path={routes.createExpense} element={<CreateExpense planned={false} />} />
+            <Route path={routes.createPlannedExpense} element={<CreateExpense planned />} />
             <Route path={routes.expenses} element={<ExpenseList />} />
             <Route path={routes.more} element={<More />} />
             <Route path={routes.accounts} element={<Accounts />} />
             <Route path={routes.categories} element={<Categories />} />
+            <Route path={routes.plannedExpenses} element={<PlannedExpenses />} />
             <Route path={routes.debts} element={<Debts />} />
             <Route path={routes.import} element={<Import />} />
             <Route path={routes.export} element={<Export />} />

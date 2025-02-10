@@ -10,6 +10,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ReactNode } from "react";
 import supabase from "@src/utils/supabase.ts";
+import { CalendarMonth } from "@mui/icons-material";
 
 type ItemData = {
   label: string;
@@ -32,6 +33,11 @@ function More() {
       label: t("categories"),
       icon: <FolderCopyIcon />,
       link: routes.categories,
+    },
+    {
+      label: t("plannedExpenses"),
+      icon: <CalendarMonth />,
+      link: routes.plannedExpenses,
     },
     {
       label: t("debts"),
