@@ -5,7 +5,12 @@ import { updateArray } from "@src/utils/functions.ts";
 import { TableType } from "@src/utils/types.ts";
 import queryKey from "@src/utils/queryKey.ts";
 
-function useOptimisticUpsert(table: TableType) {
+type MutationProperties = {
+  onSuccess?: () => void;
+  onError?: () => void;
+};
+
+function useOptimisticUpsert(table: TableType, { onSuccess, onError }: MutationProperties = {}) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -17,8 +22,10 @@ function useOptimisticUpsert(table: TableType) {
       queryClient.setQueryData(queryKey[table].all, nextData);
       return { previousData, nextData };
     },
+    onSuccess,
     onError: (_, __, context) => {
       if (context) queryClient.setQueryData(queryKey[table].all, context.previousData);
+      onError?.();
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: queryKey[table].all }),
   });

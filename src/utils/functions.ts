@@ -1,4 +1,4 @@
-import { Database, Json } from "@src/utils/database.types.ts";
+import { Database, Json, Tables } from "@src/utils/database.types.ts";
 import { DateTime, Interval } from "luxon";
 import { sortBy, unzip, zip } from "lodash";
 import { TooltipItem } from "chart.js";
@@ -89,4 +89,9 @@ export const isValidCompound = (compound: Json): compound is CompoundData => {
   return compound.every(
     (element) => typeof element === "object" && element !== null && "amount" in element && "description" in element,
   );
+};
+
+export const isPlannedExpenseRealized = (realized: Tables<"planned_expenses">["realized"]) => {
+  if (!realized) return false;
+  return DateTime.fromSQL(realized).hasSame(DateTime.now(), "month");
 };

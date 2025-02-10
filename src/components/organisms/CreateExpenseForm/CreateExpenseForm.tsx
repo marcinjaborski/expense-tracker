@@ -8,6 +8,8 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemButton,
+  ListItemText,
   MenuItem,
   Stack,
   Typography,
@@ -24,15 +26,18 @@ import { showFeedback } from "@src/store/FeedbackSlice.ts";
 import { setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
-import { Enums } from "@src/utils/database.types.ts";
+import { Enums, Tables } from "@src/utils/database.types.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
 import BottomFab from "@src/components/atoms/BottomFab";
 import ListIcon from "@mui/icons-material/List";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
 import { sumBy } from "lodash";
-import { isValidCompound } from "@src/utils/functions.ts";
+import { currencyFormat, isPlannedExpenseRealized, isValidCompound } from "@src/utils/functions.ts";
+import usePlannedExpenses from "@src/repository/usePlannedExpenses.ts";
+import supabase from "@src/utils/supabase.ts";
 
 type CreateExpenseFormProps = {
   planned: boolean;
@@ -43,10 +48,13 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const { expenseToEdit, plannedExpenseToEdit } = useAppSelector((state) => state.expense);
   const [selectedType, setSelectedType] = useState<Enums<"expense_type">>("expense");
   const [compoundDialogOpen, setCompoundDialogOpen] = useState(false);
+  const [plannedExpensesDialogOpen, setPlannedExpensesDialogOpen] = useState(false);
+  const [filledFromPlannedExpense, setFilledFromPlannedExpense] = useState<Tables<"planned_expenses"> | null>(null);
   const dispatch = useAppDispatch();
 
   const { data: categories } = useCategories();
   const { data: accounts } = useAccounts();
+  const { data: plannedExpenses } = usePlannedExpenses();
   const filteredCategories = categories.filter(({ type }) => type === selectedType);
   const {
     control,
@@ -71,6 +79,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
 
   const formType = watch("type");
   const compound = watch("compound");
+  const date = watch("date");
 
   const isEdit = planned ? !!plannedExpenseToEdit : !!expenseToEdit;
 
@@ -111,26 +120,38 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
       );
   };
 
-  const {
-    mutate: upsertExpenses,
-    status,
-    reset: resetUpsert,
-  } = useOptimisticUpsert(planned ? "planned_expenses" : "expenses");
+  const fillFromPlanned = (plannedExpense: Tables<"planned_expenses">) => {
+    setValue("account", plannedExpense.account);
+    setValue("amount", plannedExpense.amount);
+    setValue("category", plannedExpense.category);
+    setValue("description", plannedExpense.description);
+    if (plannedExpense.from_account) setValue("from_account", plannedExpense.from_account);
+    setValue("type", plannedExpense.type);
+    if (isValidCompound(plannedExpense.compound)) setValue("compound", plannedExpense.compound);
+    setPlannedExpensesDialogOpen(false);
+    setFilledFromPlannedExpense(plannedExpense);
+  };
+
+  const { mutate: upsertExpenses, reset: resetUpsert } = useOptimisticUpsert(
+    planned ? "planned_expenses" : "expenses",
+    {
+      onSuccess: async () => {
+        resetForm();
+        resetUpsert();
+        dispatch(setExpenseToEdit(null));
+        dispatch(showFeedback({ message: t("success"), type: "success" }));
+        if (filledFromPlannedExpense)
+          await supabase.from("planned_expenses").update({ realized: date }).eq("id", filledFromPlannedExpense.id);
+      },
+      onError: () => {
+        dispatch(showFeedback({ message: t("error"), type: "error" }));
+      },
+    },
+  );
 
   const onSubmit = (data: CreateExpenseFormData) => {
     upsertExpenses(expenseToEdit ? [{ ...data, id: Number(expenseToEdit.id) }] : [data]);
   };
-
-  useEffect(() => {
-    if (status === "success") {
-      resetForm();
-      resetUpsert();
-      dispatch(setExpenseToEdit(null));
-      dispatch(showFeedback({ message: t("success"), type: "success" }));
-    } else if (status === "error") {
-      dispatch(showFeedback({ message: t("error"), type: "error" }));
-    }
-  }, [dispatch, status, resetForm, resetUpsert, t]);
 
   return (
     <Stack
@@ -220,6 +241,12 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
         <ListIcon />
       </BottomFab>
 
+      {!planned ? (
+        <BottomFab sx={{ translate: "calc(-100% - 0.5rem) 0" }} onClick={() => setPlannedExpensesDialogOpen(true)}>
+          <CalendarMonthIcon />
+        </BottomFab>
+      ) : null}
+
       <Dialog open={compoundDialogOpen} onClose={onCompoundDialogClose}>
         <DialogTitle>{t("compoundTitle")}</DialogTitle>
         <DialogContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 2 }}>
@@ -252,6 +279,26 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
           <Fab color="primary" size="small" onClick={() => append({ amount: 0, description: "" })}>
             <AddIcon />
           </Fab>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={plannedExpensesDialogOpen} onClose={() => setPlannedExpensesDialogOpen(false)}>
+        <DialogTitle>{t("plannedExpensesTitle")}</DialogTitle>
+        <DialogContent>
+          <List>
+            {plannedExpenses?.map((plannedExpense) => (
+              <ListItemButton
+                key={plannedExpense.id}
+                onClick={() => fillFromPlanned(plannedExpense)}
+                disabled={isPlannedExpenseRealized(plannedExpense.realized)}
+              >
+                <ListItemText
+                  primary={plannedExpense.description}
+                  secondary={currencyFormat().format(plannedExpense.amount)}
+                />
+              </ListItemButton>
+            ))}
+          </List>
         </DialogContent>
       </Dialog>
     </Stack>
