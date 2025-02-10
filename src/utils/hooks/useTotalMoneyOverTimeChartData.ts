@@ -7,16 +7,18 @@ import { Interval } from "luxon";
 import { colors } from "@mui/material";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 import { CHART_POINT_RADIUS, CHART_TENSION } from "@src/utils/constants.ts";
+import useUnrealizedPlannedExpenses from "@src/utils/hooks/useUnrealizedPlannedExpenses.ts";
 
 function useTotalMoneyOverTimeChartData() {
   const { t } = useTranslation("Dashboard");
   const { startDate, endDate } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
   const startTotalMoney = useTotalMoney(startDate.minus({ day: 1 }), false);
+  const plannedExpenses = useUnrealizedPlannedExpenses();
 
   const { income, expense } = groupBy(query.data?.data, "type");
-  const incomesByMonth = getSumByMonth(income, startDate, endDate);
-  const expensesByMonth = getSumByMonth(expense, startDate, endDate);
+  const incomesByMonth = getSumByMonth(income, startDate, endDate, plannedExpenses.incomes);
+  const expensesByMonth = getSumByMonth(expense, startDate, endDate, plannedExpenses.expenses);
 
   const monthsDifference = Math.ceil(Interval.fromDateTimes(startDate, endDate).length("months"));
   let totalProfit = 0;

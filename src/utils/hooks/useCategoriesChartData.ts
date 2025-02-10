@@ -3,14 +3,16 @@ import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDa
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 import { sortChartData } from "@src/utils/functions.ts";
 import { Enums } from "@src/utils/database.types.ts";
+import useUnrealizedPlannedExpensesByCategory from "@src/utils/hooks/useUnrealizedPlannedExpensesByCategory.ts";
 
 function useCategoriesChartData(expenseType: Enums<"expense_type">) {
   const { startDate, endDate } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
+  const plannedExpenses = useUnrealizedPlannedExpensesByCategory();
 
   const expensesByType = query.data?.data?.filter(({ type }) => type === expenseType) || [];
-  const expensesByCategory = Object.values(groupBy(expensesByType, "category")).map((expenses) =>
-    sumBy(expenses, "sum"),
+  const expensesByCategory = Object.entries(groupBy(expensesByType, "category")).map(
+    ([category, expenses]) => sumBy(expenses, "sum") + (plannedExpenses[category] || 0),
   );
   const labels = uniq(expensesByType.map(({ category }) => category));
   const [sortedLabels, sortedData] = sortChartData(labels, expensesByCategory);
