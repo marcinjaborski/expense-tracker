@@ -6,7 +6,7 @@ function useCategories() {
   return useSuspenseQuery({
     queryKey: queryKey.categories.all,
     queryFn: async () => {
-      const query = supabase.from("categories").select();
+      const query = supabase.from("categories").select().order("order");
       return await query.throwOnError().then((result) => {
         if (result.error) throw result.error;
         return result.data;

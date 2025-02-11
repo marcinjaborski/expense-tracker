@@ -15,6 +15,7 @@ function usePlannedExpenses() {
       await supabase
         .from("planned_expenses")
         .select("*, category (*), account (*)")
+        .order("order")
         .throwOnError()
         .returns<PlannedExpenseReturnType[]>()
         .then((result) => {

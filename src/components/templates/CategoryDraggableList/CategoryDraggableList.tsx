@@ -3,12 +3,11 @@ import { setCategoryDialogOpen } from "@src/store/DialogSlice.ts";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DraggableList from "@src/components/organisms/DraggableList";
-import { DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import { useAppDispatch } from "@src/store/store.ts";
 import { Tables } from "@src/utils/database.types.ts";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
+import useReorder from "@src/utils/hooks/useReorder.ts";
 
 type Props = {
   categories: Tables<"categories">[];
@@ -16,17 +15,17 @@ type Props = {
   setCategoryDeleteId: (id: number) => void;
 };
 
+const getOffset = (category?: Tables<"categories">) => {
+  if (!category) return 0;
+  if (category.type === "expense") return 0;
+  if (category.type === "income") return 1000;
+  if (category.type === "transfer") return 2000;
+};
+
 function CategoryDraggableList({ categories, setCategoryToEdit, setCategoryDeleteId }: Props) {
   const dispatch = useAppDispatch();
   const { mutate: upsertCategories } = useOptimisticUpsert("categories");
-
-  const onDragEnd = async ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) return;
-    const oldIndex = categories.findIndex((category) => category.id === active.id);
-    const newIndex = categories.findIndex((category) => category.id === over.id);
-    const newAccounts = arrayMove(categories, oldIndex, newIndex);
-    upsertCategories(newAccounts);
-  };
+  const reorderCategories = useReorder(categories, getOffset(categories.at(0)));
 
   return (
     <DraggableList
@@ -57,7 +56,10 @@ function CategoryDraggableList({ categories, setCategoryToEdit, setCategoryDelet
           ),
         },
       }))}
-      onDragEnd={onDragEnd}
+      onDragEnd={(event) => {
+        const reorderedCategories = reorderCategories(event);
+        if (reorderedCategories) upsertCategories(reorderedCategories);
+      }}
     />
   );
 }

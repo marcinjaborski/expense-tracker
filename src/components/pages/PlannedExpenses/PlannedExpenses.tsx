@@ -1,8 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "@src/store/store.ts";
 import { useState } from "react";
-import { DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import DraggableList from "@src/components/organisms/DraggableList";
 import { Box, IconButton, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,6 +16,7 @@ import BottomFab from "@src/components/atoms/BottomFab";
 import AddIcon from "@mui/icons-material/Add";
 import { currencyFormat } from "@src/utils/functions.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
+import useReorder from "@src/utils/hooks/useReorder.ts";
 
 function PlannedExpenses() {
   const { t } = useTranslation("PlannedExpenses");
@@ -27,18 +26,11 @@ function PlannedExpenses() {
   const { mutate: upsertPlannedExpenses } = useOptimisticUpsert("planned_expenses");
   const { mutate: deletePlannedExpense } = useDeletePlannedExpense();
   const [deletePlannedExpenseId, setDeletePlannedExpenseId] = useState<number | null>(null);
+  const reorderPlannedExpenses = useReorder(plannedExpenses);
 
   const onConfirmDelete = () => {
     if (deletePlannedExpenseId) deletePlannedExpense(deletePlannedExpenseId);
     setDeletePlannedExpenseId(null);
-  };
-
-  const onDragEnd = async ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) return;
-    const oldIndex = plannedExpenses.findIndex((plannedExpense) => plannedExpense.id === active.id);
-    const newIndex = plannedExpenses.findIndex((plannedExpense) => plannedExpense.id === over.id);
-    const newPlannedExpenses = arrayMove(plannedExpenses, oldIndex, newIndex);
-    upsertPlannedExpenses(newPlannedExpenses);
   };
 
   return (
@@ -72,7 +64,10 @@ function PlannedExpenses() {
             ),
           },
         }))}
-        onDragEnd={onDragEnd}
+        onDragEnd={(event) => {
+          const reorderedPlannedExpenses = reorderPlannedExpenses(event);
+          if (reorderedPlannedExpenses) upsertPlannedExpenses(reorderedPlannedExpenses);
+        }}
       />
       <BottomFab onClick={() => navigate(routes.createPlannedExpense)}>
         <AddIcon />

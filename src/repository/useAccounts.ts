@@ -9,6 +9,7 @@ function useAccounts() {
       await supabase
         .from("accounts")
         .select()
+        .order("order")
         .throwOnError()
         .then((result) => {
           if (result.error) throw result.error;

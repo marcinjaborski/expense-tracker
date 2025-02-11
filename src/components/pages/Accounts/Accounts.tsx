@@ -1,7 +1,5 @@
 import useAccounts from "@src/repository/useAccounts.ts";
 import DraggableList from "@src/components/organisms/DraggableList";
-import { DragEndEvent } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import { Box, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -14,6 +12,7 @@ import useDeleteAccount from "@src/repository/useDeleteAccount.ts";
 import ConfirmDialog from "@src/components/organisms/ConfirmDialog";
 import { useTranslation } from "react-i18next";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
+import useReorder from "@src/utils/hooks/useReorder.ts";
 
 function Accounts() {
   const { t } = useTranslation("Accounts");
@@ -23,18 +22,11 @@ function Accounts() {
   const { mutate: deleteAccount } = useDeleteAccount();
   const [accountToEdit, setAccountToEdit] = useState<Tables<"accounts"> | null>(null);
   const [deleteAccountId, setDeleteAccountId] = useState<number | null>(null);
+  const reorderAccounts = useReorder(accounts);
 
   const onConfirmDelete = () => {
     if (deleteAccountId) deleteAccount(deleteAccountId);
     setDeleteAccountId(null);
-  };
-
-  const onDragEnd = async ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) return;
-    const oldIndex = accounts.findIndex((account) => account.id === active.id);
-    const newIndex = accounts.findIndex((account) => account.id === over.id);
-    const newAccounts = arrayMove(accounts, oldIndex, newIndex);
-    upsertAccounts(newAccounts);
   };
 
   return (
@@ -62,7 +54,10 @@ function Accounts() {
             ),
           },
         }))}
-        onDragEnd={onDragEnd}
+        onDragEnd={(event) => {
+          const reorderedAccounts = reorderAccounts(event);
+          if (reorderedAccounts) upsertAccounts(reorderedAccounts);
+        }}
       />
       <AccountDialog account={accountToEdit} resetAccount={() => setAccountToEdit(null)} />
       <ConfirmDialog
