@@ -23,10 +23,10 @@ import ExpenseTypeSelect from "@src/components/molecules/ExpenseTypeSelect";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { showFeedback } from "@src/store/FeedbackSlice.ts";
-import { setExpenseToEdit } from "@src/store/ExpenseSlice.ts";
+import { setExpenseToEdit, setPlannedExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
-import { Enums, Tables } from "@src/utils/database.types.ts";
+import { Tables } from "@src/utils/database.types.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
 import BottomFab from "@src/components/atoms/BottomFab";
 import ListIcon from "@mui/icons-material/List";
@@ -43,10 +43,11 @@ type CreateExpenseFormProps = {
   planned: boolean;
 };
 
+const DEFAULT_TYPE = "expense";
+
 function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const { t } = useTranslation("CreateExpense");
   const { expenseToEdit, plannedExpenseToEdit } = useAppSelector((state) => state.expense);
-  const [selectedType, setSelectedType] = useState<Enums<"expense_type">>("expense");
   const [compoundDialogOpen, setCompoundDialogOpen] = useState(false);
   const [plannedExpensesDialogOpen, setPlannedExpensesDialogOpen] = useState(false);
   const [filledFromPlannedExpense, setFilledFromPlannedExpense] = useState<Tables<"planned_expenses"> | null>(null);
@@ -55,7 +56,6 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const { data: categories } = useCategories();
   const { data: accounts } = useAccounts();
   const { data: plannedExpenses } = usePlannedExpenses();
-  const filteredCategories = categories.filter(({ type }) => type === selectedType);
   const {
     control,
     watch,
@@ -64,8 +64,8 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
     reset: resetForm,
   } = useForm<CreateExpenseFormData>({
     defaultValues: {
-      type: "expense",
-      category: filteredCategories.at(0)?.id,
+      type: DEFAULT_TYPE,
+      category: categories.find(({ type }) => type === DEFAULT_TYPE)?.id,
       account: accounts.at(0)?.id,
       from_account: accounts.at(1)?.id,
       amount: 0,
@@ -80,6 +80,8 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const formType = watch("type");
   const compound = watch("compound");
   const date = watch("date");
+
+  const filteredCategories = categories.filter(({ type }) => type === formType);
 
   const isEdit = planned ? !!plannedExpenseToEdit : !!expenseToEdit;
 
@@ -105,11 +107,6 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
     setValue("type", plannedExpenseToEdit.type);
     if (isValidCompound(plannedExpenseToEdit.compound)) setValue("compound", plannedExpenseToEdit.compound);
   }, [plannedExpenseToEdit, setValue]);
-
-  useEffect(() => {
-    setSelectedType(formType);
-    if (!expenseToEdit?.category && filteredCategories.at(0)) setValue("category", filteredCategories[0].id);
-  }, [expenseToEdit, filteredCategories, formType, setValue]);
 
   const onCompoundDialogClose = () => {
     setCompoundDialogOpen(false);
@@ -139,6 +136,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
         resetForm();
         resetUpsert();
         dispatch(setExpenseToEdit(null));
+        dispatch(setPlannedExpenseToEdit(null));
         dispatch(showFeedback({ message: t("success"), type: "success" }));
         if (filledFromPlannedExpense)
           await supabase.from("planned_expenses").update({ realized: date }).eq("id", filledFromPlannedExpense.id);
@@ -150,7 +148,8 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   );
 
   const onSubmit = (data: CreateExpenseFormData) => {
-    upsertExpenses(expenseToEdit ? [{ ...data, id: Number(expenseToEdit.id) }] : [data]);
+    if (data.type !== "transfer") delete data.from_account;
+    upsertExpenses(isEdit ? [{ ...data, id: Number(expenseToEdit?.id || plannedExpenseToEdit?.id) }] : [data]);
   };
 
   return (
@@ -162,6 +161,12 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
       <Controller
         control={control}
         name="type"
+        rules={{
+          onChange: (event) => {
+            const newCategory = categories.find(({ type }) => type === event.target.value);
+            if (newCategory) setValue("category", newCategory.id);
+          },
+        }}
         render={({ field: { value, onChange } }) => <ExpenseTypeSelect value={value} onChange={onChange} />}
       />
       <ControlledTextField
@@ -183,7 +188,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
           </MenuItem>
         ))}
       </ControlledTextField>
-      {selectedType === "transfer" ? (
+      {formType === "transfer" ? (
         <ControlledTextField
           control={control}
           name="from_account"
@@ -203,7 +208,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
         name="account"
         rules={{ required: true }}
         select
-        label={t(selectedType === "transfer" ? "toAccount" : "account")}
+        label={t(formType === "transfer" ? "toAccount" : "account")}
       >
         {accounts.map((account) => (
           <MenuItem value={account.id} key={account.id}>

@@ -58,8 +58,10 @@ export function getSumByMonth(
       .map((month) => [month.toSQLDate(), 0]),
   );
   collection?.forEach((element) => {
-    sums[element.month.split(" ")[0]] += element.sum + (isCurrentMonth(element.month) ? plannedValue : 0);
+    sums[element.month.split(" ")[0]] += element.sum || 0;
   });
+  const currentMonth = DateTime.now().startOf("month").toSQLDate();
+  if (sums[currentMonth] !== undefined) sums[currentMonth] += plannedValue;
   return Object.values(sums);
 }
 
