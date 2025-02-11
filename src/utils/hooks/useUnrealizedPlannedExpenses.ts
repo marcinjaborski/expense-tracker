@@ -19,12 +19,12 @@ function useUnrealizedPlannedExpenses(groupExpensesBy: GroupBy = "type") {
   const allUnrealized = plannedExpenses.filter((plannedExpense) => !isPlannedExpenseRealized(plannedExpense.realized));
 
   if (groupExpensesBy === "category") {
-    const grouped = groupBy(allUnrealized, "category");
+    const grouped = groupBy(allUnrealized, "category.id");
     return Object.fromEntries(Object.entries(grouped).map(([name, expenses]) => [name, sumBy(expenses, "amount")]));
   }
 
   if (groupExpensesBy === "account") {
-    const grouped = groupBy(allUnrealized, "account");
+    const grouped = groupBy(allUnrealized, "account.id");
     return Object.fromEntries(
       Object.entries(grouped).map(([name, expenses]) => [
         name,

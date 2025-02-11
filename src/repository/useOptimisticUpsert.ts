@@ -16,11 +16,15 @@ function useOptimisticUpsert(table: TableType, { onSuccess, onError }: MutationP
   return useMutation({
     mutationFn: async (data: TablesUpdate<typeof table>[]) => supabase.from(table).upsert(data).throwOnError(),
     onMutate: async (newData) => {
-      await queryClient.cancelQueries({ queryKey: queryKey[table].all });
-      const previousData = (queryClient.getQueryData(queryKey[table].all) as TablesUpdate<typeof table>[]) || [];
-      const nextData = updateArray(previousData, newData);
-      queryClient.setQueryData(queryKey[table].all, nextData);
-      return { previousData, nextData };
+      try {
+        await queryClient.cancelQueries({ queryKey: queryKey[table].all });
+        const previousData = (queryClient.getQueryData(queryKey[table].all) as TablesUpdate<typeof table>[]) || [];
+        const nextData = updateArray(previousData, newData);
+        queryClient.setQueryData(queryKey[table].all, nextData);
+        return { previousData, nextData };
+      } catch {
+        /* empty */
+      }
     },
     onSuccess,
     onError: (_, __, context) => {

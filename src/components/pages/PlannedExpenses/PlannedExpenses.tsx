@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import DraggableList from "@src/components/organisms/DraggableList";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmDialog from "@src/components/organisms/ConfirmDialog";
@@ -17,6 +17,7 @@ import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
 import BottomFab from "@src/components/atoms/BottomFab";
 import AddIcon from "@mui/icons-material/Add";
 import { currencyFormat } from "@src/utils/functions.ts";
+import CategoryIcon from "@src/components/atoms/CategoryIcon";
 
 function PlannedExpenses() {
   const { t } = useTranslation("PlannedExpenses");
@@ -45,7 +46,12 @@ function PlannedExpenses() {
       <DraggableList
         items={plannedExpenses.map((plannedExpense) => ({
           id: plannedExpense.id,
-          primary: plannedExpense.description,
+          primary: (
+            <Stack direction="row" sx={{ gap: 2 }}>
+              <CategoryIcon icon={plannedExpense.category.icon} />
+              {plannedExpense.description}
+            </Stack>
+          ),
           secondary: currencyFormat().format(plannedExpense.amount),
           listItemProps: {
             sx: { pr: 10 },

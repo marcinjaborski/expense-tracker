@@ -6,7 +6,7 @@ export type CreateExpenseFormData = {
   category: number;
   date: string;
   description: string;
-  from_account: number;
+  from_account?: number;
   type: Enums<"expense_type">;
   compound?: { amount: number; description: string }[];
 };
