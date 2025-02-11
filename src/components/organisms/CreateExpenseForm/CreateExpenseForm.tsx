@@ -26,7 +26,6 @@ import { showFeedback } from "@src/store/FeedbackSlice.ts";
 import { setExpenseToEdit, setPlannedExpenseToEdit } from "@src/store/ExpenseSlice.ts";
 import ControlledTextField from "@src/components/atoms/ControlledTextField";
 import { DateTime } from "luxon";
-import { Tables } from "@src/utils/database.types.ts";
 import CategoryIcon from "@src/components/atoms/CategoryIcon";
 import BottomFab from "@src/components/atoms/BottomFab";
 import ListIcon from "@mui/icons-material/List";
@@ -36,7 +35,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ControlledAmountTextField from "@src/components/atoms/ControlledAmountTextField";
 import { sumBy } from "lodash";
 import { currencyFormat, isPlannedExpenseRealized, isValidCompound } from "@src/utils/functions.ts";
-import usePlannedExpenses from "@src/repository/usePlannedExpenses.ts";
+import usePlannedExpenses, { PlannedExpenseReturnType } from "@src/repository/usePlannedExpenses.ts";
 import supabase from "@src/utils/supabase.ts";
 
 type CreateExpenseFormProps = {
@@ -50,7 +49,7 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
   const { expenseToEdit, plannedExpenseToEdit } = useAppSelector((state) => state.expense);
   const [compoundDialogOpen, setCompoundDialogOpen] = useState(false);
   const [plannedExpensesDialogOpen, setPlannedExpensesDialogOpen] = useState(false);
-  const [filledFromPlannedExpense, setFilledFromPlannedExpense] = useState<Tables<"planned_expenses"> | null>(null);
+  const [filledFromPlannedExpense, setFilledFromPlannedExpense] = useState<PlannedExpenseReturnType | null>(null);
   const dispatch = useAppDispatch();
 
   const { data: categories } = useCategories();
@@ -117,10 +116,10 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
       );
   };
 
-  const fillFromPlanned = (plannedExpense: Tables<"planned_expenses">) => {
-    setValue("account", plannedExpense.account);
+  const fillFromPlanned = (plannedExpense: PlannedExpenseReturnType) => {
+    setValue("account", plannedExpense.account.id);
     setValue("amount", plannedExpense.amount);
-    setValue("category", plannedExpense.category);
+    setValue("category", plannedExpense.category.id);
     setValue("description", plannedExpense.description);
     if (plannedExpense.from_account) setValue("from_account", plannedExpense.from_account);
     setValue("type", plannedExpense.type);

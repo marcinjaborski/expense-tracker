@@ -1,11 +1,11 @@
 import { ExpenseReturnType } from "@src/repository/useExpenses.ts";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Tables } from "@src/utils/database.types.ts";
+import { PlannedExpenseReturnType } from "@src/repository/usePlannedExpenses.ts";
 
 export type ExpenseState = {
   expenseToEdit: ExpenseReturnType | null;
   expenseDeleteId: number | null;
-  plannedExpenseToEdit: Tables<"planned_expenses"> | null;
+  plannedExpenseToEdit: PlannedExpenseReturnType | null;
 };
 
 const initialState: ExpenseState = {
@@ -25,7 +25,7 @@ const expenseSlice = createSlice({
     setExpenseDeleteId: (state, { payload }: PayloadAction<number | null>) => {
       state.expenseDeleteId = payload;
     },
-    setPlannedExpenseToEdit: (state, { payload }: PayloadAction<Tables<"planned_expenses"> | null>) => {
+    setPlannedExpenseToEdit: (state, { payload }: PayloadAction<PlannedExpenseReturnType | null>) => {
       state.plannedExpenseToEdit = payload;
     },
   },

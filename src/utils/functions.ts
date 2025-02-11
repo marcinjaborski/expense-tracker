@@ -1,8 +1,9 @@
-import { Database, Json, Tables } from "@src/utils/database.types.ts";
+import { Database, Json } from "@src/utils/database.types.ts";
 import { DateTime, Interval } from "luxon";
 import { sortBy, unzip, zip } from "lodash";
 import { TooltipItem } from "chart.js";
 import { CompoundData } from "@src/utils/types.ts";
+import { PlannedExpenseReturnType } from "@src/repository/usePlannedExpenses.ts";
 
 export function notNull<T>(value: T | null): value is T {
   return value !== null;
@@ -96,7 +97,7 @@ export const isValidCompound = (compound: Json): compound is CompoundData => {
   );
 };
 
-export const isPlannedExpenseRealized = (realized: Tables<"planned_expenses">["realized"]) => {
+export const isPlannedExpenseRealized = (realized: PlannedExpenseReturnType["realized"]) => {
   if (!realized) return false;
   return isCurrentMonth(realized);
 };
