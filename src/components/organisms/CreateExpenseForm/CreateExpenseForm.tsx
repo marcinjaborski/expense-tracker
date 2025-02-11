@@ -98,9 +98,9 @@ function CreateExpenseForm({ planned }: CreateExpenseFormProps) {
 
   useEffect(() => {
     if (!plannedExpenseToEdit) return;
-    setValue("account", plannedExpenseToEdit.account);
+    setValue("account", plannedExpenseToEdit.account.id);
     setValue("amount", plannedExpenseToEdit.amount);
-    setValue("category", plannedExpenseToEdit.category);
+    setValue("category", plannedExpenseToEdit.category.id);
     setValue("description", plannedExpenseToEdit.description);
     if (plannedExpenseToEdit.from_account) setValue("from_account", plannedExpenseToEdit.from_account);
     setValue("type", plannedExpenseToEdit.type);
