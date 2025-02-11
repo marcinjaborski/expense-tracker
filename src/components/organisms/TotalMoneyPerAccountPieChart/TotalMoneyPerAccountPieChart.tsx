@@ -8,6 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 const options: ChartOptions<"pie"> = {
   radius: CHART_PIE_RADIUS,
+  responsive: true,
   plugins: {
     colors: {
       forceOverride: true,
