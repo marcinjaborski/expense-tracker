@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "@src/store/store.ts";
 import { setDebtDialogOpen } from "@src/store/DialogSlice.ts";
 import { useEffect, useState } from "react";
 import useOptimisticUpsert from "@src/repository/useOptimisticUpsert.ts";
-import { uniq } from "lodash";
 import PersonIcon from "@mui/icons-material/Person";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import useTotalDebts from "@src/repository/useTotalDebts.ts";
@@ -34,7 +33,7 @@ function DebtDialog({ debt, resetDebt }: Props) {
   const { handleSubmit, reset, control } = useForm<FormData>();
   const { mutate: upsertDebts } = useOptimisticUpsert("debts");
   const { data: totalDebts } = useTotalDebts();
-  const persons = uniq(Object.keys(totalDebts || {}));
+  const persons = totalDebts?.data?.map(({ person }) => person) || [];
 
   useEffect(() => {
     if (debt) reset({ person: debt.person, amount: Math.abs(debt.amount), description: debt.description });
