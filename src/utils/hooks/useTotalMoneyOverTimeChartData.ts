@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDate.ts";
 import useTotalMoney from "@src/utils/hooks/useTotalMoney.ts";
-import { groupBy } from "lodash";
-import { formatDate, getSumByMonth } from "@src/utils/functions.ts";
+import { groupBy, last } from "lodash";
+import { currencyFormat, formatDate, getSumByMonth } from "@src/utils/functions.ts";
 import { Interval } from "luxon";
 import { colors } from "@mui/material";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
@@ -38,7 +38,7 @@ function useTotalMoneyOverTimeChartData() {
       datasets: [
         {
           data: totalMoneyOverMonths,
-          label: t("totalMoney"),
+          label: `${t("totalMoney")} (${currencyFormat().format(last(totalMoneyOverMonths)! - startTotalMoney)})`,
           borderColor: colors.cyan["500"],
           backgroundColor: colors.cyan["300"],
           tension: CHART_TENSION,

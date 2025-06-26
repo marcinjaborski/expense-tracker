@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDate.ts";
-import { groupBy } from "lodash";
+import { groupBy, sum } from "lodash";
 import { Interval } from "luxon";
 import { colors } from "@mui/material";
-import { formatDate, getSumByMonth } from "@src/utils/functions.ts";
+import { currencyFormat, formatDate, getSumByMonth } from "@src/utils/functions.ts";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 import { CHART_POINT_RADIUS, CHART_TENSION } from "@src/utils/constants.ts";
 import useUnrealizedPlannedExpenses from "@src/utils/hooks/useUnrealizedPlannedExpenses.ts";
@@ -28,7 +28,7 @@ function useExpenseTypeChartData() {
       labels,
       datasets: [
         {
-          label: t("income"),
+          label: `${t("income")} (${currencyFormat().format(sum(incomesByMonth))})`,
           data: incomesByMonth,
           borderColor: colors.lightGreen["500"],
           backgroundColor: colors.lightGreen["300"],
@@ -36,7 +36,7 @@ function useExpenseTypeChartData() {
           pointRadius: CHART_POINT_RADIUS,
         },
         {
-          label: t("expense"),
+          label: `${t("expense")} (${currencyFormat().format(sum(expensesByMonth))})`,
           data: expensesByMonth,
           borderColor: colors.red["500"],
           backgroundColor: colors.red["300"],
