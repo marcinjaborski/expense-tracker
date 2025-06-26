@@ -37,7 +37,7 @@ const options: ChartOptions<"line"> = {
 function ExpenseTypeLineChart() {
   const { data } = useExpenseTypeChartData();
 
-  return <Line options={options} data={data} />;
+  return <Line height={180} options={options} data={data} />;
 }
 
 export default ExpenseTypeLineChart;
