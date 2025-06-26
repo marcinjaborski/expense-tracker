@@ -10,6 +10,7 @@ import CategoriesLineChart from "@src/components/organisms/CategoriesLineChart";
 import { Divider, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { MONTH_FIELD_FORMAT } from "@src/utils/constants.ts";
+import CategoriesCountsLineChart from "@src/components/organisms/CategoriesCountsLineChart";
 
 function Dashboard() {
   const { t } = useTranslation("Dashboard");
@@ -70,6 +71,7 @@ function Dashboard() {
         <ExpenseTypeLineChart />
         <TotalMoneyOverTimeChart />
         <CategoriesLineChart type="expense" />
+        <CategoriesCountsLineChart />
         <CategoriesPieChart type="expense" />
         <TotalMoneyPerAccountPieChart />
       </Stack>

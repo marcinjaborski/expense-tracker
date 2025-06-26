@@ -42,6 +42,11 @@ const queryKey = {
       "amountByCategoryAndDate",
       { filters },
     ],
+    countsByCategoryAndDate: (filters: AmountByCategoryAndDateFilters) => [
+      ...queryKey.expenses.all,
+      "countByCategoryAndDate",
+      { filters },
+    ],
     outgoingTransfersByAccounts: (filters: OutgoingTransfersByAccountsFilters) => [
       ...queryKey.expenses.all,
       "outgoingTransfersByAccounts",
