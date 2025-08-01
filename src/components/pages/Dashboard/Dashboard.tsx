@@ -12,9 +12,15 @@ import { useTranslation } from "react-i18next";
 import { MONTH_FIELD_FORMAT } from "@src/utils/constants.ts";
 import CategoriesCountsLineChart from "@src/components/organisms/CategoriesCountsLineChart";
 
+const getStartDate = () => {
+  const startOfYear = DateTime.now().startOf("year");
+  const sixMonthsPrior = DateTime.now().minus({ month: 5 });
+  return startOfYear < sixMonthsPrior ? startOfYear : sixMonthsPrior;
+};
+
 function Dashboard() {
   const { t } = useTranslation("Dashboard");
-  const [startDate, setStartDate] = useState(DateTime.now().minus({ month: 5 }).toFormat(MONTH_FIELD_FORMAT));
+  const [startDate, setStartDate] = useState(getStartDate().toFormat(MONTH_FIELD_FORMAT));
   const [endDate, setEndDate] = useState(DateTime.now().toFormat(MONTH_FIELD_FORMAT));
   const [planned, setPlanned] = useState(true);
 
