@@ -23,14 +23,16 @@ function Dashboard() {
   const [startDate, setStartDate] = useState(getStartDate().toFormat(MONTH_FIELD_FORMAT));
   const [endDate, setEndDate] = useState(DateTime.now().toFormat(MONTH_FIELD_FORMAT));
   const [planned, setPlanned] = useState(true);
+  const [excludeBig, setExcludeBig] = useState(true);
 
   const contextValue = useMemo(
     () => ({
       startDate: DateTime.fromFormat(startDate, MONTH_FIELD_FORMAT),
       endDate: DateTime.fromFormat(endDate, MONTH_FIELD_FORMAT).endOf("month"),
       planned,
+      excludeBig,
     }),
-    [startDate, endDate, planned],
+    [startDate, endDate, planned, excludeBig],
   );
 
   return (
@@ -73,6 +75,11 @@ function Dashboard() {
             <Typography>{t("planned")}</Typography>
           </Stack>
         ) : null}
+        <Stack direction="row" sx={{ alignItems: "center", justifyContent: "center" }}>
+          <Typography>{t("all")}</Typography>
+          <Switch checked={excludeBig} onChange={(_, checked) => setExcludeBig(checked)} />
+          <Typography>{t("excludeBig")}</Typography>
+        </Stack>
         <DashboardValues />
         <ExpenseTypeLineChart />
         <TotalMoneyOverTimeChart />

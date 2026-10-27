@@ -48,6 +48,8 @@ export default {
     to: "To",
     planned: "Planned",
     real: "Real",
+    all: "All",
+    excludeBig: "Exclude Big",
   },
   CreateExpense: {
     amount: "Amount",

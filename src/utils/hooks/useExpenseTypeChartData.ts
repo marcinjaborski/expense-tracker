@@ -3,18 +3,18 @@ import useAmountByCategoryAndDate from "@src/repository/useAmountByCategoryAndDa
 import { groupBy, sum } from "lodash";
 import { Interval } from "luxon";
 import { colors } from "@mui/material";
-import { currencyFormat, formatDate, getSumByMonth } from "@src/utils/functions.ts";
+import { currencyFormat, filterBigCategories, formatDate, getSumByMonth } from "@src/utils/functions.ts";
 import useDashboardContext from "@src/utils/context/dashboardContext.ts";
 import { CHART_POINT_RADIUS, CHART_TENSION } from "@src/utils/constants.ts";
 import useUnrealizedPlannedExpenses from "@src/utils/hooks/useUnrealizedPlannedExpenses.ts";
 
 function useExpenseTypeChartData() {
   const { t } = useTranslation("Dashboard");
-  const { startDate, endDate } = useDashboardContext();
+  const { startDate, endDate, excludeBig } = useDashboardContext();
   const query = useAmountByCategoryAndDate(startDate, endDate);
   const plannedExpenses = useUnrealizedPlannedExpenses();
 
-  const { income, expense } = groupBy(query.data?.data, "type");
+  const { income, expense } = groupBy(filterBigCategories(query.data?.data, excludeBig), "type");
   const incomesByMonth = getSumByMonth(income, startDate, endDate, plannedExpenses.incomes);
   const expensesByMonth = getSumByMonth(expense, startDate, endDate, plannedExpenses.expenses);
 

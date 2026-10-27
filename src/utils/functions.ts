@@ -1,9 +1,10 @@
 import { Database, Json } from "@src/utils/database.types.ts";
 import { DateTime, Interval } from "luxon";
-import { sortBy, unzip, zip } from "lodash";
+import { filter, sortBy, unzip, zip } from "lodash";
 import { TooltipItem } from "chart.js";
 import { CompoundData } from "@src/utils/types.ts";
 import { PlannedExpenseReturnType } from "@src/repository/usePlannedExpenses.ts";
+import { EXCLUDED_BIG_CATEGORIES } from "@src/utils/constants.ts";
 
 export function notNull<T>(value: T | null): value is T {
   return value !== null;
@@ -100,4 +101,12 @@ export const isValidCompound = (compound: Json): compound is CompoundData => {
 export const isPlannedExpenseRealized = (realized: PlannedExpenseReturnType["realized"]) => {
   if (!realized) return false;
   return isCurrentMonth(realized);
+};
+
+export const filterBigCategories = (
+  data: Database["public"]["Functions"]["get_amount_by_category_and_date"]["Returns"] | null | undefined,
+  excludeBig: boolean,
+) => {
+  if (!excludeBig) return data;
+  return filter(data, ({ category }) => !EXCLUDED_BIG_CATEGORIES.includes(category));
 };

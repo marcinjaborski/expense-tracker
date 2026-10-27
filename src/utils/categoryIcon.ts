@@ -12,7 +12,7 @@ import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import HeadphonesIcon from "@mui/icons-material/Headphones";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import TerminalIcon from "@mui/icons-material/Terminal";
@@ -52,7 +52,7 @@ const categoryIcon = {
   AttachMoneyIcon,
   CardGiftcardIcon,
   HeadphonesIcon,
-  ConfirmationNumberIcon,
+  ReceiptIcon,
   SportsBarIcon,
   LocalBarIcon,
   TerminalIcon,

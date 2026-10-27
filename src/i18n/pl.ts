@@ -42,6 +42,8 @@ const resource = {
     averageExpenses: "Średnie wydatki z 6 miesięcy",
     totalMoney: "Wszystkie pieniądze",
     currentNetProfit: "Zysk w tym miesiącu",
+    all: "Wszystkie",
+    excludeBig: "Bez dużych",
   },
   CreateExpense: {
     amount: "Kwota",
