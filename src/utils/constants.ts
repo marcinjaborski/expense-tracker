@@ -8,3 +8,4 @@ export const CHART_PIE_RADIUS = 100;
 export const MONTH_FIELD_FORMAT = "yyyy-MM";
 export const EXPORT_LIMIT = 1000;
 export const EXCLUDED_BIG_CATEGORIES = ["Apartment"];
+export const MONTHLY_LIMIT = 3300;

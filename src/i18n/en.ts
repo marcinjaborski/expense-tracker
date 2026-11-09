@@ -42,6 +42,7 @@ export default {
     expense: "Expenses",
     currentExpenses: "Monthly expenses",
     averageExpenses: "Average expenses",
+    percentage: "Percentage spent/passed",
     totalMoney: "Total money",
     currentNetProfit: "Net profit",
     from: "From",
